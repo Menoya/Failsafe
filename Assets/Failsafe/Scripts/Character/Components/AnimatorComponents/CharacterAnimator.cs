@@ -16,6 +16,8 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
         private readonly CharacterAnimatorParameters _animatorParameters;
 
         private CharacterAnimationHeightType _currentAnimationHeightType;
+        private Vector2 _currentMagnitude;
+        private float _speedMultiplier = 1;
         
         public CharacterAnimator(CharacterEventBus eventBus, Animator animator, IInputService inputService)
         {
@@ -42,6 +44,8 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
             _eventBus.Subscribe<OnCharacterMove>(OnMove);
             _inputService.Character.EventBus.Subscribe<OnCharacterCrouchButton>(OnCrouchButton);
             _inputService.Character.EventBus.Subscribe<OnCharacterCrawlButton>(OnCrawlButton);
+            _inputService.Character.EventBus.Subscribe<OnCharacterWalkButton>(OnWalkButton);
+            _inputService.Character.EventBus.Subscribe<OnCharacterRunButton>(OnRunButton);
         }
 
         private void RemoveSubscriptions()
@@ -49,12 +53,30 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
             _eventBus.Unsubscribe<OnCharacterMove>(OnMove);
             _inputService.Character.EventBus.Unsubscribe<OnCharacterCrouchButton>(OnCrouchButton);
             _inputService.Character.EventBus.Unsubscribe<OnCharacterCrawlButton>(OnCrawlButton);
+            _inputService.Character.EventBus.Unsubscribe<OnCharacterWalkButton>(OnWalkButton);
+            _inputService.Character.EventBus.Unsubscribe<OnCharacterRunButton>(OnRunButton);
         }
 
         private void OnMove(OnCharacterMove movementInput)
         {
-            SetAnimatorFloat(_animatorParameters.ForwardInputHash, movementInput.ForwardMagnitude);
-            SetAnimatorFloat(_animatorParameters.SideInputHash, movementInput.SideMagnitude);
+            _currentMagnitude = new Vector2 { x = movementInput.ForwardMagnitude, y = movementInput.SideMagnitude };
+            
+            SetAnimatorFloat(_animatorParameters.ForwardInputHash, _currentMagnitude.x * _speedMultiplier);
+            SetAnimatorFloat(_animatorParameters.SideInputHash, _currentMagnitude.y * _speedMultiplier);
+        }
+
+        private void OnRunButton(OnCharacterRunButton state)
+        {
+            _speedMultiplier = state.IsPressed ? 2f : 1f;
+            
+            OnMove(new OnCharacterMove { ForwardMagnitude = _currentMagnitude.x, SideMagnitude = _currentMagnitude.y });
+        }
+
+        private void OnWalkButton(OnCharacterWalkButton state)
+        {
+            _speedMultiplier = state.IsPressed ? 0.5f : 1f;
+            
+            OnMove(new OnCharacterMove { ForwardMagnitude = _currentMagnitude.x, SideMagnitude = _currentMagnitude.y });
         }
 
         private void OnCrouchButton(OnCharacterCrouchButton _) => 

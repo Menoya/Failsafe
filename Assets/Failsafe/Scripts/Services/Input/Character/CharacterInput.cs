@@ -1,10 +1,11 @@
-﻿using Failsafe.Scripts.Services.Input.Character.Events;
+﻿using System;
+using Failsafe.Scripts.Services.Input.Character.Events;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Failsafe.Scripts.Services.Input.Character
 {
-    public class CharacterInput
+    public class CharacterInput : IDisposable
     {
         private readonly CharacterControl _characterControl;
         
@@ -18,11 +19,9 @@ namespace Failsafe.Scripts.Services.Input.Character
             AddSubscriptions();
         }
 
-        public void Destroy()
-        {
+        public void Dispose() => 
             RemoveSubscriptions();
-        }
-        
+
         private void AddSubscriptions()
         {
             _characterControl.Enable();
