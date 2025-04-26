@@ -35,13 +35,8 @@ namespace Failsafe.Scripts.Services.Input.Character
             _characterControl.Move.Run.canceled += OnRunButtonUp;
             
             _characterControl.Move.Crouch.started += OnCrouchButtonDown;
-            _characterControl.Move.Crouch.canceled += OnCrouchButtonUp;
-            
             _characterControl.Move.Crawl.started += OnCrawlButtonDown;
-            _characterControl.Move.Crawl.canceled += OmCrawlButtonUp;
-            
             _characterControl.Move.Jump.started += OnJumButtonDown;
-            _characterControl.Move.Jump.canceled += OnJumpButtonUp;
             
             _characterControl.Enable();
         }
@@ -58,13 +53,8 @@ namespace Failsafe.Scripts.Services.Input.Character
             _characterControl.Move.Run.canceled -= OnRunButtonUp;
             
             _characterControl.Move.Crouch.started -= OnCrouchButtonDown;
-            _characterControl.Move.Crouch.canceled -= OnCrouchButtonUp;
-            
             _characterControl.Move.Crawl.started -= OnCrawlButtonDown;
-            _characterControl.Move.Crawl.canceled -= OmCrawlButtonUp;
-            
             _characterControl.Move.Jump.started -= OnJumButtonDown;
-            _characterControl.Move.Jump.canceled -= OnJumpButtonUp;
             
             _characterControl.Disable();
         }
@@ -99,19 +89,10 @@ namespace Failsafe.Scripts.Services.Input.Character
         private void OnCrouchButtonDown(InputAction.CallbackContext _) => 
             EventBus.Publish(new OnCharacterCrouchButton { IsPressed = true });
 
-        private void OnCrouchButtonUp(InputAction.CallbackContext context) => 
-            EventBus.Publish(new OnCharacterCrouchButton { IsPressed = false });
-
-        private void OnCrawlButtonDown(InputAction.CallbackContext context) => 
+        private void OnCrawlButtonDown(InputAction.CallbackContext _) => 
             EventBus.Publish(new OnCharacterCrawlButton { IsPressed = true });
-        
-        private void OmCrawlButtonUp(InputAction.CallbackContext context) => 
-            EventBus.Publish(new OnCharacterCrawlButton { IsPressed = false });
 
-        private void OnJumButtonDown(InputAction.CallbackContext context) => 
+        private void OnJumButtonDown(InputAction.CallbackContext _) => 
             EventBus.Publish(new OnCharacterJumpButton { IsPressed = true });
-        
-        private void OnJumpButtonUp(InputAction.CallbackContext context) => 
-            EventBus.Publish(new OnCharacterJumpButton { IsPressed = false });
     }
 }
