@@ -38,6 +38,8 @@ namespace Failsafe.Scripts.Services.Input.Character
             _characterControl.Move.Crouch.started += OnCrouchButtonDown;
             _characterControl.Move.Crawl.started += OnCrawlButtonDown;
             _characterControl.Move.Jump.started += OnJumButtonDown;
+            
+            _characterControl.Look.LookDirection.performed += OnLockDirection;
         }
 
         private void RemoveSubscriptions()
@@ -54,6 +56,8 @@ namespace Failsafe.Scripts.Services.Input.Character
             _characterControl.Move.Crouch.started -= OnCrouchButtonDown;
             _characterControl.Move.Crawl.started -= OnCrawlButtonDown;
             _characterControl.Move.Jump.started -= OnJumButtonDown;
+            
+            _characterControl.Look.LookDirection.performed -= OnLockDirection;
             
             _characterControl.Disable();
         }
@@ -93,5 +97,13 @@ namespace Failsafe.Scripts.Services.Input.Character
 
         private void OnJumButtonDown(InputAction.CallbackContext _) => 
             EventBus.Publish(new OnCharacterJumpButton { IsPressed = true });
+
+        private void OnLockDirection(InputAction.CallbackContext context)
+        {
+            var direction = context.ReadValue<Vector2>();
+            var lookDirectionEvent = new OnLookDirectionChange { Horizontal = direction.x / 10f };
+
+            EventBus.Publish(lookDirectionEvent);
+        }
     }
 }

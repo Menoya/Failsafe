@@ -172,6 +172,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Look",
+            "id": "58e5e0b5-8587-4812-b66e-46ed345875b8",
+            "actions": [
+                {
+                    "name": "LookDirection",
+                    "type": "PassThrough",
+                    "id": "736bca35-da33-440e-9619-bb2913e2af54",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "358a8696-06ce-4f31-8413-dfa4afb338db",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard and Mouse",
+                    "action": "LookDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

@@ -16,7 +16,7 @@ namespace Failsafe.Scripts.Character.Components
             EventBus = new CharacterEventBus();
             StateMachine = new CharacterStateMachine(EventBus);
 
-            Mover = new CharacterMover(EventBus, inputService);
+            Mover = new CharacterMover(EventBus, inputService, transform);
             Animator = new CharacterAnimator(EventBus, animator, inputService);
         }
 
