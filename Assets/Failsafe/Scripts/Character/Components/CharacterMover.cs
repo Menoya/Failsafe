@@ -2,9 +2,11 @@
 {
     public class CharacterMover
     {
-        public CharacterMover()
+        private readonly CharacterEventBus _eventBus;
+
+        public CharacterMover(CharacterEventBus eventBus)
         {
-            
+            _eventBus = eventBus;
         }
     }
 }

@@ -8,12 +8,16 @@ namespace Failsafe.Scripts.Character.Components
 {
     public class CharacterStateMachine : StateMachine
     {
-        public CharacterStateMachine()
+        private readonly CharacterEventBus _eventBus;
+
+        public CharacterStateMachine(CharacterEventBus eventBus)
         {
-            InitStateMachine();
+            _eventBus = eventBus;
+            
+            InitStates();
         }
 
-        private void InitStateMachine()
+        private void InitStates()
         {
             States = new Dictionary<Type, IExitableState>
             {
