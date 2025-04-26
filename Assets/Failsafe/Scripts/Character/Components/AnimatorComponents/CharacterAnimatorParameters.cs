@@ -22,12 +22,12 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
         public float CurrentRotateValue;
         public float CurrentSpeedMultiplier;
 
-        private CharacterAnimationHeightType _animationHeightType;
-        private float _targetMoveHeight;
+        private CharacterAnimationHeightType _animationHeightType = CharacterAnimationHeightType.Stand;
+        private float _targetMoveHeight = 2f;
         private float _targetForwardInput;
         private float _targetSideInput;
         private float _targetRotateValue;
-        private float _targetSpeedMultiplier;
+        private float _targetSpeedMultiplier = 1;
 
         public CharacterAnimatorParameters(CharacterEventBus eventBus, IInputService inputService)
         {
@@ -35,15 +35,6 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
             _inputService = inputService;
             
             AddSubscriptions();
-            
-            Init();
-        }
-
-        private void Init()
-        {
-            _animationHeightType = CharacterAnimationHeightType.Stand;
-            _targetMoveHeight = (int)_animationHeightType;
-            _targetSpeedMultiplier = 1;
         }
 
         public void Dispose() => 
