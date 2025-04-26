@@ -41,7 +41,11 @@ namespace Failsafe.Scripts.Character.Components
            _eventBus.Publish(new OnCharacterMove { ForwardMagnitude = magnitude.Vertical, SideMagnitude = magnitude.Horizontal });
         }
 
-        private void Rotate(OnLookDirectionChange lookDirection) => 
+        private void Rotate(OnLookDirectionChange lookDirection)
+        {
             _transform.rotation *= Quaternion.Euler(new Vector2(0, lookDirection.Horizontal));
+            
+            _eventBus.Publish(new OnCharacterRotate { Horizontal = lookDirection.Horizontal });
+        }
     }
 }

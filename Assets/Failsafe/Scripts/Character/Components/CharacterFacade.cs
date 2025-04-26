@@ -1,4 +1,5 @@
-﻿using Failsafe.Scripts.Character.Components.AnimatorComponents;
+﻿using System;
+using Failsafe.Scripts.Character.Components.AnimatorComponents;
 using Failsafe.Scripts.Services.Input;
 using UnityEngine;
 
@@ -18,6 +19,11 @@ namespace Failsafe.Scripts.Character.Components
 
             Mover = new CharacterMover(EventBus, inputService, transform);
             Animator = new CharacterAnimator(EventBus, animator, inputService);
+        }
+
+        private void Update()
+        {
+            Animator.Update();
         }
 
         private void OnDestroy()
