@@ -1,8 +1,8 @@
-﻿using Failsafe.Scripts.Infrastructure.StateMachine.States;
+﻿using Failsafe.Scripts.Infrastructure.StateMachine.States.Character;
 
 namespace Failsafe.Scripts.Character.States
 {
-    public class CharacterIdleState : IState
+    public class CharacterIdleState : ICharacterState
     {
         public void Enter()
         {

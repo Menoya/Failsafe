@@ -1,5 +1,4 @@
-﻿using System;
-using Failsafe.Scripts.Character.Components.AnimatorComponents;
+﻿using Failsafe.Scripts.Character.Components.AnimatorComponents;
 using Failsafe.Scripts.Services.Input;
 using UnityEngine;
 
