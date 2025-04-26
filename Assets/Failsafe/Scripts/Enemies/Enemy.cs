@@ -1,27 +1,32 @@
+using Failsafe.Scripts.Behavior;
+using Failsafe.Scripts.Enemies.Sensors;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+namespace Failsafe.Scripts.Enemies
 {
-    private Sensor[] _sensors;
-    private BehaviorStateMachine _stateMachine;
-
-    void Start()
+    public class Enemy : MonoBehaviour
     {
-        _sensors = GetComponents<Sensor>();
-        var navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        private Sensor[] _sensors;
+        private BehaviorStateMachine _stateMachine;
 
-        var defaultState = new DefaultState(_sensors, transform);
-        var chasingState = new ChasingState(_sensors, transform, navMeshAgent);
+        void Start()
+        {
+            _sensors = GetComponents<Sensor>();
+            var navMeshAgent = GetComponentInChildren<NavMeshAgent>();
 
-        defaultState.AddTransition(chasingState, defaultState.PlayerSpoted);
-        chasingState.AddTransition(defaultState, chasingState.PlayerLost);
+            var defaultState = new DefaultState(_sensors, transform);
+            var chasingState = new ChasingState(_sensors, transform, navMeshAgent);
 
-        _stateMachine = new BehaviorStateMachine(defaultState);
-    }
+            defaultState.AddTransition(chasingState, defaultState.PlayerSpoted);
+            chasingState.AddTransition(defaultState, chasingState.PlayerLost);
 
-    void Update()
-    {
-        _stateMachine.Update();
+            _stateMachine = new BehaviorStateMachine(defaultState);
+        }
+
+        void Update()
+        {
+            _stateMachine.Update();
+        }
     }
 }

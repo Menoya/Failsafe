@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     [System.Serializable]
     public class Door {
 

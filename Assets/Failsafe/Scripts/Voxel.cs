@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     [System.Serializable]
     public class Voxel {
         public Vector3 position; // Voxel position, should always be a whole number as we use this to index the voxel grid

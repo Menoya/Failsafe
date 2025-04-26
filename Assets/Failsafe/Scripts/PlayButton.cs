@@ -1,23 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayButton : MonoBehaviour
+namespace Failsafe.Scripts
 {
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public class PlayButton : MonoBehaviour
     {
 
-    }
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
+        {
 
-    // Update is called once per frame
-    void Update()
-    {
+        }
 
-    }
+        // Update is called once per frame
+        void Update()
+        {
 
-    public void LoadLevel(string levelName)
-    {
-        SceneManager.LoadScene(levelName);
+        }
+
+        public void LoadLevel(string levelName)
+        {
+            SceneManager.LoadScene(levelName);
+        }
     }
 }

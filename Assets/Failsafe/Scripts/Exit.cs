@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class Exit : MonoBehaviour
+namespace Failsafe.Scripts
 {
-    void Update()
+    public class Exit : MonoBehaviour
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        void Update()
         {
-            Application.Quit();
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
         }
     }
 }

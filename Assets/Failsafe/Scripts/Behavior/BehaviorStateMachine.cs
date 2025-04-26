@@ -1,24 +1,27 @@
-public class BehaviorStateMachine
+namespace Failsafe.Scripts.Behavior
 {
-    private BehaviorState _currentState;
-
-    public BehaviorStateMachine(BehaviorState initState)
+    public class BehaviorStateMachine
     {
-        _currentState = initState;
-    }
+        private BehaviorState _currentState;
 
-    /// <summary>
-    /// Вызывать в методе MonoBehaviour.Update
-    /// </summary>
-    public void Update()
-    {
-        var nextState = _currentState.DecideNextState();
-        if (nextState != _currentState)
+        public BehaviorStateMachine(BehaviorState initState)
         {
-            _currentState.Exit();
-            _currentState = nextState;
-            _currentState.Enter();
+            _currentState = initState;
         }
-        _currentState.Update();
+
+        /// <summary>
+        /// Вызывать в методе MonoBehaviour.Update
+        /// </summary>
+        public void Update()
+        {
+            var nextState = _currentState.DecideNextState();
+            if (nextState != _currentState)
+            {
+                _currentState.Exit();
+                _currentState = nextState;
+                _currentState.Enter();
+            }
+            _currentState.Update();
+        }
     }
 }

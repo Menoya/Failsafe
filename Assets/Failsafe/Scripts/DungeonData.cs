@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using DMDungeonGenerator;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     //[CreateAssetMenu(fileName = "DungeonData", menuName = "DMDungeonGenerator/Create Dungeon Data", order = 1)]
 
     public class DungeonData : ScriptableObject {

@@ -1,39 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class crouch : MonoBehaviour
+namespace Failsafe.Scripts
 {
-    public CharacterController playerController;
-    public float crouchSpeed, normalHeight, crouchHeight;
-    public Vector3 offset;
-    public Transform player;
-    bool crouching;
-
-    void Update()
+    public class crouch : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        public CharacterController playerController;
+        public float crouchSpeed, normalHeight, crouchHeight;
+        public Vector3 offset;
+        public Transform player;
+        bool crouching;
+
+        void Update()
         {
-            crouching = !crouching;
-        }
-        if (crouching == true)
-        {
-            playerController.height = playerController.height - crouchSpeed * Time.deltaTime;
-            if (playerController.height <= crouchHeight)
+            if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                playerController.height = crouchHeight;
+                crouching = !crouching;
             }
-        }
-        if (crouching == false)
-        {
-            playerController.height = playerController.height + crouchSpeed * Time.deltaTime;
-            if (playerController.height < normalHeight)
+            if (crouching == true)
             {
-                player.position = player.position + offset * Time.deltaTime;
+                playerController.height = playerController.height - crouchSpeed * Time.deltaTime;
+                if (playerController.height <= crouchHeight)
+                {
+                    playerController.height = crouchHeight;
+                }
             }
-            if (playerController.height >= normalHeight)
+            if (crouching == false)
             {
-                playerController.height = normalHeight;
+                playerController.height = playerController.height + crouchSpeed * Time.deltaTime;
+                if (playerController.height < normalHeight)
+                {
+                    player.position = player.position + offset * Time.deltaTime;
+                }
+                if (playerController.height >= normalHeight)
+                {
+                    playerController.height = normalHeight;
+                }
             }
         }
     }

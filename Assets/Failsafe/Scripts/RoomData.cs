@@ -1,16 +1,14 @@
-using UnityEngine;
 using System.Collections.Generic;
-using DMDungeonGenerator;
-using System;
+using UnityEngine;
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     [ExecuteInEditMode]
     public class RoomData:MonoBehaviour {
         [HideInInspector]
         public float debugTransparency = 0.2f;
 
-        public List<DMDungeonGenerator.Voxel> LocalVoxels = new List<Voxel>();
-        public List<DMDungeonGenerator.Door> Doors = new List<DMDungeonGenerator.Door>();
+        public List<Voxel> LocalVoxels = new List<Voxel>();
+        public List<Door> Doors = new List<Door>();
         private Bounds bounds = new Bounds();
         public static bool DrawRoomBounds = false;
         public static bool DrawVolumes = true;
@@ -77,7 +75,7 @@ namespace DMDungeonGenerator {
         /// <param name="pos"></param>
         /// <param name="dir"></param>
         public void AddDoor(Vector3 pos, Vector3 dir) {
-            DMDungeonGenerator.Door door = new DMDungeonGenerator.Door(pos, dir, this);
+            Door door = new Door(pos, dir, this);
             Doors.Add(door);
         }
 
@@ -170,7 +168,7 @@ namespace DMDungeonGenerator {
             for(int i = 0; i < Doors.Count; i++) {
                 if(Doors[i].doorPairs != null) { 
                     if(Doors[i].doorPairs.Count != 0) {
-                        Gizmos.color = DMDungeonGenerator.DungeonGenerator.GetKeyColor(i);
+                        Gizmos.color = DungeonGenerator.GetKeyColor(i);
                         for(int j = 0; j < Doors[i].doorPairs.Count; j++) {
 
                             Vector3 a = Doors[i].position + (Vector3.up * 0.05f * i);

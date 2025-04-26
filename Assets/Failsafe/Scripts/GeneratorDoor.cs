@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -7,7 +5,7 @@ using UnityEngine;
 /// To find out if this door is locked, locked by what, etc
 /// </summary>
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     public class GeneratorDoor:MonoBehaviour {
 
         public GraphConnection data;

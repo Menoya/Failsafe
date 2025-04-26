@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using System;
-using DMUtils;
+using Failsafe.DemoScripts;
+using Failsafe.Utils;
+using UnityEngine;
 
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     public class DungeonGenerator:MonoBehaviour {
 
         [Header("Generator Options")]
@@ -290,8 +290,8 @@ namespace DMDungeonGenerator {
                     //Debug.Log("Distance: " + dd.VoxelDistance());
                     //Debug.Log("Door directions: " + GetVoxelWorldDir(a.direction, a.parent.rotation).ToString() + " : " + GetVoxelWorldDir(b.direction, b.parent.rotation).ToString());
                     Debug.DrawLine(doorAWorldVoxPos, doorBWorldVoxPos, Color.red);
-                    Debug.DrawRay(doorAWorldVoxPos, GetVoxelWorldDir(a.direction, a.parent.rotation) * 0.5f, DMDungeonGenerator.DungeonGenerator.GetKeyColor(i));
-                    Debug.DrawRay(doorBWorldVoxPos, GetVoxelWorldDir(b.direction, b.parent.rotation) * 0.5f, DMDungeonGenerator.DungeonGenerator.GetKeyColor(i));
+                    Debug.DrawRay(doorAWorldVoxPos, GetVoxelWorldDir(a.direction, a.parent.rotation) * 0.5f, DungeonGenerator.GetKeyColor(i));
+                    Debug.DrawRay(doorBWorldVoxPos, GetVoxelWorldDir(b.direction, b.parent.rotation) * 0.5f, DungeonGenerator.GetKeyColor(i));
                 }
             }
             return dpd;
@@ -312,7 +312,7 @@ namespace DMDungeonGenerator {
                 Door b = targetDoor;
                 Vector3 doorAWorldVoxPos = GetVoxelWorldPos(a.position + a.direction, a.parent.rotation) + a.parent.transform.position + (Vector3.up * 0.1f);
                 Vector3 doorBWorldVoxPos = GetVoxelWorldPos(b.position + b.direction, b.parent.rotation) + b.parent.transform.position + (Vector3.up * 0.1f);
-                Debug.DrawLine(doorAWorldVoxPos, doorBWorldVoxPos, DMDungeonGenerator.DungeonGenerator.GetKeyColor(i));
+                Debug.DrawLine(doorAWorldVoxPos, doorBWorldVoxPos, DungeonGenerator.GetKeyColor(i));
             }
 
 

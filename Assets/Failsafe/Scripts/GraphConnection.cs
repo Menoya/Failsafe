@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace DMDungeonGenerator {
+namespace Failsafe.Scripts {
     /// <summary>
     /// Graph Connection is a "door" or connection that connects two rooms.
     /// One GraphNode CAN be null, as we can have "doors" that don't lead anywhere at the end of the generator.

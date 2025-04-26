@@ -1,21 +1,23 @@
-using System;
 using UnityEngine;
 
-public class FPSCounter : MonoBehaviour
+namespace Failsafe.Scripts.FPSCounter
 {
-
-    [SerializeField] private GameObject fpsGameObject;
-
-    private void Start()
+    public class FPSCounter : MonoBehaviour
     {
-        DontDestroyOnLoad(gameObject);
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F1))
+        [SerializeField] private GameObject fpsGameObject;
+
+        private void Start()
         {
-            fpsGameObject.SetActive(!fpsGameObject.activeSelf);
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                fpsGameObject.SetActive(!fpsGameObject.activeSelf);
+            }
         }
     }
 }

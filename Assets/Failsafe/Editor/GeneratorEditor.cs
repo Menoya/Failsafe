@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using Failsafe.Scripts;
 using UnityEditor;
-using UnityEditor.IMGUI.Controls;
-using System.Linq;
-using DMDungeonGenerator;
+using UnityEngine;
 
-[RequireComponent(typeof(DungeonGenerator))]
-[CustomEditor(typeof(DungeonGenerator))]
-public class GeneratorEditor:Editor {
+namespace Failsafe.Editor
+{
+    [RequireComponent(typeof(DungeonGenerator))]
+    [CustomEditor(typeof(DungeonGenerator))]
+    public class GeneratorEditor:UnityEditor.Editor {
 
 
-    public override void OnInspectorGUI() {
+        public override void OnInspectorGUI() {
 
-        //Generator g = (Generator)target;
-        //Generator.voxelScale = EditorGUILayout.FloatField("VoxelScale: ", Generator.voxelScale);
+            //Generator g = (Generator)target;
+            //Generator.voxelScale = EditorGUILayout.FloatField("VoxelScale: ", Generator.voxelScale);
 
-        base.OnInspectorGUI();
+            base.OnInspectorGUI();
+        }
+
     }
-
 }
   

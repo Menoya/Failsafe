@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
 
-namespace DMUtils {
+namespace Failsafe.Utils {
     /// <summary>
     /// Quick and easy timer.  Just call DDebugTimer.Init to start, and Lap to end 
     /// </summary>

@@ -1,98 +1,99 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PhysicsPickup : MonoBehaviour
+namespace Failsafe.Scripts
 {
-    //distance from the camera the item is carried
-    public float dist = 2.5f;
-
-    //the object being held
-    private GameObject curObject;
-    private Rigidbody curBody;
-
-    //the rotation of the curObject at pickup relative to the camera
-    private Quaternion relRot;
-
-    // Use this for initialization
-    void Start()
+    public class PhysicsPickup : MonoBehaviour
     {
+        //distance from the camera the item is carried
+        public float dist = 2.5f;
 
-    }
+        //the object being held
+        private GameObject curObject;
+        private Rigidbody curBody;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //on mouse click, either pickup or drop an item
-        if (Input.GetMouseButtonDown(0))
+        //the rotation of the curObject at pickup relative to the camera
+        private Quaternion relRot;
+
+        // Use this for initialization
+        void Start()
         {
-            if (curObject == null)
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            //on mouse click, either pickup or drop an item
+            if (Input.GetMouseButtonDown(0))
             {
-                PickupItem();
-            }
-            else
-            {
-                DropItem();
+                if (curObject == null)
+                {
+                    PickupItem();
+                }
+                else
+                {
+                    DropItem();
+                }
             }
         }
-    }
 
-    void FixedUpdate()
-    {
-        if (curObject != null)
+        void FixedUpdate()
         {
-            //keep the object in front of the camera
-            ReposObject();
+            if (curObject != null)
+            {
+                //keep the object in front of the camera
+                ReposObject();
+            }
         }
-    }
 
-    //calculates the new rotation and position of the curObject
-    void ReposObject()
-    {
-        //calculate the target position and rotation of the curbody
-        Vector3 targetPos = transform.position + transform.forward * dist;
-        Quaternion targetRot = transform.rotation * relRot;
+        //calculates the new rotation and position of the curObject
+        void ReposObject()
+        {
+            //calculate the target position and rotation of the curbody
+            Vector3 targetPos = transform.position + transform.forward * dist;
+            Quaternion targetRot = transform.rotation * relRot;
 
-        //interpolate to the target position using velocity
-        curBody.linearVelocity = (targetPos - curBody.position) * 10;
+            //interpolate to the target position using velocity
+            curBody.linearVelocity = (targetPos - curBody.position) * 10;
 
-        //keep the relative rotation the same
-        curBody.rotation = targetRot;
+            //keep the relative rotation the same
+            curBody.rotation = targetRot;
 
-        //no spinning around
-        curBody.angularVelocity = Vector3.zero;
-    }
+            //no spinning around
+            curBody.angularVelocity = Vector3.zero;
+        }
 
-    //attempts to pick up an item straigth ahead
-    void PickupItem()
-    {
-        //raycast to find an item
-        RaycastHit hitInfo;
-        Physics.Raycast(transform.position, transform.forward, out hitInfo, 5f);
+        //attempts to pick up an item straigth ahead
+        void PickupItem()
+        {
+            //raycast to find an item
+            RaycastHit hitInfo;
+            Physics.Raycast(transform.position, transform.forward, out hitInfo, 5f);
 
-        if (hitInfo.rigidbody == null)
-            return;
-
-
-        curBody = hitInfo.rigidbody;
-        curBody.useGravity = false;
-
-        curObject = hitInfo.rigidbody.gameObject;
+            if (hitInfo.rigidbody == null)
+                return;
 
 
-        //hack w/ parenting & unparenting to get the relative rotation
-        curObject.transform.parent = transform;
-        relRot = curObject.transform.localRotation;
-        curObject.transform.parent = null;
+            curBody = hitInfo.rigidbody;
+            curBody.useGravity = false;
+
+            curObject = hitInfo.rigidbody.gameObject;
 
 
-    }
+            //hack w/ parenting & unparenting to get the relative rotation
+            curObject.transform.parent = transform;
+            relRot = curObject.transform.localRotation;
+            curObject.transform.parent = null;
 
-    //drops the current item
-    void DropItem()
-    {
-        curBody.useGravity = true;
-        curBody = null;
-        curObject = null;
+
+        }
+
+        //drops the current item
+        void DropItem()
+        {
+            curBody.useGravity = true;
+            curBody = null;
+            curObject = null;
+        }
     }
 }
