@@ -8,7 +8,7 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
 {
     public class CharacterAnimator : IDisposable
     {
-        private enum CharacterAnimationHeightType { Stand = 1, Crouch = 2, Crawl = 3}
+        private enum CharacterAnimationHeightType { Stand, Crouch, Crawl}
         
         private readonly CharacterEventBus _eventBus;
         private readonly Animator _animator;
@@ -24,7 +24,14 @@ namespace Failsafe.Scripts.Character.Components.AnimatorComponents
             _inputService = inputService;
             _animatorParameters = new CharacterAnimatorParameters();
 
+            Init();
+            
             AddSubscriptions();
+        }
+
+        private void Init()
+        {
+            ChangeHeightState(CharacterAnimationHeightType.Stand);
         }
 
         public void Dispose() => 

@@ -1,6 +1,8 @@
 ﻿using System;
 using Failsafe.Scripts.Character.Events;
 using Failsafe.Scripts.Services.Input;
+using Failsafe.Scripts.Services.Input.Character.Events;
+using UnityEngine;
 
 namespace Failsafe.Scripts.Character.Components
 {
@@ -21,16 +23,15 @@ namespace Failsafe.Scripts.Character.Components
             RemoveSubscriptions();
         
         private void AddSubscriptions() => 
-            _inputService.Character.EventBus.Subscribe<OnCharacterMove>(Move);
+            _inputService.Character.EventBus.Subscribe<OnMoveDirectionChange>(Move);
 
         private void RemoveSubscriptions() => 
-            _inputService.Character.EventBus.Subscribe<OnCharacterMove>(Move);
+            _inputService.Character.EventBus.Subscribe<OnMoveDirectionChange>(Move);
 
-        private void Move(OnCharacterMove magnitude)
+        private void Move(OnMoveDirectionChange magnitude)
         {
            //move character
-
-           _eventBus.Publish(new OnCharacterMove { ForwardMagnitude = magnitude.ForwardMagnitude, SideMagnitude = magnitude.SideMagnitude });
+           _eventBus.Publish(new OnCharacterMove { ForwardMagnitude = magnitude.Vertical, SideMagnitude = magnitude.Horizontal });
         }
     }
 }

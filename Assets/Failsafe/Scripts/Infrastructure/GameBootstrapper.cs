@@ -10,10 +10,10 @@ namespace Failsafe.Scripts.Infrastructure
         
         private IInputService _inputService;
 
-        private void Awake()
+        private async void Awake()
         {
             _inputService = new InputService();
-
+            
             InitCharacter();
         }
 

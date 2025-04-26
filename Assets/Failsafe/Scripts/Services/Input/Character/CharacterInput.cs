@@ -25,26 +25,26 @@ namespace Failsafe.Scripts.Services.Input.Character
         
         private void AddSubscriptions()
         {
+            _characterControl.Enable();
+            
             _characterControl.Move.MoveDirection.performed += OnMovePerformed;
-            _characterControl.Move.MoveDirection.canceled += OnMoveCanceled;
+            _characterControl.Move.MoveDirection.canceled += OnMoveCenceled;
 
             _characterControl.Move.Walk.started += OnWalkButtonDown;
             _characterControl.Move.Walk.canceled += OnWalkButtonUp;
-            
+
             _characterControl.Move.Run.started += OnRunButtonDown;
             _characterControl.Move.Run.canceled += OnRunButtonUp;
-            
+
             _characterControl.Move.Crouch.started += OnCrouchButtonDown;
             _characterControl.Move.Crawl.started += OnCrawlButtonDown;
             _characterControl.Move.Jump.started += OnJumButtonDown;
-            
-            _characterControl.Enable();
         }
 
         private void RemoveSubscriptions()
         {
             _characterControl.Move.MoveDirection.performed -= OnMovePerformed;
-            _characterControl.Move.MoveDirection.canceled -= OnMoveCanceled;
+            _characterControl.Move.MoveDirection.canceled -= OnMoveCenceled;
             
             _characterControl.Move.Walk.started -= OnWalkButtonDown;
             _characterControl.Move.Walk.canceled -= OnWalkButtonUp;
@@ -62,12 +62,12 @@ namespace Failsafe.Scripts.Services.Input.Character
         private void OnMovePerformed(InputAction.CallbackContext context)
         {
             var direction = context.ReadValue<Vector2>();
-            var moveEvent = new OnMoveDirectionChange { Horizontal = direction.x, Vertical = direction.y };
+            var moveEvent = new OnMoveDirectionChange { Horizontal = -direction.x, Vertical = direction.y };
 
             EventBus.Publish(moveEvent);
         }
 
-        private void OnMoveCanceled(InputAction.CallbackContext _)
+        private void OnMoveCenceled(InputAction.CallbackContext _)
         {
             var moveEvent = new OnMoveDirectionChange { Horizontal = 0, Vertical = 0 };
             
