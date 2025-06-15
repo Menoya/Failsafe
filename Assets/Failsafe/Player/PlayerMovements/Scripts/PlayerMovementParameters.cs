@@ -9,20 +9,20 @@ namespace Failsafe.PlayerMovements
         /// <summary>
         /// Скорость ходьбы
         /// </summary>
-        public float WalkSpeed = 8f;
+        public float WalkSpeed = 2.5f;
         /// <summary>
         /// Скорость бега
         /// </summary>
-        public float RunSpeed = 15f;
+        public float RunSpeed = 4.4f;
         /// <summary>
         /// Скорость ходьбы в присяди
         /// </summary>
-        public float CrouchSpeed = 3f;
+        public float CrouchSpeed = 1.5f;
         
         /// <summary>
         /// Скорость скольжения
         /// </summary>
-        public float SlideSpeed = 12f;
+        public float SlideSpeed = 4.2f;
         /// <summary>
         /// Максимальное время скольжения
         /// </summary>

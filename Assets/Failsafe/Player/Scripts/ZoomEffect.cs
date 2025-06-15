@@ -2,6 +2,8 @@ using Failsafe.PlayerMovements;
 using Sirenix.OdinInspector.Editor;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using VContainer;
 
 public class ZoomEffect : MonoBehaviour
 {
@@ -10,11 +12,10 @@ public class ZoomEffect : MonoBehaviour
     private float normal;
     private float smooth = 5f;
     [SerializeField] private Camera m_Camera;
-    private PlayerController _PlayerController;
+    [Inject] private InputHandler _inputHandler;
 
     private void Awake()
     {
-        _PlayerController = GetComponent<PlayerController>();
         if (m_Camera == null)
         {
             m_Camera = Camera.main; // запасной вариант
@@ -26,7 +27,7 @@ public class ZoomEffect : MonoBehaviour
     void Update()
     {
         // Считаем "зажата ли кнопка" прямо в апдейте
-        zooming = _PlayerController.InputHandler.ZoomTriggered;
+        zooming = _inputHandler.ZoomTriggered;
 
         if (zooming)
         {

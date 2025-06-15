@@ -11,16 +11,16 @@ public class EnemyAudioManager : MonoBehaviour
 
     public void StepEvent()
     {
-        SoundUtils3D.Play(this.gameObject, walk);
+        //SoundUtils3D.Play(this.gameObject, walk);
     }
 
     public void RunStep()
     {
-        SoundUtils3D.Play(this.gameObject, run);
+        //SoundUtils3D.Play(this.gameObject, run);
     }
 
     public void ReloadEvent()
     {
-        SoundUtils3D.Play(this.gameObject, reload);
+        //SoundUtils3D.Play(this.gameObject, reload);
     }
 }

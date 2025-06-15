@@ -13,17 +13,22 @@ namespace Failsafe.Scripts.Bootstrap
             _sceneLoader = sceneLoader;
             _gameConfig = gameConfig;
         }
-        
+
         public async void Start()
         {
-            #if UNITY_EDITOR
-                return;
-            #endif
-            
             //logic after container build & IInitializable
-            await _sceneLoader.LoadSceneAsync(_gameConfig.MainMenuSceneName);
-            
-            //game started, main scene loaded
+
+            string sceneName;
+
+#if UNITY_EDITOR
+            // Загружается активная сцена. Если ее нет то загружется главное меню
+            sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name
+                ?? _gameConfig.MainMenuSceneName;
+            await _sceneLoader.LoadSceneAsync(sceneName);
+#else
+            sceneName = _gameConfig.MainMenuSceneName;
+            await _sceneLoader.LoadSceneAsync(sceneName);
+#endif
         }
     }
 }
