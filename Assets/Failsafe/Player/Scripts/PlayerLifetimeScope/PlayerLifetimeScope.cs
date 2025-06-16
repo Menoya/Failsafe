@@ -1,6 +1,9 @@
+using Failsafe.Player.Model;
+using Failsafe.Player.View;
 using Failsafe.PlayerMovements;
 using Failsafe.Scripts.Health;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 using VContainer.Unity;
 
@@ -12,13 +15,27 @@ namespace Failsafe.Player
     /// </summary>
     public class PlayerLifetimeScope : LifetimeScope
     {
-        [SerializeField] private PlayerModelParameters playerParameters;
+        [SerializeReference] private PlayerModelParameters _playerModelParameters;
+        [SerializeReference] private PlayerMovementParameters _playerMovementParameters;
+        [SerializeReference] private PlayerNoiseParameters _playerNoiseParameters;
+
+        [SerializeField] private PlayerView _playerView;
+        [SerializeField] private InputActionAsset _inputActionAsset;
 
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<SimpleHealth>(Lifetime.Singleton).As<IHealth>().WithParameter(playerParameters.MaxHealth);
-            //TODO: зарегистрировать компоненты и системы игрока : InputHandler, MovementController, Inventory ...
-            
+            builder.RegisterInstance(_playerModelParameters);
+            builder.RegisterInstance(_playerMovementParameters);
+            builder.RegisterInstance(_playerNoiseParameters);
+            builder.RegisterComponent(_playerView);
+            builder.RegisterComponent(_inputActionAsset);
+
+            builder.Register<InputHandler>(Lifetime.Scoped);
+
+            builder.Register<SimpleHealth>(Lifetime.Singleton).As<IHealth>().WithParameter(_playerModelParameters.MaxHealth);
+            builder.RegisterEntryPoint<PlayerDamageable>(Lifetime.Scoped);
+
+            builder.RegisterEntryPoint<PlayerController>(Lifetime.Scoped);
         }
     }
 }
