@@ -1,3 +1,4 @@
+using Failsafe.Player.Model;
 using Failsafe.PlayerMovements.Controllers;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace Failsafe.PlayerMovements.States
         private CharacterController _characterController;
         private PlayerMovementController _movementController;
         private readonly PlayerMovementParameters _movementParameters;
+        private readonly PlayerStaminaController _playerStaminaController;
         private float _jumpProgress = 0;
         private Vector3 _initialVelocity;
         private float _targetHeight;
@@ -26,12 +28,13 @@ namespace Failsafe.PlayerMovements.States
 
         private bool IsCollidedAbove() => (_characterController.collisionFlags & CollisionFlags.CollidedAbove) != 0;
 
-        public JumpState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParametrs)
+        public JumpState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerStaminaController playerStaminaController)
         {
             _inputHandler = inputHandler;
             _characterController = characterController;
             _movementController = movementController;
             _movementParameters = movementParametrs;
+            _playerStaminaController = playerStaminaController;
         }
 
         public override void Enter()
@@ -41,6 +44,7 @@ namespace Failsafe.PlayerMovements.States
             _jumpProgress = 0;
             _initialVelocity = new Vector3(_movementController.Velocity.x, 0, _movementController.Velocity.z);
             _targetHeight = _characterController.transform.position.y + _movementParameters.JumpMaxHeight;
+            _playerStaminaController.SpendOnJump();
         }
 
         public override void Update()
