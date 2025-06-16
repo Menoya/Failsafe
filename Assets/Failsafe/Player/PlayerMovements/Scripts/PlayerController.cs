@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Failsafe.PlayerMovements.Controllers;
 using Failsafe.PlayerMovements.States;
-using Failsafe.Scripts.Damage;
-using Failsafe.Scripts.Damage.Implementation;
-using Failsafe.Scripts.Damage.Providers;
 using Failsafe.Scripts.Health;
 using FMODUnity;
 using TMPro;
 using VContainer;
+using Failsafe.Player.View;
+using VContainer.Unity;
 
 
 namespace Failsafe.PlayerMovements
@@ -18,77 +17,58 @@ namespace Failsafe.PlayerMovements
     /// <summary>
     /// Движение персонажа
     /// </summary>
-    public class PlayerController : MonoBehaviour
+    public class PlayerController : ITickable, IFixedTickable
     {
-        [Header("Movement params")]
-        [SerializeReference] private PlayerMovementParameters _movementParametrs = new PlayerMovementParameters();
-        [SerializeField] private InputActionAsset _inputActionAsset;
+        private readonly PlayerMovementParameters _movementParametrs;
+        private readonly PlayerNoiseParameters _noiseParametrs;
+        private readonly SignalManager _signalManager;
+        private readonly InputHandler _inputHandler;
+        private readonly PlayerView _playerView;
+        private readonly IHealth _health;
 
-        [Header("Noise params")]
-        [SerializeReference] private PlayerNoiseParameters _noiseParametrs = new PlayerNoiseParameters();
-
-        private Transform _playerCamera;
-        private Transform _playerGrabPoint;
-
-        private DamageableComponent _damageableComponent;
-
-        private IHealth _health;
-        private IDamageService _damageService;
-
-        private CharacterController _characterController;
         private PlayerMovementController _movementController;
         private PlayerRotationController _playerRotationController;
         private PlayerBodyController _playerBodyController;
         private BehaviorStateMachine _behaviorStateMachine;
-        private InputHandler _inputHandler;
         private PlayerLedgeController _ledgeController;
         private PlayerGravityController _playerGravity;
         private PlayerNoiseController _noiseController;
-        public InputHandler InputHandler => _inputHandler;
-
 
         [SerializeField] private EventReference _footstepEvent;
         private StepController _stepController;
 
-        [Inject]
-        public void Construct(IHealth health)
+        public PlayerController(
+            PlayerMovementParameters movementParametrs,
+            PlayerNoiseParameters noiseParametrs,
+            SignalManager signalManager,
+            InputHandler inputHandler,
+            PlayerView playerView,
+            IHealth health)
         {
+            _movementParametrs = movementParametrs;
+            _noiseParametrs = noiseParametrs;
+            _signalManager = signalManager;
+            _inputHandler = inputHandler;
+            _playerView = playerView;
             _health = health;
-            _damageService = new DamageService(new FlatDamageProvider(_health));
-        }
-        
-        private void Awake()
-        {
-            _damageableComponent = transform.Find("Capsule").GetComponent<DamageableComponent>();
 
+            Initialize();
         }
 
-        private void OnEnable()
+        void Initialize()
         {
-            _damageableComponent.OnTakeDamage += OnTakeDamage;
-        }
-
-        private void OnDisable()
-        {
-            _damageableComponent.OnTakeDamage -= OnTakeDamage;
-        }
-
-        void Start()
-        {
-            _characterController = GetComponent<CharacterController>();
-            _movementController = new PlayerMovementController(_characterController);
-            _playerCamera = transform.Find("Camera");
-            _playerGrabPoint = transform.Find("ObstacleGrabPoint");
-            _inputHandler = new InputHandler(_inputActionAsset);
-            _playerRotationController = new PlayerRotationController(transform, _playerCamera, _inputHandler);
-            _playerBodyController = new PlayerBodyController(_playerCamera, _characterController, transform.Find("Capsule"), this);
-            _ledgeController = new PlayerLedgeController(transform, _playerCamera, _playerGrabPoint, _movementParametrs);
-            _playerGravity = new PlayerGravityController(_movementController, _characterController, _movementParametrs);
-            _noiseController = new PlayerNoiseController(transform, _noiseParametrs);
-            _stepController = new StepController(_characterController, _movementParametrs, _footstepEvent);
+            _movementController = new PlayerMovementController(_playerView.CharacterController);
+            _playerRotationController = new PlayerRotationController(_playerView.transform, _playerView.PlayerCamera, _inputHandler);
+            _playerBodyController = new PlayerBodyController(_playerView.PlayerCamera, _playerView.CharacterController, _playerView.Body, _playerView);
+            _ledgeController = new PlayerLedgeController(_playerView.transform, _playerView.PlayerCamera, _playerView.PlayerGrabPoint, _movementParametrs);
+            _playerGravity = new PlayerGravityController(_movementController, _playerView.CharacterController, _movementParametrs);
+            _noiseController = new PlayerNoiseController(_playerView.transform, _noiseParametrs, _signalManager);
+            _stepController = new StepController(_playerView.CharacterController, _movementParametrs, _playerView.FootstepEvent);
 
             InitializeStateMachine();
         }
+
+
 
         private void InitializeStateMachine()
         {
@@ -97,13 +77,13 @@ namespace Failsafe.PlayerMovements
             var runState = new SprintState(_inputHandler, _movementController, _movementParametrs, _noiseController, _stepController);
             var slideState = new SlideState(_inputHandler, _movementController, _movementParametrs, _playerBodyController, _playerRotationController);
             var crouchState = new CrouchState(_inputHandler, _movementController, _movementParametrs, _playerBodyController, _noiseController, _stepController);
-            var jumpState = new JumpState(_inputHandler, _characterController, _movementController, _movementParametrs);
-            var fallState = new FallState(_inputHandler, _characterController, _movementController, _movementParametrs, _noiseController);
-            var grabLedgeState = new GrabLedgeState(_inputHandler, _characterController, _movementController, _movementParametrs, _playerGravity, _playerRotationController, _ledgeController);
-            var climbingUpState = new ClimbingUpState(_inputHandler, _characterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
-            var climbingOnState = new ClimbingOnState(_inputHandler, _characterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
-            var climbingOverState = new ClimbingOverState(_inputHandler, _characterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
-            var ledgeJumpState = new LedgeJumpState(_inputHandler, _characterController, _movementParametrs, _playerCamera);
+            var jumpState = new JumpState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs);
+            var fallState = new FallState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _noiseController);
+            var grabLedgeState = new GrabLedgeState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _playerRotationController, _ledgeController);
+            var climbingUpState = new ClimbingUpState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
+            var climbingOnState = new ClimbingOnState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
+            var climbingOverState = new ClimbingOverState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
+            var ledgeJumpState = new LedgeJumpState(_inputHandler, _playerView.CharacterController, _movementParametrs, _playerView.PlayerCamera);
             var crouchIdleState = new CrouchIdle(_playerBodyController, _movementController, _movementParametrs, _noiseController, _stepController);
 
             var deathState = new DeathState();
@@ -170,12 +150,7 @@ namespace Failsafe.PlayerMovements
 
         }
 
-        private void OnTakeDamage(IDamage damage)
-        {
-            _damageService.Provide(damage);
-        }
-
-        void Update()
+        public void Tick()
         {
             _ledgeController.HandleFindingLedge();
             _playerRotationController.HandlePlayerRotation();
@@ -188,7 +163,7 @@ namespace Failsafe.PlayerMovements
             }
         }
 
-        void FixedUpdate()
+        public void FixedTick()
         {
             _movementController.HandleMovement();
             _playerGravity.CheckGrounded();

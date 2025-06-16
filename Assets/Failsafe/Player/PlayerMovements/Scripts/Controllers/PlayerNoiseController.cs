@@ -16,11 +16,11 @@ namespace Failsafe.PlayerMovements.Controllers
         private readonly SignalChannel _playerSignalChannel;
         private readonly PlayerNoiseSignal _noiseSignal;
 
-        public PlayerNoiseController(Transform playerTransform, PlayerNoiseParameters playerNoiseParametrs)
+        public PlayerNoiseController(Transform playerTransform, PlayerNoiseParameters playerNoiseParametrs, SignalManager signalManager)
         {
             _playerTransform = playerTransform;
             _playerNoiseParametrs = playerNoiseParametrs;
-            _playerSignalChannel = SignalManager.Instance.PlayerNoiseChanel;
+            _playerSignalChannel = signalManager.PlayerNoiseChanel;
             _noiseSignal = new PlayerNoiseSignal(_playerTransform);
             _playerSignalChannel.AddConstant(_noiseSignal);
         }

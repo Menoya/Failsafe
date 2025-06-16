@@ -12,19 +12,17 @@ public class SignalManager : MonoBehaviour
     /// <summary>
     /// Канал шума, издаваемый игроком или объектами
     /// </summary>
-    public SignalChannel PlayerNoiseChanel;
+    public SignalChannel PlayerNoiseChanel = new SignalChannel(() => TempNoiseSignal.Zero);
     /// <summary>
     /// Канал шума, издаваемый врагами
     /// </summary>
-    public SignalChannel EnemyNoiseChanel;
+    public SignalChannel EnemyNoiseChanel = new SignalChannel(() => TempNoiseSignal.Zero);
 
     private float _lastRemoveExpireAt;
     private const float _removeExpireDelay = 5;
 
     void Awake()
     {
-        PlayerNoiseChanel = new SignalChannel(() => TempNoiseSignal.Zero);
-        EnemyNoiseChanel = new SignalChannel(() => TempNoiseSignal.Zero);
         Instance = this;
     }
 
