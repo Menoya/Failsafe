@@ -1,6 +1,7 @@
 using Failsafe.PlayerMovements;
 using System;
 using UnityEngine;
+using VContainer;
 
 namespace Failsafe.Player.Interaction
 {
@@ -21,7 +22,8 @@ namespace Failsafe.Player.Interaction
 
         private Quaternion _relativeRotation;
         
-        private PlayerController _playerController;
+        [Inject]
+        private InputHandler _inputHandler;
         
         private bool _isPreparingToThrow; 
         private float _throwForceMultiplier;
@@ -39,24 +41,22 @@ namespace Failsafe.Player.Interaction
                 
                 _playerCameraTransform = playerCamera.transform;
             }
-            
-            _playerController = GetComponent<PlayerController>();
         }
 
         private void Update()
         {
-            if (_playerController.InputHandler.GrabOrDropTriggered && _allowToGrabOrDrop)
+            if (_inputHandler.GrabOrDropTriggered && _allowToGrabOrDrop)
             {
                 GrabOrDrop();
             }
-            else if (!_playerController.InputHandler.GrabOrDropTriggered)
+            else if (!_inputHandler.GrabOrDropTriggered)
             {
                 _allowToGrabOrDrop = true;
             }
 
             if (IsDragging)
             {
-                if (_playerController.InputHandler.AttackTriggered)
+                if (_inputHandler.AttackTriggered)
                 {
                     _throwForceMultiplier = Mathf.Clamp(_throwForceMultiplier + Time.deltaTime, _throwForceMultiplier, _maxForceMultiplier);
                     _isPreparingToThrow = true;
