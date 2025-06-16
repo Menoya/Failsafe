@@ -498,10 +498,10 @@ MonoBehaviour:
     - rid: 8852827076035346520
       type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
       data:
-        WalkSpeed: 2.5
-        RunSpeed: 4.4
-        CrouchSpeed: 1.5
-        SlideSpeed: 4.2
+        WalkSpeed: 3.5
+        RunSpeed: 7
+        CrouchSpeed: 1.75
+        SlideSpeed: 6
         MaxSlideTime: 1
         MinSlideTime: 0.5
         JumpMaxHeight: 1.5
@@ -558,8 +558,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 374109432981789085}
-  PlayerGrabPoint: {fileID: 4161287245272060702}
   Body: {fileID: 374109432967700042}
+  PlayerGrabPoint: {fileID: 4161287245272060702}
   CharacterController: {fileID: 374109433352817471}
   FootstepEvent:
     Guid:
@@ -627,7 +627,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoom: 50
   m_Camera: {fileID: 374109432981789075}
-  _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
 --- !u!1 &374109433356125759
 GameObject:
   m_ObjectHideFlags: 0
