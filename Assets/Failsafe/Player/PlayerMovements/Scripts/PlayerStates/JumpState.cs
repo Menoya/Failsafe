@@ -55,7 +55,10 @@ namespace Failsafe.PlayerMovements.States
             var upForce = deltaHeight * _movementParameters.GravityForce;
             upForce = Mathf.Min(upForce, _movementParameters.JumpMaxSpeed);
             var jumpMovement = Vector3.up * (upForce + _movementParameters.GravityForce);//Добавляем GravityForce к силе прыжка чтобы компенсировать гравитацию
-            _movementController.Move(jumpMovement + _initialVelocity);
+
+            var airMovement = _movementController.GetRelativeMovement(_inputHandler.MovementInput) * _movementParameters.AirMovementSpeed;
+
+            _movementController.Move(jumpMovement + _initialVelocity + airMovement);
         }
     }
 }
