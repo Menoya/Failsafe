@@ -410,6 +410,7 @@ GameObject:
   - component: {fileID: 6003168246341229848}
   - component: {fileID: 8406886069167695128}
   - component: {fileID: 7623893399856682050}
+  - component: {fileID: 4317386371813510697}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -618,6 +619,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoom: 50
   m_Camera: {fileID: 374109432981789075}
+--- !u!114 &4317386371813510697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374109433352817464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2779a55250b9c064da92640236d3a8f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CursorOn: 0
+  Enemies: []
 --- !u!1 &374109433356125759
 GameObject:
   m_ObjectHideFlags: 0
