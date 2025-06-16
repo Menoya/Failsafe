@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private bool DebugMode = false;
     private Sensor[] _sensors;
     private BehaviorStateMachine _stateMachine;
-    private AwarenessMeter _awarenessMeter;
     private Animator _animator;
     private EnemyAnimator _enemyAnimator;
     private EnemyController _controller;
@@ -21,7 +20,10 @@ public class Enemy : MonoBehaviour
     private LaserBeamController _activeLaser;
     [SerializeField] private Transform _laserSpawnPoint; // Точка спавна лазера, если нужно
    [SerializeField] private List<Transform> _manualPoints; // Привязать вручную через инспектор
-
+    public BehaviorState currentState;
+    public AwarenessMeter _awarenessMeter;
+    public bool seePlayer;
+    public bool hearPlayer;
     private void Awake()
     {
         // Основные компоненты
@@ -80,6 +82,7 @@ public class Enemy : MonoBehaviour
         _stateMachine.Update();
         _awarenessMeter.Update();
         DebugEnemy();
+        currentState = _stateMachine.CurrentState;
     }
 
     [ContextMenu("DisableState")]
@@ -91,14 +94,13 @@ public class Enemy : MonoBehaviour
     private void RoomCheck()
     {
         // Ищем все коллайдеры рядом с врагом
-        Collider[] hits = Physics.OverlapSphere(transform.position, 5f); // можно увеличить радиус при необходимости
+        Collider[] hits = Physics.OverlapSphere(transform.position, 5f); 
         Debug.Log($"[Enemy] Обнаружено коллайдеров: {hits.Length}");
 
         foreach (var hit in hits)
         {
             Debug.Log($"[Enemy] Hit: {hit.name}");
 
-            // Ищем RoomData в дочерних объектах каждого найденного объекта
             RoomData room = hit.GetComponentInChildren<RoomData>();
             if (room != null)
             {
@@ -125,6 +127,29 @@ public class Enemy : MonoBehaviour
         if (DebugMode)
         {
             Debug.Log($"Противник: "+ this.gameObject.name + "уровень настороженности: " + _awarenessMeter.AlertnessValue.ToInt());
+            foreach (var sensor in _sensors)
+            {
+                if (sensor is VisualSensor visual)
+                {
+                    seePlayer = true;
+                    if(visual.IsActivated()) Debug.Log("Визулаьный сенсор противника активен");
+                }
+                else
+                {
+                    seePlayer = false;
+                }
+
+                if (sensor is NoiseSensor noise)
+                {
+                    hearPlayer = true;
+                    if(noise.IsActivated()) Debug.Log("Аудио сенсор противника активен");
+                }
+                else
+                {
+                    hearPlayer = false;
+                }
+                
+            }
         }
         
     }
