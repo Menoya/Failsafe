@@ -1,6 +1,7 @@
 ﻿using DMDungeonGenerator;
 using Failsafe.Enemies.Sensors;
 using System.Collections.Generic;
+using Tayx.Graphy.Utils.NumString;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -8,6 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private bool DebugMode = false;
     private Sensor[] _sensors;
     private BehaviorStateMachine _stateMachine;
     private AwarenessMeter _awarenessMeter;
@@ -77,6 +79,7 @@ public class Enemy : MonoBehaviour
         _enemyAnimator.UpdateAnimator();
         _stateMachine.Update();
         _awarenessMeter.Update();
+        DebugEnemy();
     }
 
     [ContextMenu("DisableState")]
@@ -113,8 +116,17 @@ public class Enemy : MonoBehaviour
     void OnAnimatorMove()
     {
 
-        _enemyAnimator.ApplyRootMotion(); // Всё управление Root Motion'ом теперь централизовано здесь
+        _enemyAnimator.ApplyRootMotion(); // Всё управление Root Motion'ом централизовано здесь
       
+    }
+
+    private void DebugEnemy()
+    {
+        if (DebugMode)
+        {
+            Debug.Log($"Противник: "+ this.gameObject.name + "уровень настороженности: " + _awarenessMeter.AlertnessValue.ToInt());
+        }
+        
     }
 }
 
