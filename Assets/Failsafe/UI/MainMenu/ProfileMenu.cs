@@ -1,5 +1,7 @@
+using Failsafe.UI.MainMenu.Popup;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public enum ProfileClickState
 {
@@ -8,14 +10,19 @@ public enum ProfileClickState
 
 public class ProfileMenu : MonoBehaviour
 {
+    [SerializeField] Popup _popup;
+    
     [SerializeField] Transform _profileScrollContent;
     [SerializeField] Profile _profilePrefab;
     [SerializeField] Transform _buttonNewProfile;
     
-    List<Profile> _profiles = new List<Profile>();
+    [SerializeField] List<Profile> _profiles = new List<Profile>();
     Profile _selectedProfile;
     ProfileClickState _profileClickState = ProfileClickState.Select;
-     
+    
+    //переменная чтобы удалять конкретно подписанный лямбда-метод из подписчиков поп-апа
+    private UnityAction lambdaFunc;
+        
     public void OnCreateNewProfile()
     {
         Profile newProfile = Instantiate(_profilePrefab, _profileScrollContent);
@@ -44,7 +51,17 @@ public class ProfileMenu : MonoBehaviour
     {
         return _selectedProfile == profileToCheck;
     }
-    
+
+    public void RemoveProfile(Profile clickedProfile)
+    {
+        _profiles.Remove(clickedProfile);
+        if (_selectedProfile == clickedProfile)
+            _selectedProfile = null;
+        Destroy(clickedProfile.gameObject);
+        //приходится удалять подписку ибо при следующем удалении уже другого профиля все еще будет попытка удалить уже удаленный профиль и будет NullReference
+        _popup.onSubmit.RemoveListener(lambdaFunc);
+        RerenderProfiles();
+    }
     public void ProfileClickAction(Profile clickedProfile)
     {
         switch (_profileClickState)
@@ -53,10 +70,11 @@ public class ProfileMenu : MonoBehaviour
                 _selectedProfile = clickedProfile;
                 break;
             case ProfileClickState.Delete:
-                _profiles.Remove(clickedProfile);
-                if (_selectedProfile == clickedProfile)
-                    _selectedProfile = null;
-                Destroy(clickedProfile.gameObject);
+                _popup.Show();
+                //подписываюсь к методу поп-апа через код, а не инспектор, ибо мне нужно передавать профиль, который будет удален
+                //а это еще и можно сделать только с помощью лямбда-метода
+                lambdaFunc = () => RemoveProfile(clickedProfile);
+                _popup.onSubmit.AddListener(lambdaFunc);
                 break;
         }
         RerenderProfiles();

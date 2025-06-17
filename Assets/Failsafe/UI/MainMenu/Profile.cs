@@ -37,6 +37,7 @@ public class Profile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void OnProfileClicked()
     {
+        //_profileMenu.ShowPopupForDelete(this);
         _profileMenu.ProfileClickAction(this);
     }
 
