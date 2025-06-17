@@ -11,7 +11,7 @@ namespace Failsafe.PlayerMovements.States
         private InputHandler _inputHandler;
         private CharacterController _characterController;
         private readonly PlayerMovementController _movementController;
-        private readonly PlayerMovementParameters _movementParametrs;
+        private readonly PlayerMovementParameters _movementParameters;
         private readonly PlayerNoiseController _playerNoiseController;
 
         //Если не задавать дополнительную силу падения то контроллер не приземляется
@@ -20,12 +20,12 @@ namespace Failsafe.PlayerMovements.States
         private Vector3 _initialVelocity;
         private Vector3 _initialPosition;
 
-        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerNoiseController playerNoiseController)
+        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController)
         {
             _inputHandler = inputHandler;
             _characterController = characterController;
             _movementController = movementController;
-            _movementParametrs = movementParametrs;
+            _movementParameters = movementParameters;
             _playerNoiseController = playerNoiseController;
         }
 
@@ -40,7 +40,10 @@ namespace Failsafe.PlayerMovements.States
         public override void Update()
         {
             _fallProgress += Time.deltaTime;
-            _movementController.Move(_initialVelocity);
+
+            var airMovement = _movementController.GetRelativeMovement(_inputHandler.MovementInput) * _movementParameters.AirMovementSpeed;
+
+            _movementController.Move(_initialVelocity + airMovement);
         }
 
         public override void Exit()
