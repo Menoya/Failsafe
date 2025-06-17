@@ -405,8 +405,8 @@ GameObject:
   - component: {fileID: 374109433352817471}
   - component: {fileID: 3685481300793825505}
   - component: {fileID: 5564961472655603788}
+  - component: {fileID: 5685973373649496905}
   - component: {fileID: 3587987712684801882}
-  - component: {fileID: 5543863665210299431}
   - component: {fileID: 6003168246341229848}
   - component: {fileID: 8406886069167695128}
   - component: {fileID: 7623893399856682050}
@@ -479,9 +479,56 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 374109433352817464}
-  playerParameters:
-    <MaxHealth>k__BackingField: 1000
-    <MaxStamina>k__BackingField: 100
+  _playerModelParameters:
+    rid: 8852827098600964199
+  _playerMovementParameters:
+    rid: 8852827076035346520
+  _playerNoiseParameters:
+    rid: 8852827076035346521
+  _playerView: {fileID: 5685973373649496905}
+  _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 8852827076035346520
+      type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
+      data:
+        WalkSpeed: 3.5
+        RunSpeed: 7
+        CrouchSpeed: 1.75
+        SlideSpeed: 6
+        MaxSlideTime: 1
+        MinSlideTime: 0.5
+        JumpMaxHeight: 1.5
+        JumpMaxSpeed: 8
+        JumpMinDuration: 0.1
+        JumpDuration: 0.5
+        GravityForce: 8
+        GrabLedgeMaxDistance: 0.5
+        GrabLedgeMinHeight: 2
+        GrabLedgeSpeed: 4
+        GrabLedgeHeightDifference: 0.1
+        ClimbOverMaxDistanceToLedge: 1
+        ClimbOverLedgeMaxWidth: 0.5
+        ClimbOverLedgeMaxHeight: 1.5
+        ClimbOnMaxDistanceToLedge: 1
+        ClimbOnLedgeMaxHeight: 2
+    - rid: 8852827076035346521
+      type: {class: PlayerNoiseParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
+      data:
+        MinStrength: 1
+        DefaultStrength: 5
+        IncreasedStrength: 10
+        ReducedStrength: 2
+    - rid: 8852827098600964199
+      type: {class: PlayerModelParameters, ns: Failsafe.Player.Model, asm: Assembly-CSharp}
+      data:
+        <MaxHealth>k__BackingField: 1000
+        <MaxStamina>k__BackingField: 100
+        RegenerateStaminaPerSecond: 20
+        RegenerationDelay: 1
+        StaminaForJump: 25
+        StaminaForRunPerSecond: 20
 --- !u!114 &5564961472655603788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,6 +549,29 @@ MonoBehaviour:
   _draggablePositionOffset: {x: 0, y: 1, z: 0}
   _dragSpeed: 10
   _throwForce: 10
+--- !u!114 &5685973373649496905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374109433352817464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36297433e4eba064ea6767409571fe29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerCamera: {fileID: 374109432981789085}
+  Body: {fileID: 374109432967700042}
+  PlayerGrabPoint: {fileID: 4161287245272060702}
+  CharacterController: {fileID: 374109433352817471}
+  FootstepEvent:
+    Guid:
+      Data1: -1362921849
+      Data2: 1073791315
+      Data3: -1220606587
+      Data4: -1805872764
+    Path: event:/SFX/MAIN CHARACTER/MOVEMENT/WALK/WALK
 --- !u!114 &3587987712684801882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,63 +584,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eb8b993b2ff8da46b45361c0630c6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5543863665210299431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374109433352817464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c693af0863caad6469b8e7790b6fa8ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movementParametrs:
-    rid: 2287995151870591098
-  _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
-  _noiseParametrs:
-    rid: 2287995151870591099
-  _footstepEvent:
-    Guid:
-      Data1: 645672247
-      Data2: 1210137235
-      Data3: -1357825636
-      Data4: 640958622
-    Path: event:/SFX/MAIN CHARACTER/MOVEMENT/WALK/METAL
-  references:
-    version: 2
-    RefIds:
-    - rid: 2287995151870591098
-      type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
-      data:
-        WalkSpeed: 2.5
-        RunSpeed: 4.4
-        CrouchSpeed: 1.5
-        SlideSpeed: 4.2
-        MaxSlideTime: 1
-        MinSlideTime: 0.5
-        JumpMaxHeight: 1.5
-        JumpMaxSpeed: 8
-        JumpMinDuration: 0.1
-        JumpDuration: 0.5
-        GravityForce: 9
-        GrabLedgeMaxDistance: 0.5
-        GrabLedgeMinHeight: 2
-        GrabLedgeSpeed: 2.4
-        GrabLedgeHeightDifference: 0.1
-        ClimbOverMaxDistanceToLedge: 1
-        ClimbOverLedgeMaxWidth: 0.5
-        ClimbOverLedgeMaxHeight: 1.5
-        ClimbOnMaxDistanceToLedge: 1
-        ClimbOnLedgeMaxHeight: 2
-    - rid: 2287995151870591099
-      type: {class: PlayerNoiseParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
-      data:
-        MinStrength: 1
-        DefaultStrength: 5
-        IncreasedStrength: 10
-        ReducedStrength: 2
 --- !u!114 &6003168246341229848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1357,10 +1370,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4352608973284231599, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3333134368851660464}
   m_SourcePrefab: {fileID: 100100000, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+--- !u!114 &802286003113564073 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7327189305579254395, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+  m_PrefabInstance: {fileID: 7966072812413494738}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3382437479846267488 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4647145215876526002, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
   m_PrefabInstance: {fileID: 7966072812413494738}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5974798723992349821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4352608973284231599, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+  m_PrefabInstance: {fileID: 7966072812413494738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3333134368851660464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974798723992349821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fd52282cada0f449c8aea9fd4265ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StaminaSlider: {fileID: 802286003113564073}
