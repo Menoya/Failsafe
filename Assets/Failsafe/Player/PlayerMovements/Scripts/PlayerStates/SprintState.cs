@@ -1,4 +1,5 @@
-﻿using Failsafe.PlayerMovements.Controllers;
+﻿using Failsafe.Player.Model;
+using Failsafe.PlayerMovements.Controllers;
 using UnityEngine;
 
 namespace Failsafe.PlayerMovements.States
@@ -13,19 +14,22 @@ namespace Failsafe.PlayerMovements.States
         private PlayerMovementParameters _movementParametrs;
         private readonly PlayerNoiseController _playerNoiseController;
         private StepController _stepController;
+        private readonly PlayerStaminaController _playerStaminaController;
+
         private float Speed => _movementParametrs.RunSpeed;
         private float _sprintProgress = 0f;
         private float _slideAfterTime = 1f;
 
         public bool CanSlide() => _sprintProgress > _slideAfterTime;
 
-        public SprintState(InputHandler inputHandler, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerNoiseController playerNoiseController, StepController stepController)
+        public SprintState(InputHandler inputHandler, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerNoiseController playerNoiseController, StepController stepController, PlayerStaminaController playerStaminaController)
         {
             _inputHandler = inputHandler;
             _movementController = movementController;
             _movementParametrs = movementParametrs;
             _playerNoiseController = playerNoiseController;
             _stepController = stepController;
+            _playerStaminaController = playerStaminaController;
         }
 
         public override void Enter()
@@ -41,6 +45,7 @@ namespace Failsafe.PlayerMovements.States
             _sprintProgress += Time.deltaTime;
             var movement = _movementController.GetRelativeMovement(_inputHandler.MovementInput) * Speed;
             _movementController.Move(movement);
+            _playerStaminaController.SpendOnRunning();
         }
 
         public override void Exit()
