@@ -2903,9 +2903,33 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4650943975569472845, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
-      propertyPath: m_WarningMessage
-      value: 
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].RunSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].WalkSpeed
+      value: 3.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].SlideSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].CrouchSpeed
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].JumpMaxSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346520].AirMovementSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3685481300793825505, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
+      propertyPath: managedReferences[8852827076035346519].<MaxStamina>k__BackingField
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5943841520111575275, guid: 4168a1c5b47b6244cbf55fadeb19c7ba, type: 3}
       propertyPath: m_AnchorMax.y
