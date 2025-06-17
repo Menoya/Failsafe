@@ -493,10 +493,10 @@ MonoBehaviour:
     - rid: 8852827076035346520
       type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
       data:
-        WalkSpeed: 2.5
-        RunSpeed: 4.4
-        CrouchSpeed: 1.5
-        SlideSpeed: 4.2
+        WalkSpeed: 3.5
+        RunSpeed: 7
+        CrouchSpeed: 1.75
+        SlideSpeed: 6
         MaxSlideTime: 1
         MinSlideTime: 0.5
         JumpMaxHeight: 1.5
