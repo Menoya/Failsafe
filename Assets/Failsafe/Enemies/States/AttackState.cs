@@ -135,6 +135,11 @@ public class AttackState : BehaviorState
     public override void Exit()
     {
         base.Exit();
+        if (_activeLaser != null)
+        {
+            GameObject.Destroy(_activeLaser.gameObject);
+            _activeLaser = null;
+        }
         _enemyController.ResumeMoving();
     }
 }
