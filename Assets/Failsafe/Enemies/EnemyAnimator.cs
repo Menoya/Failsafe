@@ -69,9 +69,8 @@ public class EnemyAnimator
         float signedAngle = Vector3.SignedAngle(_transform.forward, desiredDirection.normalized, Vector3.up);
 
         if (Mathf.Abs(signedAngle) < 25f)
-            return false; // Порог гистерезиса
+            return false; 
 
-        // Clamp к диапазону Blend Tree
         clampedAngle = Mathf.Clamp(signedAngle, -180f, 180f);
         return true;
     }
@@ -106,12 +105,10 @@ public class EnemyAnimator
 
         if (_isTurning)
         {
-            // Применяем поворот из root motion
             _transform.rotation = _animator.rootRotation;
         }
         else
         {
-            // Поворот в сторону движения вручную
             Vector3 desiredVelocity = _navMeshAgent.desiredVelocity;
             if (desiredVelocity.sqrMagnitude > 0.001f)
             {
