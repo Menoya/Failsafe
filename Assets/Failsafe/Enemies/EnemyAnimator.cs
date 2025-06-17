@@ -13,6 +13,7 @@ public class EnemyAnimator
 
     private bool _waitingForTurnToFinish = false;
     private bool _inCooldown = false;
+    private bool _inAttack = false;
 
     public EnemyAnimator( NavMeshAgent navMeshAgent, Animator animator, Transform transform, EnemyController enemyController)
     {
@@ -81,7 +82,7 @@ public class EnemyAnimator
     public bool IsInAction()
     {
         var state = _animator.GetCurrentAnimatorStateInfo(0);
-        return state.IsTag("Attack") || state.IsTag("Reload");
+        return (state.IsTag("Attack") || state.IsTag("Reload")) && _inAttack;
     }
 
     public void TryReload()
@@ -94,6 +95,10 @@ public class EnemyAnimator
         _inCooldown = isReloading;
         _animator.SetBool("isReloading", isReloading);
     }
-    
-    
+
+    public void isAttacking(bool isAttacking)
+    {
+        _inAttack = isAttacking;
+    }
+
 }
