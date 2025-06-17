@@ -58,8 +58,7 @@ public class ProfileMenu : MonoBehaviour
         if (_selectedProfile == clickedProfile)
             _selectedProfile = null;
         Destroy(clickedProfile.gameObject);
-        //приходится удалять подписку ибо при следующем удалении уже другого профиля все еще будет попытка удалить уже удаленный профиль и будет NullReference
-        _popup.onSubmit.RemoveListener(lambdaFunc);
+        
         RerenderProfiles();
     }
     public void ProfileClickAction(Profile clickedProfile)
@@ -73,8 +72,14 @@ public class ProfileMenu : MonoBehaviour
                 _popup.Show();
                 //подписываюсь к методу поп-апа через код, а не инспектор, ибо мне нужно передавать профиль, который будет удален
                 //а это еще и можно сделать только с помощью лямбда-метода
-                lambdaFunc = () => RemoveProfile(clickedProfile);
+                lambdaFunc = () =>
+                {
+                    RemoveProfile(clickedProfile);
+                    //приходится удалять подписку ибо при следующем удалении уже другого профиля все еще будет попытка удалить уже удаленный профиль и будет NullReference
+                    _popup.onSubmit.RemoveListener(lambdaFunc);
+                };
                 _popup.onSubmit.AddListener(lambdaFunc);
+                _popup.onCancel.AddListener(() => _popup.onSubmit.RemoveListener(lambdaFunc));
                 break;
         }
         RerenderProfiles();
