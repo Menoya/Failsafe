@@ -14,7 +14,22 @@ namespace Failsafe.Player.View
     public class PlayerView : MonoBehaviour
     {
         /// <summary>
-        /// Камера (голова) персонажа
+        /// Игровой персонаж
+        /// </summary>
+        public Transform PlayerTransform;
+        /// <summary>
+        /// Голова модели персонажа
+        /// </summary>
+        public Transform PlayerModelHead;
+        /// <summary>
+        /// Голова рига персонажа
+        /// </summary>
+        /// <remarks>
+        /// Задает поворот камеры и головы модели
+        /// </remarks>
+        public Transform PlayerRigHead;
+        /// <summary>
+        /// Камера персонажа
         /// </summary>
         public Transform PlayerCamera;
         /// <summary>
@@ -37,6 +52,12 @@ namespace Failsafe.Player.View
 
         void OnValidate()
         {
+            if (PlayerTransform == null)
+                Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerTransform)}");
+            if (PlayerModelHead == null)
+                Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerModelHead)}");
+            if (PlayerRigHead == null)
+                Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerRigHead)}");
             if (PlayerCamera == null)
                 Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerCamera)}");
             if (Animator == null)

@@ -40,6 +40,7 @@ namespace Failsafe.Player
             builder.RegisterEntryPoint<PlayerController>(Lifetime.Scoped).AsSelf();
 
             builder.RegisterEntryPoint<PlayerAnimationController>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<PlayerCameraController>(Lifetime.Scoped);
         }
     }
 }
