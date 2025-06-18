@@ -480,7 +480,7 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 374109433352817464}
   _playerModelParameters:
-    rid: 8852827076035346519
+    rid: 8852827098600964199
   _playerMovementParameters:
     rid: 8852827076035346520
   _playerNoiseParameters:
@@ -490,18 +490,13 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 8852827076035346519
-      type: {class: PlayerModelParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
-      data:
-        <MaxHealth>k__BackingField: 1000
-        <MaxStamina>k__BackingField: 100
     - rid: 8852827076035346520
       type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
       data:
-        WalkSpeed: 2.5
-        RunSpeed: 4.4
-        CrouchSpeed: 1.5
-        SlideSpeed: 4.2
+        WalkSpeed: 3.5
+        RunSpeed: 7
+        CrouchSpeed: 1.75
+        SlideSpeed: 6
         MaxSlideTime: 1
         MinSlideTime: 0.5
         JumpMaxHeight: 1.5
@@ -525,6 +520,15 @@ MonoBehaviour:
         DefaultStrength: 5
         IncreasedStrength: 10
         ReducedStrength: 2
+    - rid: 8852827098600964199
+      type: {class: PlayerModelParameters, ns: Failsafe.Player.Model, asm: Assembly-CSharp}
+      data:
+        <MaxHealth>k__BackingField: 1000
+        <MaxStamina>k__BackingField: 100
+        RegenerateStaminaPerSecond: 20
+        RegenerationDelay: 1
+        StaminaForJump: 25
+        StaminaForRunPerSecond: 20
 --- !u!114 &5564961472655603788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,8 +562,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 374109432981789085}
-  PlayerGrabPoint: {fileID: 4161287245272060702}
   Body: {fileID: 374109432967700042}
+  PlayerGrabPoint: {fileID: 4161287245272060702}
   CharacterController: {fileID: 374109433352817471}
   FootstepEvent:
     Guid:
@@ -627,7 +631,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoom: 50
   m_Camera: {fileID: 374109432981789075}
-  _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
 --- !u!1 &374109433356125759
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,10 +1370,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4352608973284231599, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3333134368851660464}
   m_SourcePrefab: {fileID: 100100000, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+--- !u!114 &802286003113564073 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7327189305579254395, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+  m_PrefabInstance: {fileID: 7966072812413494738}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3382437479846267488 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4647145215876526002, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
   m_PrefabInstance: {fileID: 7966072812413494738}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5974798723992349821 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4352608973284231599, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+  m_PrefabInstance: {fileID: 7966072812413494738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3333134368851660464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5974798723992349821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29fd52282cada0f449c8aea9fd4265ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StaminaSlider: {fileID: 802286003113564073}
