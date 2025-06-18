@@ -64,11 +64,11 @@ namespace Failsafe.PlayerMovements
         public void Initialize()
         {
             _movementController = new PlayerMovementController(_playerView.CharacterController);
-            _playerRotationController = new PlayerRotationController(_playerView.transform, _playerView.PlayerCamera, _inputHandler);
-            _playerBodyController = new PlayerBodyController(_playerView.PlayerCamera, _playerView.CharacterController, _playerView);
-            _ledgeController = new PlayerLedgeController(_playerView.transform, _playerView.PlayerCamera, _playerView.PlayerGrabPoint, _movementParametrs);
+            _playerRotationController = new PlayerRotationController(_playerView.PlayerTransform, _playerView.PlayerRigHead, _inputHandler);
+            _playerBodyController = new PlayerBodyController(_playerView.CharacterController);
+            _ledgeController = new PlayerLedgeController(_playerView.PlayerTransform, _playerView.PlayerCamera, _playerView.PlayerGrabPoint, _movementParametrs);
             _playerGravity = new PlayerGravityController(_movementController, _playerView.CharacterController, _movementParametrs);
-            _noiseController = new PlayerNoiseController(_playerView.transform, _noiseParametrs, _signalManager);
+            _noiseController = new PlayerNoiseController(_playerView.PlayerTransform, _noiseParametrs, _signalManager);
             _stepController = new StepController(_playerView.CharacterController, _movementParametrs, _playerView.FootstepEvent);
 
             InitializeStateMachine();

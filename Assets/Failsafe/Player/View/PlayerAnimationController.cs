@@ -30,7 +30,7 @@ namespace Failsafe.Player
         {
             _playerController = playerController;
             _animator = playerView.Animator;
-            _payerTransform = playerView.transform;
+            _payerTransform = playerView.PlayerTransform;
         }
 
         public void Tick()

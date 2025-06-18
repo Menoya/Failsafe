@@ -15,6 +15,9 @@ namespace Failsafe.PlayerMovements.Controllers
         private float _mouseSensitivity = 10f;
         private bool _syncBodyRotationWithHead = true;
 
+        private float _verticalMinAngle = -75f;
+        private float _certicalMaxAngle = 90f;
+
         public PlayerRotationController(Transform playerTransform, Transform headTransform, InputHandler inputHandler)
         {
             _playerTransform = playerTransform;
@@ -38,7 +41,7 @@ namespace Failsafe.PlayerMovements.Controllers
         {
             var rotation = _inputHandler.RotationInput * _mouseSensitivity * Time.deltaTime;
             _cameraVerticalRotation += rotation.y;
-            _cameraVerticalRotation = Mathf.Clamp(_cameraVerticalRotation, -85f, 85f);
+            _cameraVerticalRotation = Mathf.Clamp(_cameraVerticalRotation, _verticalMinAngle, _certicalMaxAngle);
             if (_syncBodyRotationWithHead)
             {
                 _headTransform.transform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, 0, 0);
