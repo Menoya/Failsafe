@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 /// <summary>
 /// Состояние
 /// </summary>
 public abstract class BehaviorState
 {
+    public event Action OnEnter;
+    public event Action OnExit;
     private List<Transition> _transitions = new List<Transition>();
     /// <summary>
     /// Добавить переход к другому состоянию
@@ -33,7 +36,10 @@ public abstract class BehaviorState
     /// <summary>
     /// Вызывается в момент переключения на это состояние
     /// </summary>
-    public virtual void Enter() { }
+    public virtual void Enter()
+    {
+        OnEnter?.Invoke();
+    }
 
     /// <summary>
     /// Выполняется пока состояние активно
@@ -48,7 +54,12 @@ public abstract class BehaviorState
     /// <summary>
     /// Вызывается в момент когда текущее состояние меняется на другое
     /// </summary>
-    public virtual void Exit() { }
+    public virtual void Exit()
+    {
+        OnExit?.Invoke();
+    }
+
+    public IEnumerable<BehaviorState> NextStates() => _transitions.Select(x => x.Next);
 
     /// <summary>
     /// Переход от одного состояния к другому

@@ -18,7 +18,7 @@ namespace Failsafe.PlayerMovements
         /// Скорость ходьбы в присяди
         /// </summary>
         public float CrouchSpeed = 1.5f;
-        
+
         /// <summary>
         /// Скорость скольжения
         /// </summary>
@@ -48,6 +48,10 @@ namespace Failsafe.PlayerMovements
         /// Длительность прыжка
         /// </summary>
         public float JumpDuration = 0.5f;
+        /// <summary>
+        /// Скорость коректироваки движения в воздухе
+        /// </summary>
+        public float AirMovementSpeed = 0.5f;
 
         /// <summary>
         /// Сила притяжения

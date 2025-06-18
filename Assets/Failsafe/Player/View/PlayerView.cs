@@ -1,3 +1,4 @@
+using Failsafe.Scripts.Damage.Implementation;
 using FMODUnity;
 using UnityEngine;
 
@@ -20,6 +21,10 @@ namespace Failsafe.Player.View
         /// Тело персонажа
         /// </summary>
         public Transform Body;
+
+        public Animator Animator;
+
+        public DamageableComponent Damageable;
         /// <summary>
         /// Точка захвата
         /// </summary>
@@ -34,8 +39,8 @@ namespace Failsafe.Player.View
         {
             if (PlayerCamera == null)
                 Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerCamera)}");
-            if (Body == null)
-                Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(Body)}");
+            if (Animator == null)
+                Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(Animator)}");
             if (PlayerGrabPoint == null)
                 Debug.LogWarning($"Не задан компонент {nameof(PlayerView)}.{nameof(PlayerGrabPoint)}");
             if (CharacterController == null)

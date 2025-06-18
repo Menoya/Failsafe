@@ -26,7 +26,7 @@ namespace Failsafe.Player.Model
         public void Initialize()
         {
             _damageService = new DamageService(new FlatDamageProvider(_health));
-            _damageableComponent = _playerView.Body.GetComponent<DamageableComponent>();
+            _damageableComponent = _playerView.Damageable;
             _damageableComponent.OnTakeDamage += OnTakeDamage;
         }
 

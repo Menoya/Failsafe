@@ -12,9 +12,12 @@ namespace Failsafe.PlayerMovements.Controllers
         private PlayerMovementParameters _movementParametrs;
         private float _coyoteTime = 0.1f;
         private float _coyoteTimeProgress = 0f;
+        private float _groundedAt;
         private bool _gravityEnabled = true;
 
         public bool IsGrounded => _coyoteTimeProgress <= 0;
+        public bool IsGroundedFor(float duration) => _groundedAt + duration <= Time.time;
+
         public bool IsFalling => _coyoteTimeProgress > _coyoteTime;
 
         public PlayerGravityController(PlayerMovementController movementController, CharacterController characterController, PlayerMovementParameters movementParametrs)
@@ -41,7 +44,11 @@ namespace Failsafe.PlayerMovements.Controllers
         {
             if (_characterController.isGrounded)
             {
-                _coyoteTimeProgress = 0;
+                if (_coyoteTimeProgress > 0)
+                {
+                    _coyoteTimeProgress = 0;
+                    _groundedAt = Time.time;
+                }
             }
             else
             {
