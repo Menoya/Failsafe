@@ -79,6 +79,7 @@ public class ProfileMenu : MonoBehaviour
                     _popup.onSubmit.RemoveListener(lambdaFunc);
                 };
                 _popup.onSubmit.AddListener(lambdaFunc);
+                //на onCancel тоже надо подписывать удаление подписчика, иначе при следующем удалении удалятся 2 профиля сразу
                 _popup.onCancel.AddListener(() => _popup.onSubmit.RemoveListener(lambdaFunc));
                 break;
         }
