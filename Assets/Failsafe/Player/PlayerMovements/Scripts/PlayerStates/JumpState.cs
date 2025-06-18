@@ -1,3 +1,4 @@
+using Failsafe.Player.Model;
 using Failsafe.PlayerMovements.Controllers;
 using UnityEngine;
 
@@ -11,44 +12,53 @@ namespace Failsafe.PlayerMovements.States
         private InputHandler _inputHandler;
         private CharacterController _characterController;
         private PlayerMovementController _movementController;
-        private readonly PlayerMovementParameters _movementParametrs;
-
-        private float _jumpForce => _movementParametrs.JumpForce;
-        private float _jumpForceFade => _movementParametrs.JumpForceFade;
+        private readonly PlayerMovementParameters _movementParameters;
+        private readonly PlayerStaminaController _playerStaminaController;
         private float _jumpProgress = 0;
         private Vector3 _initialVelocity;
+        private float _targetHeight;
 
         //Минимальное время прыжка, нужно чтобы не дергало между прыжком и ходьбой. Нужно найти решение лучше
-        public bool CanGround() => _jumpProgress > 0.1f;
+        public bool CanGround() => _jumpProgress >= _movementParameters.JumpMinDuration;
         /// <summary>
         /// Находимся в высшей точке прыжка
         /// </summary>
         /// <returns></returns>
-        // Формулу нужно подбирать чтобы было красиво
-        public bool InHightPoint() => IsCollidedAbove() || (_jumpForce - _jumpProgress * _jumpForceFade) < _movementParametrs.GravityForce * 0.8;
+        public bool InHightPoint() => IsCollidedAbove() || _jumpProgress >= _movementParameters.JumpDuration;
 
         private bool IsCollidedAbove() => (_characterController.collisionFlags & CollisionFlags.CollidedAbove) != 0;
 
-        public JumpState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParametrs)
+        public JumpState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerStaminaController playerStaminaController)
         {
             _inputHandler = inputHandler;
             _characterController = characterController;
             _movementController = movementController;
-            _movementParametrs = movementParametrs;
+            _movementParameters = movementParametrs;
+            _playerStaminaController = playerStaminaController;
         }
 
         public override void Enter()
         {
+            base.Enter();
             Debug.Log("Enter " + nameof(JumpState));
             _jumpProgress = 0;
             _initialVelocity = new Vector3(_movementController.Velocity.x, 0, _movementController.Velocity.z);
+            _targetHeight = _characterController.transform.position.y + _movementParameters.JumpMaxHeight;
+            _playerStaminaController.SpendOnJump();
         }
 
         public override void Update()
         {
             _jumpProgress += Time.deltaTime;
-            var jumpMovement = Vector3.up * (_jumpForce - _jumpProgress * _jumpForceFade);
-            _movementController.Move(jumpMovement + _initialVelocity);
+
+            var deltaHeight = _targetHeight - _characterController.transform.position.y;
+            var upForce = deltaHeight * _movementParameters.GravityForce;
+            upForce = Mathf.Min(upForce, _movementParameters.JumpMaxSpeed);
+            var jumpMovement = Vector3.up * (upForce + _movementParameters.GravityForce);//Добавляем GravityForce к силе прыжка чтобы компенсировать гравитацию
+
+            var airMovement = _movementController.GetRelativeMovement(_inputHandler.MovementInput) * _movementParameters.AirMovementSpeed;
+
+            _movementController.Move(jumpMovement + _initialVelocity + airMovement);
         }
     }
 }

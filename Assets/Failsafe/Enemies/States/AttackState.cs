@@ -15,10 +15,10 @@ public class AttackState : BehaviorState
     private Vector3? _targetPosition;
     private Transform _target;
     
-    private float _attackDelay = 3f;
+    private float _attackDelay = 1f;
     private float _rayDuration = 5f;
     private float _rayDPS = 100f;
-    private float _rayCooldown = 10f;
+    private float _rayCooldown = 4f;
     private float _attackProgress = 0;
     private bool _delayOver = false;
     private bool _onCooldown = false;
@@ -60,13 +60,8 @@ public class AttackState : BehaviorState
         _attackFired = false;
         _playerInSight = true;
         _enemyController.StopMoving();
+        _enemyAnimator.isAttacking(true);
         Debug.Log("Enter AttackState");
-
-        if (_laserPrefab == null)
-            Debug.LogError("Laser Prefab не назначен!");
-
-        if (_laserOrigin == null)
-            Debug.LogError("Laser Origin не назначен!");
     }
 
     public override void Update()
@@ -105,8 +100,8 @@ public class AttackState : BehaviorState
                         var damageableComponent = visual.Target.GetComponentInChildren<DamageableComponent>();
                         if (sensor.SignalInAttackRay((Vector3)_targetPosition) && damageableComponent is not null)
                         {
-                            Debug.Log("damage");
                             damageableComponent.TakeDamage(new FlatDamage(_rayDPS * Time.deltaTime));
+                            Debug.Log($"Урон: {_rayDPS * Time.deltaTime:F1}");
                         }
                     }
                 }
@@ -141,6 +136,12 @@ public class AttackState : BehaviorState
     public override void Exit()
     {
         base.Exit();
+        if (_activeLaser != null)
+        {
+            GameObject.Destroy(_activeLaser.gameObject);
+            _activeLaser = null;
+        }
+        _enemyAnimator.isAttacking(false);
         _enemyController.ResumeMoving();
     }
 }

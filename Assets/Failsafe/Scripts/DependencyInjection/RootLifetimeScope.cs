@@ -10,14 +10,15 @@ namespace Failsafe.Scripts.DependencyInjection
     {
         [SerializeField]
         private GameConfig _gameConfig;
-        
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(_gameConfig).As<GameConfig>();
             
             builder.Register<SceneLoader.SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
-            
+
             builder.RegisterEntryPoint<Bootstrapper>();
+            
         }
     }
 }

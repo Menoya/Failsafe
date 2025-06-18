@@ -9,27 +9,20 @@ namespace Failsafe.PlayerMovements
         /// <summary>
         /// Скорость ходьбы
         /// </summary>
-        public float WalkSpeed = 8f;
+        public float WalkSpeed = 2.5f;
         /// <summary>
         /// Скорость бега
         /// </summary>
-        public float RunSpeed = 15f;
+        public float RunSpeed = 4.4f;
         /// <summary>
         /// Скорость ходьбы в присяди
         /// </summary>
-        public float CrouchSpeed = 3f;
-        /// <summary>
-        /// Высота в присяди относительно нормальной высоты
-        /// </summary>
-        public float CrouchHeight = 0.5f;
+        public float CrouchSpeed = 1.5f;
+
         /// <summary>
         /// Скорость скольжения
         /// </summary>
-        public float SlideSpeed = 12f;
-        /// <summary>
-        /// Высота в скольжении относительно нормальной высоты
-        /// </summary>
-        public float SlideHeight = 0.3f;
+        public float SlideSpeed = 4.2f;
         /// <summary>
         /// Максимальное время скольжения
         /// </summary>
@@ -38,14 +31,28 @@ namespace Failsafe.PlayerMovements
         /// Минимальное время скольжения
         /// </summary>
         public float MinSlideTime = 0.5f;
+
         /// <summary>
-        /// Сила прыжка
+        /// Высота прыжка
         /// </summary>
-        public float JumpForce = 20f;
+        public float JumpMaxHeight = 1.5f;
         /// <summary>
-        /// Сила угасания прыжка
+        /// Максимальная скорость прыжка
         /// </summary>
-        public float JumpForceFade = 30f;
+        public float JumpMaxSpeed = 8f;
+        /// <summary>
+        /// Минимальная длительность прыжка
+        /// </summary>
+        public float JumpMinDuration = 0.1f;
+        /// <summary>
+        /// Длительность прыжка
+        /// </summary>
+        public float JumpDuration = 0.5f;
+        /// <summary>
+        /// Скорость коректироваки движения в воздухе
+        /// </summary>
+        public float AirMovementSpeed = 0.5f;
+
         /// <summary>
         /// Сила притяжения
         /// </summary>

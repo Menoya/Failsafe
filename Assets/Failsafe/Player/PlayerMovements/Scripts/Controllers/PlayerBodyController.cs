@@ -10,9 +10,6 @@ namespace Failsafe.PlayerMovements.Controllers
     {
         private readonly Transform _headTransform;
         private readonly CharacterController _characterController;
-        // Пока это капсула, позже будет модель игрока котороя должна менять высоту с помощью анимации. 
-        // Удалить после исправления
-        private readonly Transform _playerBody;
         // Нужен только для запуска корутины, позже камера будет привязана к голове персонажа и двигаться анимацией приседания. 
         // Удалить после исправления
         private readonly MonoBehaviour _monoBehaviour;
@@ -21,15 +18,11 @@ namespace Failsafe.PlayerMovements.Controllers
         private float _standingCCCenterHeight = 1f;
         private float _standingCCHeight = 2f;
         private float _standingCCStepOffset = 1f;
-        private float _standingBodyHeight = 1f;
-        private float _standingBodyCenterHeight = 1f;
 
         private Vector3 _crouchingHeadPosition;
         private float _crouchingCCCenterHeight = 0.5f;
         private float _crouchingCCHeight = 1f;
         private float _crouchingCCStepOffset = 0.2f;
-        private float _crouchingBodyHeight = 0.5f;
-        private float _crouchingBodyCenterHeight = 0.5f;
 
         private Vector3 _slideHeadPosition;
         private float _elapsedTime;
@@ -37,14 +30,13 @@ namespace Failsafe.PlayerMovements.Controllers
         private Coroutine _lerpHeadCoroutine;
         private int _ignoreLedgeLayer;
 
-        public PlayerBodyController(Transform headTransform, CharacterController characterController, Transform playerBody, MonoBehaviour monoBehaviour)
+        public PlayerBodyController(Transform headTransform, CharacterController characterController, MonoBehaviour monoBehaviour)
         {
             _headTransform = headTransform;
             _characterController = characterController;
-            _playerBody = playerBody;
             _standingHeadPosition = _headTransform.localPosition;
-            _crouchingHeadPosition = _standingHeadPosition + Vector3.down * (_standingHeadPosition.y * 0.5f);
-            _slideHeadPosition = _standingHeadPosition + Vector3.down * (_standingHeadPosition.y * 0.7f);
+            _crouchingHeadPosition = _standingHeadPosition + Vector3.down * (_standingHeadPosition.y * 0.3f);
+            _slideHeadPosition = _standingHeadPosition + Vector3.down * (_standingHeadPosition.y * 0.5f);
             _monoBehaviour = monoBehaviour;
             _ignoreLedgeLayer = LayerMask.NameToLayer("Ledge");
         }
@@ -69,9 +61,6 @@ namespace Failsafe.PlayerMovements.Controllers
             _characterController.height = _standingCCHeight;
             _characterController.stepOffset = _standingCCStepOffset;
 
-            _playerBody.localPosition = _standingBodyCenterHeight * Vector3.up;
-            _playerBody.localScale = new Vector3(1, _standingBodyHeight, 1);
-
             if (_lerpHeadCoroutine != null)
                 _monoBehaviour.StopCoroutine(_lerpHeadCoroutine);
             _lerpHeadCoroutine = _monoBehaviour.StartCoroutine(ChangeHeadPositionCoroutine(_standingHeadPosition));
@@ -82,9 +71,6 @@ namespace Failsafe.PlayerMovements.Controllers
             _characterController.center = _crouchingCCCenterHeight * Vector3.up;
             _characterController.height = _crouchingCCHeight;
             _characterController.stepOffset = _crouchingCCStepOffset;
-
-            _playerBody.localPosition = _crouchingBodyCenterHeight * Vector3.up;
-            _playerBody.localScale = new Vector3(1, _crouchingBodyHeight, 1);
 
             if (_lerpHeadCoroutine != null)
                 _monoBehaviour.StopCoroutine(_lerpHeadCoroutine);
@@ -98,9 +84,6 @@ namespace Failsafe.PlayerMovements.Controllers
             _characterController.center = _crouchingCCCenterHeight * Vector3.up;
             _characterController.height = _crouchingCCHeight;
             _characterController.stepOffset = _crouchingCCStepOffset;
-
-            _playerBody.localPosition = _crouchingBodyCenterHeight * Vector3.up;
-            _playerBody.localScale = new Vector3(1, _crouchingBodyHeight, 1);
 
             if (_lerpHeadCoroutine != null)
                 _monoBehaviour.StopCoroutine(_lerpHeadCoroutine);
