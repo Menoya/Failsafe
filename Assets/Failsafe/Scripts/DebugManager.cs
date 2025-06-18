@@ -21,6 +21,8 @@ public class DebugManager : MonoBehaviour
     {
         Cursor.visible = CursorOn;
         Cursor.lockState = CursorOn ? CursorLockMode.None : CursorLockMode.Locked;
+        
+        
     }
 
     private void OnGUI()
@@ -63,6 +65,7 @@ public class DebugManager : MonoBehaviour
             var NavMesh = enemyGO.GetComponent<NavMeshAgent>();
             var awarness = enemy._awarenessMeter.AlertnessValue;
             string stateName = enemy?.currentState?.ToString() ?? "Unknown";
+            enemy.DebugEnemy();
 
             GUILayout.Label($"[{i}] {enemyGO.name}");
             GUILayout.Label($"Pos: {pos}");

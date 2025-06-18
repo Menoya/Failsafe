@@ -81,7 +81,6 @@ public class Enemy : MonoBehaviour
         _enemyAnimator.UpdateAnimator();
         _stateMachine.Update();
         _awarenessMeter.Update();
-        DebugEnemy();
         currentState = _stateMachine.CurrentState;
     }
 
@@ -121,19 +120,17 @@ public class Enemy : MonoBehaviour
         _enemyAnimator.ApplyRootMotion(); // Всё управление Root Motion'ом централизовано здесь
       
     }
-
-    private void DebugEnemy()
+//Описал тут, но вызываю его в DebugManager
+    public void DebugEnemy()
     {
-        if (DebugMode)
-        {
-            Debug.Log($"Противник: "+ this.gameObject.name + "уровень настороженности: " + _awarenessMeter.AlertnessValue.ToInt());
+       
+        
             foreach (var sensor in _sensors)
             {
                 if (sensor is VisualSensor visual)
                     if (visual.IsActivated())
                     {
                         seePlayer = true;
-                        Debug.Log("Визулаьный сенсор противника активен");
                     }
                     else
                     {
@@ -144,15 +141,13 @@ public class Enemy : MonoBehaviour
                     if (noise.IsActivated())
                     {
                         hearPlayer = true;
-                        Debug.Log("Аудио сенсор противника активен");
                     }
                     else
                     {
                         hearPlayer = false;
                     }
             }
-        }
-        
+
     }
 }
 
