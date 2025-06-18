@@ -60,6 +60,7 @@ public class AttackState : BehaviorState
         _attackFired = false;
         _playerInSight = true;
         _enemyController.StopMoving();
+        _enemyAnimator.isAttacking(true);
         Debug.Log("Enter AttackState");
     }
 
@@ -135,6 +136,12 @@ public class AttackState : BehaviorState
     public override void Exit()
     {
         base.Exit();
+        if (_activeLaser != null)
+        {
+            GameObject.Destroy(_activeLaser.gameObject);
+            _activeLaser = null;
+        }
+        _enemyAnimator.isAttacking(false);
         _enemyController.ResumeMoving();
     }
 }
