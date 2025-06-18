@@ -37,7 +37,9 @@ namespace Failsafe.Player
             builder.RegisterEntryPoint<PlayerDamageable>(Lifetime.Scoped);
             builder.RegisterEntryPoint<PlayerStaminaController>(Lifetime.Scoped).AsSelf();
 
-            builder.RegisterEntryPoint<PlayerController>(Lifetime.Scoped);
+            builder.RegisterEntryPoint<PlayerController>(Lifetime.Scoped).AsSelf();
+
+            builder.RegisterEntryPoint<PlayerAnimationController>(Lifetime.Scoped);
         }
     }
 }

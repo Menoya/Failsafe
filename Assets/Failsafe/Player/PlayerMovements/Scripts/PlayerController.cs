@@ -18,7 +18,7 @@ namespace Failsafe.PlayerMovements
     /// <summary>
     /// Движение персонажа
     /// </summary>
-    public class PlayerController : ITickable, IFixedTickable
+    public class PlayerController : IInitializable, ITickable, IFixedTickable
     {
         private readonly PlayerMovementParameters _movementParametrs;
         private readonly PlayerNoiseParameters _noiseParametrs;
@@ -36,6 +36,10 @@ namespace Failsafe.PlayerMovements
         private PlayerGravityController _playerGravity;
         private PlayerNoiseController _noiseController;
         private StepController _stepController;
+
+        public BehaviorStateMachine StateMachine => _behaviorStateMachine;
+        public PlayerMovementController PlayerMovementController => _movementController;
+        public PlayerGravityController PlayerGravityController => _playerGravity;
 
         public PlayerController(
             PlayerMovementParameters movementParametrs,
@@ -55,14 +59,13 @@ namespace Failsafe.PlayerMovements
             _health = health;
             _stamina = stamina;
             _playerStaminaController = playerStaminaController;
-            Initialize();
         }
 
-        void Initialize()
+        public void Initialize()
         {
             _movementController = new PlayerMovementController(_playerView.CharacterController);
             _playerRotationController = new PlayerRotationController(_playerView.transform, _playerView.PlayerCamera, _inputHandler);
-            _playerBodyController = new PlayerBodyController(_playerView.PlayerCamera, _playerView.CharacterController, _playerView.Body, _playerView);
+            _playerBodyController = new PlayerBodyController(_playerView.PlayerCamera, _playerView.CharacterController, _playerView);
             _ledgeController = new PlayerLedgeController(_playerView.transform, _playerView.PlayerCamera, _playerView.PlayerGrabPoint, _movementParametrs);
             _playerGravity = new PlayerGravityController(_movementController, _playerView.CharacterController, _movementParametrs);
             _noiseController = new PlayerNoiseController(_playerView.transform, _noiseParametrs, _signalManager);
@@ -75,6 +78,13 @@ namespace Failsafe.PlayerMovements
 
         private void InitializeStateMachine()
         {
+            var deathState = new DeathState();
+            var forcedStates = new List<BehaviorForcedState>
+            {
+                 deathState
+            };
+            _behaviorStateMachine = new BehaviorStateMachine(forcedStates);
+
             var standingState = new StandingState(_inputHandler, _movementController);
             var walkState = new WalkState(_inputHandler, _movementController, _movementParametrs, _noiseController, _stepController);
             var runState = new SprintState(_inputHandler, _movementController, _movementParametrs, _noiseController, _stepController, _playerStaminaController);
@@ -89,14 +99,9 @@ namespace Failsafe.PlayerMovements
             var ledgeJumpState = new LedgeJumpState(_inputHandler, _playerView.CharacterController, _movementParametrs, _playerView.PlayerCamera);
             var crouchIdleState = new CrouchIdle(_playerBodyController, _movementController, _movementParametrs, _noiseController, _stepController);
 
-            var deathState = new DeathState();
-            var forcedStates = new List<BehaviorForcedState>
-            {
-                 deathState
-            };
 
             Func<bool> runStatePrecondition = () => _inputHandler.MoveForward && _inputHandler.SprintTriggered && !_stamina.IsEmpty;
-            Func<bool> jumpStatePrecondition = () => _inputHandler.JumpTriggered && !_stamina.IsEmpty;
+            Func<bool> jumpStatePrecondition = () => _inputHandler.JumpTriggered && !_stamina.IsEmpty && _playerGravity.IsGroundedFor(0.1f);
 
             standingState.AddTransition(walkState, () => !_inputHandler.MovementInput.Equals(Vector2.zero));
             standingState.AddTransition(crouchIdleState, () => _inputHandler.CrouchTrigger.IsTriggered, _inputHandler.CrouchTrigger.ReleaseTrigger);
@@ -152,7 +157,7 @@ namespace Failsafe.PlayerMovements
             climbingOnState.AddTransition(walkState, () => climbingOnState.ClimbFinish());
             climbingOverState.AddTransition(fallState, () => climbingOverState.ClimbFinish());
 
-            _behaviorStateMachine = new BehaviorStateMachine(walkState, forcedStates);
+            _behaviorStateMachine.SetInitState(walkState);
 
         }
 
