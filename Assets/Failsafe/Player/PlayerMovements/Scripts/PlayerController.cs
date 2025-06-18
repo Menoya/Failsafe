@@ -39,6 +39,7 @@ namespace Failsafe.PlayerMovements
 
         public BehaviorStateMachine StateMachine => _behaviorStateMachine;
         public PlayerMovementController PlayerMovementController => _movementController;
+        public PlayerGravityController PlayerGravityController => _playerGravity;
 
         public PlayerController(
             PlayerMovementParameters movementParametrs,
@@ -100,7 +101,7 @@ namespace Failsafe.PlayerMovements
 
 
             Func<bool> runStatePrecondition = () => _inputHandler.MoveForward && _inputHandler.SprintTriggered && !_stamina.IsEmpty;
-            Func<bool> jumpStatePrecondition = () => _inputHandler.JumpTriggered && !_stamina.IsEmpty;
+            Func<bool> jumpStatePrecondition = () => _inputHandler.JumpTriggered && !_stamina.IsEmpty && _playerGravity.IsGroundedFor(0.1f);
 
             standingState.AddTransition(walkState, () => !_inputHandler.MovementInput.Equals(Vector2.zero));
             standingState.AddTransition(crouchIdleState, () => _inputHandler.CrouchTrigger.IsTriggered, _inputHandler.CrouchTrigger.ReleaseTrigger);
