@@ -130,25 +130,26 @@ public class Enemy : MonoBehaviour
             foreach (var sensor in _sensors)
             {
                 if (sensor is VisualSensor visual)
-                {
-                    seePlayer = true;
-                    if(visual.IsActivated()) Debug.Log("Визулаьный сенсор противника активен");
-                }
-                else
-                {
-                    seePlayer = false;
-                }
+                    if (visual.IsActivated())
+                    {
+                        seePlayer = true;
+                        Debug.Log("Визулаьный сенсор противника активен");
+                    }
+                    else
+                    {
+                        seePlayer = false;
+                    }
 
                 if (sensor is NoiseSensor noise)
-                {
-                    hearPlayer = true;
-                    if(noise.IsActivated()) Debug.Log("Аудио сенсор противника активен");
-                }
-                else
-                {
-                    hearPlayer = false;
-                }
-                
+                    if (noise.IsActivated())
+                    {
+                        hearPlayer = true;
+                        Debug.Log("Аудио сенсор противника активен");
+                    }
+                    else
+                    {
+                        hearPlayer = false;
+                    }
             }
         }
         
