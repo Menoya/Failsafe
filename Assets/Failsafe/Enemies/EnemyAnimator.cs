@@ -27,11 +27,55 @@ public class EnemyAnimator
 
     public void UpdateAnimator()
     {
-       
         if (IsInAction())
-            return; // Блокируем всё, пока идёт атака/перезарядка
+            return;
+
+        if (_isTurning)
+        {
+            var state = _animator.GetCurrentAnimatorStateInfo(0);
+    
+            if (state.IsTag("Turn") && state.normalizedTime >= 0.98f)
+            {
+                _isTurning = false;
+                _animator.SetFloat("TurnAngle", 0f);
+            }
+
+            _animator.SetFloat("Speed", 0f);
+            return;
+        }
+
+        // Вход в поворот
+        if (ShouldStartTurn(out float clampedAngle))
+        {
+            _isTurning = true;
+            _animator.SetFloat("TurnAngle", clampedAngle);
+            _animator.CrossFade("TurnInPlace", 0.1f);
+            _animator.SetFloat("Speed", 0f);
+            return;
+        }
+
         UpdateSpeedBlend();
     }
+    private bool ShouldStartTurn(out float clampedAngle)
+    {
+        clampedAngle = 0f;
+
+        Vector3 desiredDirection = _navMeshAgent.desiredVelocity;
+        if (desiredDirection.sqrMagnitude < 0.01f)
+            return false;
+
+        if (_navMeshAgent.velocity.magnitude > 0.1f)
+            return false;
+
+        float signedAngle = Vector3.SignedAngle(_transform.forward, desiredDirection.normalized, Vector3.up);
+
+        if (Mathf.Abs(signedAngle) < 25f)
+            return false; 
+
+        clampedAngle = Mathf.Clamp(signedAngle, -180f, 180f);
+        return true;
+    }
+    
     public void ApplyRoot()
     {
         _animator.applyRootMotion = true;
@@ -55,22 +99,25 @@ public class EnemyAnimator
 
     public void ApplyRootMotion()
     {
-        // Перемещение из анимации
         Vector3 rootPos = _animator.rootPosition;
         rootPos.y = _navMeshAgent.nextPosition.y;
         _transform.position = rootPos;
         _navMeshAgent.nextPosition = rootPos;
 
-        // Поворот к направлению движения
-        Vector3 desiredVelocity = _navMeshAgent.desiredVelocity;
-
-        if (desiredVelocity.sqrMagnitude > 0.001f)
+        if (_isTurning)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(desiredVelocity.normalized);
-            _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, Time.deltaTime * 10f); // smooth поворот
+            _transform.rotation = _animator.rootRotation;
+        }
+        else
+        {
+            Vector3 desiredVelocity = _navMeshAgent.desiredVelocity;
+            if (desiredVelocity.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(desiredVelocity.normalized);
+                _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
         }
 
-        // Синхронизируем Agent с RootMotion-позицией
         _navMeshAgent.nextPosition = _transform.position;
     }
 
