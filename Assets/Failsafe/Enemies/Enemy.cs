@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private bool DebugMode = false;
     private Sensor[] _sensors;
     private BehaviorStateMachine _stateMachine;
-    private AwarenessMeter _awarenessMeter;
     private Animator _animator;
     private EnemyAnimator _enemyAnimator;
     private EnemyController _controller;
@@ -21,7 +20,10 @@ public class Enemy : MonoBehaviour
     private LaserBeamController _activeLaser;
     [SerializeField] private Transform _laserSpawnPoint; // Точка спавна лазера, если нужно
    [SerializeField] private List<Transform> _manualPoints; // Привязать вручную через инспектор
-
+    public BehaviorState currentState;
+    public AwarenessMeter _awarenessMeter;
+    public bool seePlayer;
+    public bool hearPlayer;
     private void Awake()
     {
         // Основные компоненты
@@ -79,7 +81,7 @@ public class Enemy : MonoBehaviour
         _enemyAnimator.UpdateAnimator();
         _stateMachine.Update();
         _awarenessMeter.Update();
-        DebugEnemy();
+        currentState = _stateMachine.CurrentState;
     }
 
     [ContextMenu("DisableState")]
@@ -91,14 +93,13 @@ public class Enemy : MonoBehaviour
     private void RoomCheck()
     {
         // Ищем все коллайдеры рядом с врагом
-        Collider[] hits = Physics.OverlapSphere(transform.position, 5f); // можно увеличить радиус при необходимости
+        Collider[] hits = Physics.OverlapSphere(transform.position, 5f); 
         Debug.Log($"[Enemy] Обнаружено коллайдеров: {hits.Length}");
 
         foreach (var hit in hits)
         {
             Debug.Log($"[Enemy] Hit: {hit.name}");
 
-            // Ищем RoomData в дочерних объектах каждого найденного объекта
             RoomData room = hit.GetComponentInChildren<RoomData>();
             if (room != null)
             {
@@ -119,14 +120,34 @@ public class Enemy : MonoBehaviour
         _enemyAnimator.ApplyRootMotion(); // Всё управление Root Motion'ом централизовано здесь
       
     }
-
-    private void DebugEnemy()
+//Описал тут, но вызываю его в DebugManager
+    public void DebugEnemy()
     {
-        if (DebugMode)
-        {
-            Debug.Log($"Противник: "+ this.gameObject.name + "уровень настороженности: " + _awarenessMeter.AlertnessValue.ToInt());
-        }
+       
         
+            foreach (var sensor in _sensors)
+            {
+                if (sensor is VisualSensor visual)
+                    if (visual.IsActivated())
+                    {
+                        seePlayer = true;
+                    }
+                    else
+                    {
+                        seePlayer = false;
+                    }
+
+                if (sensor is NoiseSensor noise)
+                    if (noise.IsActivated())
+                    {
+                        hearPlayer = true;
+                    }
+                    else
+                    {
+                        hearPlayer = false;
+                    }
+            }
+
     }
 }
 
