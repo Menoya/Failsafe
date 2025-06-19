@@ -24,6 +24,7 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        _profileMenu.OnProfileStartDrag?.Invoke();
         //нужно менять профилю родителя чтобы он мог показываться вне пределов окна профилей, ибо кнопка корзины как раз за пределами
         _rectTransform.SetParent(_canvas.transform);
         _canvasGroup.alpha = 0.6f;
@@ -37,6 +38,7 @@ public class DraggableUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     
     public void OnEndDrag(PointerEventData eventData)
     {
+        _profileMenu.OnProfileEndDrag?.Invoke();
         _profileMenu.ReturnProfileToContainer(_rectTransform);
         _rectTransform.anchoredPosition = Vector2.zero;
         _canvasGroup.alpha = 1f;

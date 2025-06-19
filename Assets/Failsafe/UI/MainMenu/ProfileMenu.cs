@@ -15,6 +15,9 @@ public class ProfileMenu : MonoBehaviour
     
     [SerializeField] List<Profile> _profiles = new List<Profile>();
     Profile _selectedProfile;
+    
+    public UnityEvent OnProfileStartDrag;
+    public UnityEvent OnProfileEndDrag;
    
     
     //переменная чтобы удалять конкретно подписанный лямбда-метод из подписчиков поп-апа
