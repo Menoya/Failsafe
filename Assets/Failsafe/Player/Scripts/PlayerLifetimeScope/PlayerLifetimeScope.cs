@@ -2,6 +2,7 @@ using Failsafe.Player.Model;
 using Failsafe.Player.View;
 using Failsafe.PlayerMovements;
 using Failsafe.Scripts.Health;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using VContainer;
@@ -29,6 +30,7 @@ namespace Failsafe.Player
             builder.RegisterInstance(_playerNoiseParameters);
             builder.RegisterComponent(_playerView);
             builder.RegisterComponent(_inputActionAsset);
+            builder.Register<IDisposable, PlayerMovementSpeedModifier>(Lifetime.Scoped).AsSelf();
 
             builder.Register<InputHandler>(Lifetime.Scoped);
 

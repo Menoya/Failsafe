@@ -28,6 +28,7 @@ namespace Failsafe.PlayerMovements
         private readonly IHealth _health;
         private readonly IStamina _stamina;
         private readonly PlayerStaminaController _playerStaminaController;
+        private readonly PlayerMovementSpeedModifier _playerMovementSpeedModifier;
         private PlayerMovementController _movementController;
         private PlayerRotationController _playerRotationController;
         private PlayerBodyController _playerBodyController;
@@ -49,7 +50,8 @@ namespace Failsafe.PlayerMovements
             PlayerView playerView,
             IHealth health,
             IStamina stamina,
-            PlayerStaminaController playerStaminaController)
+            PlayerStaminaController playerStaminaController,
+            PlayerMovementSpeedModifier playerMovementSpeedModifier)
         {
             _movementParametrs = movementParametrs;
             _noiseParametrs = noiseParametrs;
@@ -59,6 +61,7 @@ namespace Failsafe.PlayerMovements
             _health = health;
             _stamina = stamina;
             _playerStaminaController = playerStaminaController;
+            _playerMovementSpeedModifier = playerMovementSpeedModifier;
         }
 
         public void Initialize()
@@ -91,7 +94,7 @@ namespace Failsafe.PlayerMovements
             var slideState = new SlideState(_inputHandler, _movementController, _movementParametrs, _playerBodyController, _playerRotationController);
             var crouchState = new CrouchState(_inputHandler, _movementController, _movementParametrs, _playerBodyController, _noiseController, _stepController);
             var jumpState = new JumpState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerStaminaController);
-            var fallState = new FallState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _noiseController);
+            var fallState = new FallState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _noiseController, _playerMovementSpeedModifier);
             var grabLedgeState = new GrabLedgeState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _playerRotationController, _ledgeController);
             var climbingUpState = new ClimbingUpState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
             var climbingOnState = new ClimbingOnState(_inputHandler, _playerView.CharacterController, _movementController, _movementParametrs, _playerGravity, _ledgeController);
@@ -168,6 +171,7 @@ namespace Failsafe.PlayerMovements
             _playerGravity.HandleGravity();
             _behaviorStateMachine.Update();
             _stepController.Update();
+            _playerMovementSpeedModifier.Update();
             if (_health.IsDead)
             {
                 _behaviorStateMachine.ForseChangeState<DeathState>();

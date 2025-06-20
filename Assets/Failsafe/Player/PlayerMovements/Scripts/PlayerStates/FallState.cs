@@ -13,6 +13,7 @@ namespace Failsafe.PlayerMovements.States
         private readonly PlayerMovementController _movementController;
         private readonly PlayerMovementParameters _movementParameters;
         private readonly PlayerNoiseController _playerNoiseController;
+        private readonly PlayerMovementSpeedModifier _playerMovementSpeedModifier;
 
         //Если не задавать дополнительную силу падения то контроллер не приземляется
         private float _fallSpeed = 0.1f;
@@ -20,13 +21,16 @@ namespace Failsafe.PlayerMovements.States
         private Vector3 _initialVelocity;
         private Vector3 _initialPosition;
 
-        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController)
+        public float FallHeight => _initialPosition.y - _characterController.transform.position.y;
+
+        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController, PlayerMovementSpeedModifier playerMovementSpeedModifier)
         {
             _inputHandler = inputHandler;
             _characterController = characterController;
             _movementController = movementController;
             _movementParameters = movementParameters;
             _playerNoiseController = playerNoiseController;
+            _playerMovementSpeedModifier = playerMovementSpeedModifier;
         }
 
         public override void Enter()
@@ -48,12 +52,11 @@ namespace Failsafe.PlayerMovements.States
 
         public override void Exit()
         {
-            var fallHeight = _initialPosition.y - _characterController.transform.position.y;
-            if (fallHeight > 3f)
+            if (FallHeight > _movementParameters.FallDistanceToSlow)
             {
-                Debug.Log("Ай, больно в ноге");
+                _playerMovementSpeedModifier.ApplySlowOnLanding();
             }
-            _playerNoiseController.CreateNoise(fallHeight, 2);
+            _playerNoiseController.CreateNoise(FallHeight, 2);
         }
     }
 }
