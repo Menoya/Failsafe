@@ -12,6 +12,9 @@ namespace Failsafe.GameSceneServices
         protected override void Configure(IContainerBuilder builder)
         {
             //TODO: зарегистрировать системы игровой сцены : SignalManager, SpawnSystem ...
+
+            //TODO: Пока это монобэх, нужно интегрировать врагов с VContainer
+            builder.RegisterComponentInHierarchy<SignalManager>();
         }
     }
 }

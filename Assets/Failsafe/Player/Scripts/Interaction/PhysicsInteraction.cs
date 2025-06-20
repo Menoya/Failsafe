@@ -2,6 +2,8 @@ using Failsafe.PlayerMovements;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using VContainer;
 
 namespace Failsafe.Player.Scripts.Interaction
 {
@@ -34,9 +36,16 @@ namespace Failsafe.Player.Scripts.Interaction
         [SerializeField] private Transform _playerCameraTransform;
         [SerializeField] [ReadOnly] private float _currentCarryingDistance;
         
+        [SerializeField] private Vector3 _draggablePositionOffset;
+        [SerializeField] private float _dragSpeed = 10f;
+        
+        [Tooltip("Данная сила умножается на число от 1 до 3 при зажатии кнопки броска.")]
+        [SerializeField] private float _throwForce = 3f;
+
         private Quaternion _relativeRotation;
         
-        private PlayerController _playerController;
+        [Inject]
+        private InputHandler _inputHandler;
         
         private bool _isPreparingToThrow; 
         private float _throwForceMultiplier;
@@ -45,6 +54,12 @@ namespace Failsafe.Player.Scripts.Interaction
         private bool _allowToGrabOrDrop = true;
         private int _cachedCarryingLayer;
         
+
+        [Header("Crosshair")] 
+        [SerializeField] private Image _crosshairImage;
+        [SerializeField] private float _normalSize = 0.2f;
+        [SerializeField] private float _hoverSize = 0.6f;
+        [SerializeField] private float _scaleSpeed = 8f;    
         public bool IsDragging { get; private set; }
 
         private void Awake()
@@ -63,18 +78,19 @@ namespace Failsafe.Player.Scripts.Interaction
 
         private void Update()
         {
-            if (_playerController.InputHandler.GrabOrDropTriggered && _allowToGrabOrDrop)
+            UpdateCrosshairScale();
+            if (_inputHandler.GrabOrDropTriggered && _allowToGrabOrDrop)
             {
                 GrabOrDrop();
             }
-            else if (!_playerController.InputHandler.GrabOrDropTriggered)
+            else if (!_inputHandler.GrabOrDropTriggered)
             {
                 _allowToGrabOrDrop = true;
             }
 
             if (IsDragging)
             {
-                if (_playerController.InputHandler.AttackTriggered)
+                if (_inputHandler.AttackTriggered)
                 {
                     _throwForceMultiplier = Mathf.Clamp(_throwForceMultiplier + Time.deltaTime, _throwForceMultiplier, _maxForceMultiplier);
                     _isPreparingToThrow = true;
@@ -183,6 +199,27 @@ namespace Failsafe.Player.Scripts.Interaction
             _carryingObject = null;
             IsDragging = false;
             _currentCarryingDistance = _carryingDistance;
+        }
+        
+        private void UpdateCrosshairScale()
+        {
+            float targetScale = _normalSize;
+
+            if (!IsDragging)
+            {
+                Ray ray = new Ray(_playerCameraTransform.position, _playerCameraTransform.forward);
+                if (Physics.Raycast(ray, out RaycastHit hit, _maxPickupDistance))
+                {
+                    if (hit.rigidbody != null)
+                    {
+                        targetScale = _hoverSize;
+                    }
+                }
+            }
+
+            float current = _crosshairImage.rectTransform.localScale.x;
+            float next = Mathf.Lerp(current, targetScale, Time.deltaTime * _scaleSpeed);
+            _crosshairImage.rectTransform.localScale = new Vector3(next, next, 1f);
         }
     }
 }
