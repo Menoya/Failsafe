@@ -356,57 +356,11 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 374109433352817464}
-  _playerModelParameters:
-    rid: 8852827098600964199
-  _playerMovementParameters:
-    rid: 8852827076035346520
-  _playerNoiseParameters:
-    rid: 8852827076035346521
+  _playerModelParameters: {fileID: 11400000, guid: d61294178bcc7154cb7580e8388e3060, type: 2}
+  _playerMovementParameters: {fileID: 11400000, guid: 6f3a29936aab9d246a187306e3f01e7f, type: 2}
+  _playerNoiseParameters: {fileID: 11400000, guid: 5adbcf9fd798d4741a6f383bf3c579fc, type: 2}
   _playerView: {fileID: 345903572760889237}
   _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
-  references:
-    version: 2
-    RefIds:
-    - rid: 8852827076035346520
-      type: {class: PlayerMovementParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
-      data:
-        WalkSpeed: 3.5
-        RunSpeed: 7
-        CrouchSpeed: 1.75
-        SlideSpeed: 6
-        MaxSlideTime: 1
-        MinSlideTime: 0.5
-        JumpMaxHeight: 1.5
-        JumpMaxSpeed: 8
-        JumpMinDuration: 0.1
-        JumpDuration: 0.5
-        AirMovementSpeed: 0.5
-        GravityForce: 8
-        GrabLedgeMaxDistance: 0.5
-        GrabLedgeMinHeight: 2
-        GrabLedgeSpeed: 4
-        GrabLedgeHeightDifference: 0.1
-        ClimbOverMaxDistanceToLedge: 1
-        ClimbOverLedgeMaxWidth: 0.5
-        ClimbOverLedgeMaxHeight: 1.5
-        ClimbOnMaxDistanceToLedge: 1
-        ClimbOnLedgeMaxHeight: 2
-    - rid: 8852827076035346521
-      type: {class: PlayerNoiseParameters, ns: Failsafe.PlayerMovements, asm: Assembly-CSharp}
-      data:
-        MinStrength: 1
-        DefaultStrength: 5
-        IncreasedStrength: 10
-        ReducedStrength: 2
-    - rid: 8852827098600964199
-      type: {class: PlayerModelParameters, ns: Failsafe.Player.Model, asm: Assembly-CSharp}
-      data:
-        <MaxHealth>k__BackingField: 1000
-        <MaxStamina>k__BackingField: 100
-        RegenerateStaminaPerSecond: 20
-        RegenerationDelay: 1
-        StaminaForJump: 25
-        StaminaForRunPerSecond: 20
 --- !u!114 &5564961472655603788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1762,6 +1716,38 @@ PrefabInstance:
     - target: {fileID: 1420142578092588954, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
       propertyPath: m_Name
       value: PlayerHUD
+      objectReference: {fileID: 0}
+    - target: {fileID: 3512935305008988530, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3512935305008988530, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3512935305008988530, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391547687266829625, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391547687266829625, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391547687266829625, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391547687266829625, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4391547687266829625, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4647145215876526002, guid: 2af6a35dab3266b4d9c50cdecd15f02d, type: 3}
       propertyPath: m_Pivot.x

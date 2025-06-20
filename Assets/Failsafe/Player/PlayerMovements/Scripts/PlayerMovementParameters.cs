@@ -1,28 +1,33 @@
-using System;
+using Failsafe.Scripts.Modifiebles;
+using UnityEngine;
+
 namespace Failsafe.PlayerMovements
 {
     /// <summary>
     /// Параметры настройки движения игрока
     /// </summary>
-    public class PlayerMovementParameters
+    [CreateAssetMenu(fileName = "PlayerMovementParameters", menuName = "Parameters/PlayerMovementParameters")]
+    public class PlayerMovementParameters : ScriptableObject
     {
+        [Header("Скорость передвижения")]
         /// <summary>
         /// Скорость ходьбы
         /// </summary>
-        public float WalkSpeed = 2.5f;
+        public ModifiableField<float> WalkSpeed = 3.5f;
         /// <summary>
         /// Скорость бега
         /// </summary>
-        public float RunSpeed = 4.4f;
+        public ModifiableField<float> RunSpeed = 7f;
         /// <summary>
         /// Скорость ходьбы в присяди
         /// </summary>
-        public float CrouchSpeed = 1.5f;
+        public ModifiableField<float> CrouchSpeed = 1.75f;
 
+        [Header("Скольжение")]
         /// <summary>
         /// Скорость скольжения
         /// </summary>
-        public float SlideSpeed = 4.2f;
+        public float SlideSpeed = 6f;
         /// <summary>
         /// Максимальное время скольжения
         /// </summary>
@@ -32,6 +37,7 @@ namespace Failsafe.PlayerMovements
         /// </summary>
         public float MinSlideTime = 0.5f;
 
+        [Header("Прыжок")]
         /// <summary>
         /// Высота прыжка
         /// </summary>
@@ -53,11 +59,33 @@ namespace Failsafe.PlayerMovements
         /// </summary>
         public float AirMovementSpeed = 0.5f;
 
+        [Header("Падение")]
         /// <summary>
         /// Сила притяжения
         /// </summary>
         public float GravityForce = 8f;
+        /// <summary>
+        /// Высота падения для замедления
+        /// </summary>
+        public float FallDistanceToSlow = 2f;
+        /// <summary>
+        /// Множитель скорости
+        /// </summary>
+        public float SlowMultiplierOnLanding = 0.5f;
+        /// <summary>
+        /// Длительность замедления
+        /// </summary>
+        public float SlowDurationOnLanding = 3f;
+        /// <summary>
+        /// Высота падения для оглушения
+        /// </summary>
+        public float FallDistanceToDisable = 4f;
+        /// <summary>
+        /// Длительность оглушения
+        /// </summary>
+        public float DisableDurationOnLanding = 1f;
 
+        [Header("Зацепление")]
         /// <summary>
         /// Расстояние до точки за
         /// </summary>
@@ -75,6 +103,7 @@ namespace Failsafe.PlayerMovements
         /// </summary>
         public float GrabLedgeHeightDifference = 0.1f;
 
+        [Header("Перелезание")]
         /// <summary>
         /// Расстояние до препятствия, с которого можно начать перелезать
         /// </summary>
@@ -88,6 +117,7 @@ namespace Failsafe.PlayerMovements
         /// </summary>
         public float ClimbOverLedgeMaxHeight = 1.5f;
 
+        [Header("Залезание")]
         /// <summary>
         /// Расстояние до препятствия, с которого можно начать залезать
         /// </summary>

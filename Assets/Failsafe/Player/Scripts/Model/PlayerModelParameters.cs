@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Failsafe.Player.Model
 {
-	[Serializable]
-	public class PlayerModelParameters
+	[CreateAssetMenu(fileName = "PlayerModelParameters", menuName = "Parameters/PlayerModelParameters")]
+	public class PlayerModelParameters : ScriptableObject
 	{
 		[field: SerializeField]
 		public float MaxHealth { get; private set; } = 1000f;
