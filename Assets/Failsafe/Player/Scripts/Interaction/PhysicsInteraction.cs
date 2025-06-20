@@ -25,7 +25,6 @@ namespace Failsafe.Player.Scripts.Interaction
         [SerializeField] private float _carryingDistanceShorteningTo = 0.8f;
         
         [Header("Additional Options")]
-        [SerializeField] private Vector3 _draggablePositionOffset;
         [Tooltip("Данный вектор введёт для исправления бага, при котором на некоторых поверхностях объект застревал в текстуре." +
                  "Может быть удалён в будущем.")]
         [SerializeField] private Vector3 _grabHelperVector = new Vector3(0f,0.01f,0f);
@@ -38,9 +37,7 @@ namespace Failsafe.Player.Scripts.Interaction
         
         [SerializeField] private Vector3 _draggablePositionOffset;
         [SerializeField] private float _dragSpeed = 10f;
-        
-        [Tooltip("Данная сила умножается на число от 1 до 3 при зажатии кнопки броска.")]
-        [SerializeField] private float _throwForce = 3f;
+  
 
         private Quaternion _relativeRotation;
         
@@ -73,7 +70,6 @@ namespace Failsafe.Player.Scripts.Interaction
                 _playerCameraTransform = playerCamera.transform;
             }
             
-            _playerController = GetComponent<PlayerController>();
         }
 
         private void Update()
