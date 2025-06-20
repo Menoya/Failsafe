@@ -15,17 +15,18 @@ public class Profile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] Material _targetMaterial;
     [SerializeField] Sprite _targetSprite;
     [SerializeField] Color _targetColor;
+    [SerializeField] Image _profileBackground;
     
     
     Material _originMaterial;
     Color _originalColor;
     Sprite _originalSprite;
-    Image _profileBackground;
+    
     
     private void Awake()
     {
         _profileMenu = GetComponentInParent<ProfileMenu>();
-        _profileBackground = GetComponent<Image>();
+        //_profileBackground = GetComponent<Image>();
         _originalColor = _indexText.color;
         _originalSprite = _profileBackground.sprite;
         _originMaterial = _indexText.fontSharedMaterial;
@@ -37,7 +38,6 @@ public class Profile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
     public void OnProfileClicked()
     {
-       
         _profileMenu.ProfileClickAction(this);
     }
 
