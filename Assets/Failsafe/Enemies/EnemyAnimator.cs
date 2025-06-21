@@ -99,11 +99,23 @@ public class EnemyAnimator
 
     public void ApplyRootMotion()
     {
-        Vector3 rootPos = _animator.rootPosition;
-        rootPos.y = _navMeshAgent.nextPosition.y;
-        _transform.position = rootPos;
-        _navMeshAgent.nextPosition = rootPos;
+        // Получаем текущую позицию агента на навмеш
+        Vector3 agentNextPos = _navMeshAgent.nextPosition;
 
+        // Считаем дельту из root motion
+        Vector3 rootDelta = _animator.deltaPosition;
+        rootDelta.y = 0f;
+
+        // Предлагаемую новую позицию
+        Vector3 proposedPos = _transform.position + rootDelta;
+
+        // Обновляем позицию агента
+        _navMeshAgent.nextPosition = proposedPos;
+
+        // Перемещаем трансформ только в пределах навмеша
+        _transform.position = _navMeshAgent.nextPosition;
+
+        // Поворот
         if (_isTurning)
         {
             _transform.rotation = _animator.rootRotation;
@@ -117,8 +129,6 @@ public class EnemyAnimator
                 _transform.rotation = Quaternion.Slerp(_transform.rotation, targetRotation, Time.deltaTime * 10f);
             }
         }
-
-        _navMeshAgent.nextPosition = _transform.position;
     }
 
     public void TryAttack()
