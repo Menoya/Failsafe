@@ -9,6 +9,8 @@ public class DebugManager : MonoBehaviour
     private Rect windowRect = new Rect(100, 100, 300, 400);
     private bool showWindow = true;
     private Vector2 scrollPos;
+    [SerializeField] private bool showNavMeshPath = true;
+    [SerializeField] private Color pathColor = Color.cyan;
 
     private void Start()
     {
@@ -17,7 +19,7 @@ public class DebugManager : MonoBehaviour
         windowRect.y = 10;
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         Cursor.visible = CursorOn;
         Cursor.lockState = CursorOn ? CursorLockMode.None : CursorLockMode.Locked;
@@ -43,7 +45,27 @@ public class DebugManager : MonoBehaviour
             }
         }
     }
+    private void OnDrawGizmos()
+    {
+        if (!showNavMeshPath || Enemies == null) return;
 
+        Gizmos.color = pathColor;
+
+        foreach (var enemy in Enemies)
+        {
+            if (enemy == null) continue;
+
+            var agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent == null || agent.path == null || agent.path.corners.Length < 2)
+                continue;
+
+            var corners = agent.path.corners;
+            for (int i = 0; i < corners.Length - 1; i++)
+            {
+                Gizmos.DrawLine(corners[i], corners[i + 1]);
+            }
+        }
+    }
     private void DrawDebugWindow(int windowID)
     {
         // Кнопка скрытия окна
@@ -66,15 +88,17 @@ public class DebugManager : MonoBehaviour
             var awarness = enemy._awarenessMeter.AlertnessValue;
             string stateName = enemy?.currentState?.ToString() ?? "Unknown";
             enemy.DebugEnemy();
-
+            
             GUILayout.Label($"[{i}] {enemyGO.name}");
             GUILayout.Label($"Pos: {pos}");
+            showNavMeshPath = GUILayout.Toggle(showNavMeshPath, "Показать путь NavMeshAgent");
             GUILayout.Label($"Speed: {NavMesh.velocity}");
             GUILayout.Label($"State: {stateName}");
             GUILayout.Label($"Степень настороженности: {awarness} ");
             GUILayout.Label($"Противник видит игрока: {enemy.seePlayer}");
             GUILayout.Label($"Противник слышит игрока:{enemy.hearPlayer}");
             GUILayout.Space(10);
+            
         }
 
         GUILayout.EndScrollView();
