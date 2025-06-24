@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Walker
   accelaration: 120
   angelarSpeed: 120
-  enemyChaseSpeed: 4
-  enemyLostPlayerTime: 2
+  enemyChaseSpeed: 2
+  enemyLostPlayerTime: 5
   enemyPatrolingSpeed: 2
   enemyPatrolingWaitTime: 2
   enemySearchingSpeed: 3
@@ -29,4 +29,4 @@ MonoBehaviour:
   enemyAttackRangeMax: 15
   enemyAttackDuration: 5
   enemyAttackDelay: 1
-  enemyAttackCooldown: 4
+  enemyAttackCooldown: 5
