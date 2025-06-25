@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +13,12 @@ public class InputHandler
     {
         _playerControls = playerControls;
         Init();
+        SubscribeOnActionsPerformed();
+    }
+
+    ~InputHandler()
+    {
+        UnsubscribeOnActionsPerformed();
     }
 
     private const string _actionMapName = "Player";
@@ -38,6 +43,8 @@ public class InputHandler
     private InputAction _grabLedgeAction;
     private InputAction _zoomAction;
     private InputAction _useAction;
+
+    public List<InputAction> PerformedActions = new List<InputAction>();
 
     public Vector2 MovementInput { get; private set; }
     public bool MoveForward => MovementInput.y > 0;
@@ -80,6 +87,27 @@ public class InputHandler
 
         SubscribeActionValuesToInputEvents();
     }
+    
+    private void SubscribeOnActionsPerformed()
+    {
+        foreach (var actionMap in _playerControls.actionMaps)
+            foreach (var action in actionMap.actions)
+                action.performed += AddPerformedAction;
+    }
+
+    private void UnsubscribeOnActionsPerformed()
+    {
+        foreach (var actionMap in _playerControls.actionMaps)
+            foreach (var action in actionMap.actions)
+                action.canceled -= RemovePerformedAction;
+    }
+
+    public void AddPerformedAction(InputAction.CallbackContext context)
+    { if (!PerformedActions.Contains(context.action)) PerformedActions.Add(context.action); }
+
+    public void RemovePerformedAction(InputAction.CallbackContext context) =>
+        PerformedActions.Remove(context.action);
+        
 
     private void SubscribeActionValuesToInputEvents()
     {
@@ -103,13 +131,13 @@ public class InputHandler
 
         _attackAction.performed += inputInfo => AttackTriggered = true;
         _attackAction.canceled += inputInfo => AttackTriggered = false;
-        
+
         _grabLedgeAction.performed += GrabLedgeTrigger.OnInputStart;
         _grabLedgeAction.canceled += GrabLedgeTrigger.OnInputCancel;
 
         _zoomAction.performed += inputInfo => ZoomTriggered = true;
         _zoomAction.canceled += inputInfo => ZoomTriggered = false;
-        
+
         _useAction.performed += _ => UseTriggered = true;
         _useAction.canceled += _ => UseTriggered = false;
 
