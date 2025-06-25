@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e762b67dae4cc804eaaa70b8c0814a07, type: 3}
   m_Name: StimpackMaxHealthModifierData
   m_EditorClassIdentifier: 
-  MaxHealthDelta: 0
+  MaxHealthDelta: 100
