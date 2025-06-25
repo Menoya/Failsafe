@@ -1704,7 +1704,7 @@ MonoBehaviour:
   FocusingTime: 1
   FocusingProgress: 0
   Distance: 10
-  _minSoundStrength: 0.1
+  _minSoundStrength: 1
   _maxSoundStrength: 10
 --- !u!195 &1444448667796523294
 NavMeshAgent:
