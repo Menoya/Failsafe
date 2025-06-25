@@ -30,8 +30,8 @@ namespace Failsafe.Player.Scripts.Interaction
         [SerializeField] private Vector3 _grabHelperVector = new Vector3(0f,0.01f,0f);
         
         [Header("Debug")]
-        [SerializeField] public GameObject _carryingObject;
-        [SerializeField] public Rigidbody _carryingBody;
+        [SerializeField] public GameObject CarryingObject;
+        [SerializeField] public Rigidbody CarryingBody;
         [SerializeField] private Transform _playerCameraTransform;
         [SerializeField] [ReadOnly] private float _currentCarryingDistance;
         
@@ -86,7 +86,7 @@ namespace Failsafe.Player.Scripts.Interaction
 
             if (IsDragging)
             {
-                if (!_carryingObject || !_carryingBody)
+                if (!CarryingObject || !CarryingBody)
                 {
                     DropItem();
                     return;
@@ -110,7 +110,7 @@ namespace Failsafe.Player.Scripts.Interaction
 
         private void FixedUpdate()
         {
-            if (_carryingObject)
+            if (CarryingObject)
             {
                 DragObject();
             }
@@ -120,7 +120,7 @@ namespace Failsafe.Player.Scripts.Interaction
         {
             _allowToGrabOrDrop = false;
 
-            if (!_carryingObject)
+            if (!CarryingObject)
             {
                 GrabObject();
             }
@@ -136,10 +136,10 @@ namespace Failsafe.Player.Scripts.Interaction
             
             Quaternion targetRotation = _playerCameraTransform.rotation * _relativeRotation;
             
-            _carryingBody.linearVelocity = (targetPosition - _carryingBody.position) * _carrySpeed;
-            _carryingBody.rotation = targetRotation;
+            CarryingBody.linearVelocity = (targetPosition - CarryingBody.position) * _carrySpeed;
+            CarryingBody.rotation = targetRotation;
             
-            _carryingBody.angularVelocity = Vector3.zero;
+            CarryingBody.angularVelocity = Vector3.zero;
         }
         
         private void GrabObject()
@@ -154,20 +154,20 @@ namespace Failsafe.Player.Scripts.Interaction
             if (!hitInfo.rigidbody)
                 return;
             
-            _carryingBody = hitInfo.rigidbody;
-            _carryingBody.useGravity = false;
+            CarryingBody = hitInfo.rigidbody;
+            CarryingBody.useGravity = false;
             
-            _carryingObject = hitInfo.rigidbody.gameObject;
+            CarryingObject = hitInfo.rigidbody.gameObject;
             
-            _carryingObject.transform.parent = _playerCameraTransform;
-            _relativeRotation = _carryingObject.transform.localRotation;
-            _carryingObject.transform.parent = null;
+            CarryingObject.transform.parent = _playerCameraTransform;
+            _relativeRotation = CarryingObject.transform.localRotation;
+            CarryingObject.transform.parent = null;
 
-            _carryingObject.transform.position += _grabHelperVector;
+            CarryingObject.transform.position += _grabHelperVector;
             
-            _cachedCarryingLayer = _carryingObject.layer;
+            _cachedCarryingLayer = CarryingObject.layer;
             
-            _carryingObject.layer = _carryingObjectLayer.value >> 1;
+            CarryingObject.layer = _carryingObjectLayer.value >> 1;
             
             IsDragging = true;
             _isPreparingToThrow = false;
@@ -176,20 +176,20 @@ namespace Failsafe.Player.Scripts.Interaction
 
         public void ThrowObject(float throwForceMultiplier)
         {
-            if (_carryingBody)
+            if (CarryingBody)
             {
-                _carryingBody.useGravity = true;
+                CarryingBody.useGravity = true;
 
-                _carryingBody.AddForce(_playerCameraTransform.forward * (_throwForce * throwForceMultiplier),
+                CarryingBody.AddForce(_playerCameraTransform.forward * (_throwForce * throwForceMultiplier),
                     ForceMode.Impulse);
-                _carryingBody.AddTorque(_playerCameraTransform.forward * (_throwTorqueForce * throwForceMultiplier),
+                CarryingBody.AddTorque(_playerCameraTransform.forward * (_throwTorqueForce * throwForceMultiplier),
                     ForceMode.Impulse);
             }
 
-            if (_carryingObject)  _carryingObject.layer = _cachedCarryingLayer;
+            if (CarryingObject)  CarryingObject.layer = _cachedCarryingLayer;
 
-            _carryingBody = null;
-            _carryingObject = null;
+            CarryingBody = null;
+            CarryingObject = null;
             IsDragging = false;
             _isPreparingToThrow = false;
             _throwForceMultiplier = 0f;
@@ -198,11 +198,11 @@ namespace Failsafe.Player.Scripts.Interaction
         
         private void DropItem()
         {
-            if (_carryingObject) _carryingObject.layer = _cachedCarryingLayer;
-            if (_carryingBody) _carryingBody.useGravity = true;
+            if (CarryingObject) CarryingObject.layer = _cachedCarryingLayer;
+            if (CarryingBody) CarryingBody.useGravity = true;
 
-            _carryingBody = null;
-            _carryingObject = null;
+            CarryingBody = null;
+            CarryingObject = null;
             IsDragging = false;
             _currentCarryingDistance = _carryingDistance;
         }

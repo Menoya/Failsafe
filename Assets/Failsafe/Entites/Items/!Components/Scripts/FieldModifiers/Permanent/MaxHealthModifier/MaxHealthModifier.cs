@@ -17,6 +17,6 @@ public class MaxHealthModifier : MonoBehaviour
         if (_health is PlayerHealth playerHealth)
             playerHealth.ModifyMaxHealth(MaxHealthModificator); 
         else
-            Debug.Log("Не удалось преобразовать к MyClass");
+            Debug.Log("Не удалось преобразовать к PlayerHealth");
     }
 }
