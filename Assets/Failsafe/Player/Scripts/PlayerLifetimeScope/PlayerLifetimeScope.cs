@@ -34,7 +34,7 @@ namespace Failsafe.Player
 
             builder.Register<InputHandler>(Lifetime.Scoped);
 
-            builder.Register<SimpleHealth>(Lifetime.Singleton).As<IHealth>().WithParameter(_playerModelParameters.MaxHealth);
+            builder.Register<PlayerHealth>(Lifetime.Singleton).As<IHealth>().WithParameter(_playerModelParameters.MaxHealth);
             builder.Register<PlayerStamina>(Lifetime.Singleton).As<IStamina>().WithParameter(_playerModelParameters.MaxStamina);
             builder.RegisterEntryPoint<PlayerDamageable>(Lifetime.Scoped);
             builder.RegisterEntryPoint<PlayerStaminaController>(Lifetime.Scoped).AsSelf();
