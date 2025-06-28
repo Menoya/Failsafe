@@ -1,6 +1,9 @@
 using Failsafe.Player.Scripts.Interaction;
 using UnityEngine;
 using VContainer;
+using System.Linq;
+using Sirenix.Utilities;
+using System.Collections.Generic;
 
 namespace Failsafe.Player.ItemUsage
 {
@@ -23,11 +26,12 @@ namespace Failsafe.Player.ItemUsage
         private void Update()
         {
             if (!_inputHandler.UseTriggered) return;
-            if (!_physicsInteraction._carryingObject) return;
+            if (!_physicsInteraction.CarryingObject) return;
 
-            if (_physicsInteraction._carryingObject.TryGetComponent(out Item item))
+            if (_physicsInteraction.CarryingObject.TryGetComponent(out Item item))
             {
-                item.Use();
+                foreach (var action in _inputHandler.PerformedActions)
+                    item.ActionsGroups.Where(x => x.Actions.FirstOrDefault(z => z.action.id == action.id))?.ForEach(x => x.Invoke());
             }
         }
     }
