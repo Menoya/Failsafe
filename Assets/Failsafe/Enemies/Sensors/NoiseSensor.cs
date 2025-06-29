@@ -63,6 +63,11 @@ public class NoiseSensor : Sensor
         return signal.SignalStrength;
     }
 
+    public void SetMinMaxStrength(float minStrength,  float maxStrength)
+    {
+        _minSoundStrength = minStrength;
+        _maxSoundStrength = maxStrength;
+    }
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

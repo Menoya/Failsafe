@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour
         _navMeshAgent.updateRotation = false;
 
         // Создаём вспомогательные классы
-        _controller = new EnemyController(transform, _navMeshAgent, this);
+        _controller = new EnemyController(_sensors, transform, _navMeshAgent);
         _awarenessMeter = new AwarenessMeter(_sensors);
         _enemyAnimator = new EnemyAnimator(_navMeshAgent, _animator, transform, _controller);
 
@@ -77,6 +77,9 @@ public class Enemy : MonoBehaviour
             // Ищем комнату, в которой находится противник
             RoomCheck();
         }
+        
+        _controller.SetVisionSensorParams(_enemyConfig.OriginDistanceSight, _enemyConfig.OrginAngleViev, _enemyConfig.VisualFocusTime);
+        _controller.SetHearingSensorParams(_enemyConfig.OriginDistanceHearing, _enemyConfig.MinSoundStr, _enemyConfig.MaxSoundStr, _enemyConfig.HearFocusTime);
 
     }
 
@@ -94,7 +97,7 @@ public class Enemy : MonoBehaviour
     {
         _stateMachine.ForseChangeState<DisabledState>();
     }
-
+    
     private void RoomCheck()
     {
         // Ищем все коллайдеры рядом с врагом

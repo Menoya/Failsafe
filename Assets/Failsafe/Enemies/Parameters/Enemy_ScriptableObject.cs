@@ -20,6 +20,7 @@ public class Enemy_ScriptableObject : ScriptableObject
     public float OriginDistanceHearing = 10f; //Изначальный радиус слуха
     public float AlertDistanceHearing = 20f; //При тревоге
     public float MinSoundStr = 0.5f;
+    public float MaxSoundStr = 10f;
     public float AlertMinSoundStr = 0.1f;
     public float HearFocusTime = 1f;
     public float AlertHearFocusTime = 0.2f;

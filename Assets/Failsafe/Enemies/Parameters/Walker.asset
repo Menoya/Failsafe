@@ -15,19 +15,37 @@ MonoBehaviour:
   enemyName: Walker
   accelaration: 120
   angelarSpeed: 120
-  enemyChaseSpeed: 4
-  enemyLostPlayerTime: 2
-  enemyPatrolingSpeed: 2
-  enemyPatrolingWaitTime: 2
-  enemySearchingSpeed: 3
-  enemySearchingDuration: 15
-  enemySearchRadius: 5
+  OriginDistanceSight: 20
+  AlertDistanceSight: 30
+  OrginAngleViev: 45
+  AlertAngleViev: 65
+  VisualFocusTime: 1
+  AlertVisualFocusTime: 0.2
+  OriginDistanceHearing: 10
+  AlertDistanceHearing: 20
+  MinSoundStr: 0.5
+  MaxSoundStr: 10
+  AlertMinSoundStr: 0.1
+  HearFocusTime: 1
+  AlertHearFocusTime: 0.2
+  FillSpeed: 0
+  DecaySpeed: 0
+  DecayDelay: 0
+  AlertThreshold: 0
+  ChaseThreshold: 0
+  ChaseExitThreshold: 0
+  ChaseSpeed: 6
+  PatrolingSpeed: 4
+  PatrollingWaitTime: 2
+  SearchingSpeed: 3
+  SearchingDuration: 15
+  SearchRadius: 5
   offsetSearchingPoint: 10
-  changePointInterval: 1
+  changePointInterval: 5
   enemyHealth: 100
-  enemyDamage: 100
-  enemyAttackRangeMin: 10
-  enemyAttackRangeMax: 15
-  enemyAttackDuration: 5
-  enemyAttackDelay: 1
-  enemyAttackCooldown: 4
+  Damage: 100
+  AttackRangeMin: 10
+  AttackRangeMax: 15
+  AttackDuration: 5
+  AttackDelay: 1
+  AttackCooldown: 4

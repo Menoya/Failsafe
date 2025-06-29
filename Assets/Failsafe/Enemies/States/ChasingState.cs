@@ -41,6 +41,8 @@ public class ChasingState : BehaviorState
         _playerInSight = false;
         _navMeshAgent.stoppingDistance = _enemyConfig.AttackRangeMin;
         _enemyAnimator.StartMove(_enemyConfig.ChaseSpeed);
+        _enemyController.SetVisionSensorParams(_enemyConfig.AlertDistanceSight, _enemyConfig.AlertAngleViev, _enemyConfig.AlertVisualFocusTime);
+        _enemyController.SetHearingSensorParams(_enemyConfig.AlertDistanceHearing, _enemyConfig.AlertMinSoundStr, _enemyConfig.MaxSoundStr, _enemyConfig.AlertHearFocusTime);
         Debug.Log("Enter ChasingState");
     }
 

@@ -9,14 +9,14 @@ public class EnemyController
     private readonly Transform _transform;
     private readonly NavMeshAgent _navMeshAgent;
     private RoomData _currentRoom;
-    private Enemy _enemy;
+    private Sensor[]  _sensors;
     private Vector3 _lastKnownPlayerPosition;
     private Vector3 _lastKnownPlayerDirection;
-    public EnemyController(Transform transform, NavMeshAgent navMeshAgent, Enemy enemy)
+    public EnemyController(Sensor[] sensors, Transform transform, NavMeshAgent navMeshAgent)
     {
         _transform = transform;
         _navMeshAgent = navMeshAgent;
-        _enemy = enemy;
+        _sensors = sensors;
         _navMeshAgent.updatePosition = false;
         _navMeshAgent.updateRotation = false;
     }
@@ -136,4 +136,30 @@ public class EnemyController
     
     public Vector3 LastKnownPlayerPosition => _lastKnownPlayerPosition;
     public Vector3 LastKnownPlayerDirection => _lastKnownPlayerDirection;
+    
+    public void SetVisionSensorParams(float distance, float angle, float focusTime)
+    {
+        foreach (var sensor in _sensors)
+        {
+            if (sensor is VisualSensor visualSensor)
+            {
+                visualSensor.SetDistance(distance);
+                visualSensor.SetAngle(angle);
+                visualSensor.SetFocusingTime(focusTime);
+            }
+        }
+    }
+
+    public void SetHearingSensorParams(float distance, float minSignal, float maxSignal, float focusTime)
+    {
+        foreach (var sensor in _sensors)
+        {
+            if (sensor is NoiseSensor noiseSensor)
+            {
+                noiseSensor.SetDistance(distance);
+                noiseSensor.SetMinMaxStrength(minSignal, maxSignal);
+                noiseSensor.SetFocusingTime(focusTime);
+            }
+        }
+    }
 }
