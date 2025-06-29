@@ -20,9 +20,10 @@ MonoBehaviour:
   enemyPatrolingSpeed: 2
   enemyPatrolingWaitTime: 2
   enemySearchingSpeed: 3
-  enemySearchingDuration: 2
+  enemySearchingDuration: 15
   enemySearchRadius: 5
   offsetSearchingPoint: 10
+  changePointInterval: 1
   enemyHealth: 100
   enemyDamage: 100
   enemyAttackRangeMin: 10

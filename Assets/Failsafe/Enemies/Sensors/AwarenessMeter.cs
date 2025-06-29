@@ -7,20 +7,22 @@ namespace Failsafe.Enemies.Sensors
     {
         [Header("Sensors")] private Sensor[] _sensors;
 
-        [Header("Настройки")] [SerializeField] private float _fillSpeed = 80f;
-        [SerializeField] private float _decaySpeed = 10f;
-        [SerializeField] private float _decayDelay = 2f;
+        [Header("Настройки")]
+        private float _fillSpeed = 80f;
+        private float _decaySpeed = 10f;
+        private float _decayDelay = 2f;
 
-        [Header("Пороги")] [SerializeField] private float _alertThreshold = 30f;
-        [SerializeField] private float _chaseThreshold = 100f;
-        [SerializeField] private float _chaseExitThreshold = 90f;
-        private bool _isChasing = false;
-
+        [Header("Пороги")] [SerializeField]
+        private float _alertThreshold = 30f;
+        private float _chaseThreshold = 100f;
+        private float _chaseExitThreshold = 30f;
+        
         [SerializeField, Range(0, 100)] private float _alertness;
 
         private float _decayDelayTimer;
 
         private bool _hasEverChased = false;
+        private bool _hasLostPlayer = false;
 
         public float AlertnessValue => _alertness;
 
@@ -31,21 +33,24 @@ namespace Failsafe.Enemies.Sensors
 
         public bool IsChasing()
         {
-            if (_isChasing)
-            {
-                if (_alertness < _chaseExitThreshold)
-                    _isChasing = false;
-            }
-            else
-            {
                 if (_alertness >= _chaseThreshold)
                 {
-                    _isChasing = true;
                     _hasEverChased = true;
+                    return true;
                 }
+
+                return false;
+        }
+
+        public bool IsPlayerLost()
+        {
+            if (_hasEverChased && !_hasLostPlayer && Mathf.Approximately(_alertness, _chaseExitThreshold))
+            {
+                _hasLostPlayer = true;
+                return true;
             }
 
-            return _isChasing;
+            return false;
         }
 
         public bool IsAlerted()
@@ -62,6 +67,11 @@ namespace Failsafe.Enemies.Sensors
 
         public void Update()
         {
+            if (_alertness >= _chaseThreshold)
+            {
+                _hasEverChased = true;
+                _hasLostPlayer = false; // сбрасываем флаг "игрок потерян"
+            }
             float maxSignal = _sensors.Max(s => s.SignalStrength);
 
             if (maxSignal > 0f)

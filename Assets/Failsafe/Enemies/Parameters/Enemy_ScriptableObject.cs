@@ -9,30 +9,56 @@ public class Enemy_ScriptableObject : ScriptableObject
     public float accelaration = 120; // Ускорение врага, как быстро он может развить максимальную скорость измерения метры в секунду
     public int angelarSpeed = 120; // Угол поворота врага, как быстро он может повернуться измерения градус в секунду
 
-    [Header("Enemy Chase")]
-    public float enemyChaseSpeed = 6f; // Скорость преследования
-    public float enemyLostPlayerTime = 5f; // Время потери игрока
+    [Header("Сенсоры")] 
+    public float OriginDistanceSight = 20f; //Изначальное расстояние обзора противника
+    public float AlertDistanceSight = 30f; //При тревоге
+    public float OrginAngleViev = 45f; //Изначальный угол обзора
+    public float AlertAngleViev = 65f; //При тревоге
+    public float VisualFocusTime = 1f;
+    public float AlertVisualFocusTime = 0.2f;
     
-    [Header("Enemy Patroling")]
-    public float enemyPatrolingSpeed = 4f; // Скорость патрулирования
-    public float enemyPatrolingWaitTime = 2f; // Время ожидания при патрулировании
+    public float OriginDistanceHearing = 10f; //Изначальный радиус слуха
+    public float AlertDistanceHearing = 20f; //При тревоге
+    public float MinSoundStr = 0.5f;
+    public float AlertMinSoundStr = 0.1f;
+    public float HearFocusTime = 1f;
+    public float AlertHearFocusTime = 0.2f;
+    
+    
+
+    [Header("Awareness meter")] 
+    public float FillSpeed; //Множитель заполнения шкалы от силы сигнала за единицу времени
+    public float DecaySpeed; //Множитель скорсоти снижения настороженности за единицу времени
+    public float DecayDelay; //Задержка перед началом сниения настороженности
+    
+    public float AlertThreshold; // Нижняя граница снижения настороженности после преследования
+    public float ChaseThreshold; // Минимальная граница начала преследования
+    public float ChaseExitThreshold; //Минимальная гринца прекращения преследования
+    
+    [Header("Chase")]
+    public float ChaseSpeed = 6f; // Скорость преследования
+    
+    [Header("Patrolling")]
+    public float PatrolingSpeed = 4f; // Скорость патрулирования
+    public float PatrollingWaitTime = 2f; // Время ожидания при патрулировании
     
     [Header("Enemy Searching")]
-    public float enemySearchingSpeed = 3f; // Скорость поиска
-    public float enemySearchingDuration = 2f; // Время ожидания при поиске
-    public float enemySearchRadius = 5f; // Радиус поиска
+    public float SearchingSpeed = 3f; // Скорость поиска
+    public float SearchingDuration = 2f; // Время ожидания при поиске
+    public float SearchRadius = 5f; // Радиус поиска
     public float offsetSearchingPoint = 10f; // Радиус области поиска
+    public float changePointInterval = 1f;
     
-    [Header("Enemy Health")]
+    [Header("Health")]
     public float enemyHealth = 100f; // Здоровье врага
     
-    [Header("Enemy Attack")]
-    public float enemyDamage = 100f; // Урон врага
-    public float enemyAttackRangeMin = 10f; // Минимальная дальность атаки врага
-    public float enemyAttackRangeMax = 15f; // Максимальная дальность атаки врага
-    public float enemyAttackDuration = 5f; // Длительность атаки
-    public float enemyAttackDelay = 1f; // задержка перед атакой
-    public float enemyAttackCooldown = 4f; // Скорость атаки врага
+    [Header("Attack")]
+    public float Damage = 100f; // Урон врага
+    public float AttackRangeMin = 10f; // Минимальная дальность атаки врага
+    public float AttackRangeMax = 15f; // Максимальная дальность атаки врага
+    public float AttackDuration = 5f; // Длительность атаки
+    public float AttackDelay = 1f; // задержка перед атакой
+    public float AttackCooldown = 4f; // Скорость атаки врага
 
 
 }

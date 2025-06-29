@@ -70,4 +70,14 @@ public abstract class Sensor : MonoBehaviour
             }
         }
     }
+    public virtual void SetFocusingTime(float value)
+    {
+        FocusingTime = value;
+    }
+
+    public virtual void SetDistance(float value)
+    {
+        Distance = value;
+    }
+    
 }

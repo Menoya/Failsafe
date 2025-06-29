@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
     public AwarenessMeter _awarenessMeter;
     public bool seePlayer;
     public bool hearPlayer;
-    [SerializeField] private Enemy_ScriptableObject enemyConfig;
+    [SerializeField] private Enemy_ScriptableObject _enemyConfig;
 
     private void Awake()
     {
@@ -50,16 +50,19 @@ public class Enemy : MonoBehaviour
 
         // Создаём состояния (уже можно брать патрульные точки из Room)
         var defaultState = new DefaultState(_sensors, transform, _controller);
-        var chasingState = new ChasingState(_sensors, transform, _controller,_navMeshAgent, enemyConfig, _enemyAnimator );
-        var patrolState = new PatrolState(_sensors, _controller,_navMeshAgent,enemyConfig);
-        var attackState = new AttackState(_sensors, transform, _controller, _enemyAnimator, _activeLaser, _laserBeamPrefab, _laserSpawnPoint, _navMeshAgent, enemyConfig);
-
+        var chasingState = new ChasingState(_sensors, transform, _controller,_navMeshAgent, _enemyConfig, _enemyAnimator );
+        var patrolState = new PatrolState(_sensors, transform, _controller,_navMeshAgent, _enemyConfig);
+        var attackState = new AttackState(_sensors, transform, _controller, _enemyAnimator, _activeLaser, _laserBeamPrefab, _laserSpawnPoint, _navMeshAgent, _enemyConfig);
+        var searchingState = new SearchingState(_sensors, transform, _controller, _navMeshAgent, _enemyConfig);
+        
         defaultState.AddTransition(chasingState, _awarenessMeter.IsChasing);
         patrolState.AddTransition(chasingState, _awarenessMeter.IsChasing);
         defaultState.AddTransition(patrolState, defaultState.IsPatroling);
-        chasingState.AddTransition(patrolState, chasingState.PlayerLost);
+        chasingState.AddTransition(searchingState, _awarenessMeter.IsPlayerLost);
         chasingState.AddTransition(attackState, chasingState.PlayerInAttackRange);
         attackState.AddTransition(chasingState, attackState.PlayerOutOfAttackRange);
+        searchingState.AddTransition(patrolState, searchingState.SearchingEnd);
+        searchingState.AddTransition(chasingState, _awarenessMeter.IsChasing);
 
         var disabledStates = new List<BehaviorForcedState> { new DisabledState() };
         _stateMachine = new BehaviorStateMachine(defaultState, disabledStates);
