@@ -11,22 +11,21 @@ namespace Failsafe.PlayerMovements.States
     {
         private InputHandler _inputHandler;
         private readonly PlayerMovementController _movementController;
-        private PlayerMovementParameters _movementParametrs;
+        private PlayerMovementParameters _movementParameters;
         private readonly PlayerNoiseController _playerNoiseController;
         private StepController _stepController;
         private readonly PlayerStaminaController _playerStaminaController;
 
-        private float Speed => _movementParametrs.RunSpeed;
+        private float Speed => _movementParameters.RunSpeed;
         private float _sprintProgress = 0f;
-        private float _slideAfterTime = 1f;
 
-        public bool CanSlide() => _sprintProgress > _slideAfterTime;
+        public bool CanSlide() => _sprintProgress > _movementParameters.RunDurationBeforeSlide;
 
-        public SprintState(InputHandler inputHandler, PlayerMovementController movementController, PlayerMovementParameters movementParametrs, PlayerNoiseController playerNoiseController, StepController stepController, PlayerStaminaController playerStaminaController)
+        public SprintState(InputHandler inputHandler, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController, StepController stepController, PlayerStaminaController playerStaminaController)
         {
             _inputHandler = inputHandler;
             _movementController = movementController;
-            _movementParametrs = movementParametrs;
+            _movementParameters = movementParameters;
             _playerNoiseController = playerNoiseController;
             _stepController = stepController;
             _playerStaminaController = playerStaminaController;

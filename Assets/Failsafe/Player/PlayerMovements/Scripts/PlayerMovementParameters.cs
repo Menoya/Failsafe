@@ -25,17 +25,21 @@ namespace Failsafe.PlayerMovements
 
         [Header("Скольжение")]
         /// <summary>
+        /// Сколько нужно бежать перед скольжением
+        /// </summary>
+        public float RunDurationBeforeSlide = 0.5f;
+        /// <summary>
         /// Скорость скольжения
         /// </summary>
         public float SlideSpeed = 6f;
         /// <summary>
         /// Максимальное время скольжения
         /// </summary>
-        public float MaxSlideTime = 1f;
+        public float MaxSlideTime = 1.5f;
         /// <summary>
         /// Минимальное время скольжения
         /// </summary>
-        public float MinSlideTime = 0.5f;
+        public float MinSlideTime = 1f;
 
         [Header("Прыжок")]
         /// <summary>
