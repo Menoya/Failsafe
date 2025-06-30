@@ -18,9 +18,10 @@ MonoBehaviour:
     BaseValue: 7
   CrouchSpeed:
     BaseValue: 1.75
+  RunDurationBeforeSlide: 0.5
   SlideSpeed: 4.2
-  MaxSlideTime: 1
-  MinSlideTime: 0.5
+  MaxSlideTime: 1.5
+  MinSlideTime: 0.8
   JumpMaxHeight: 1.5
   JumpMaxSpeed: 8
   JumpMinDuration: 0.1
