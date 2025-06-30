@@ -361,6 +361,8 @@ MonoBehaviour:
   _playerNoiseParameters: {fileID: 11400000, guid: 5adbcf9fd798d4741a6f383bf3c579fc, type: 2}
   _playerView: {fileID: 345903572760889237}
   _inputActionAsset: {fileID: -944628639613478452, guid: 1f09f2f8cfa351946a2c010bb9946270, type: 3}
+  _playerItemsData:
+  - {fileID: 11400000, guid: d23fc15e8911a1e428cdf8b5fbbc36f3, type: 2}
 --- !u!114 &5564961472655603788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,8 +385,8 @@ MonoBehaviour:
   _throwTorqueForce: 3
   _carryingDistanceShorteningTo: 0.8
   _grabHelperVector: {x: 0, y: 0.01, z: 0}
-  _carryingObject: {fileID: 0}
-  _carryingBody: {fileID: 0}
+  CarryingObject: {fileID: 0}
+  CarryingBody: {fileID: 0}
   _playerCameraTransform: {fileID: 374109432981789085}
   _currentCarryingDistance: 0
   _draggablePositionOffset: {x: 0, y: 1, z: 0}
