@@ -12,11 +12,19 @@ public class PowerCross : PowerNode
         Direction.Forward, 
         Direction.Left}; // пример базовой конфигурации
 
-    private void Start()
+    protected override void Awake()
     {
+        Neighbors = new Dictionary<Direction, PowerNode>();
+        ConnectedDirections = new HashSet<Direction>();
+        foreach (var pair in NeighborsSerialized)
+        {
+            if (!Neighbors.ContainsKey(pair.Direction))
+            {
+                Neighbors.Add(pair.Direction, pair.Node);
+            }
+        }
         UpdateConnectedDirections();
     }
-
     public void Rotate()
     {
         _rotationSteps = (_rotationSteps + 1) % 4;
