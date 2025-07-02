@@ -23,12 +23,8 @@ public class PowerCross : PowerNode
                 Neighbors.Add(pair.Direction, pair.Node);
             }
         }
-    }
-    private void Start()
-    {
         UpdateConnectedDirections();
     }
-
     public void Rotate()
     {
         _rotationSteps = (_rotationSteps + 1) % 4;
