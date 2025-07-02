@@ -18,6 +18,9 @@ namespace Failsafe.PlayerMovements.Controllers
         private float _verticalMinAngle = -75f;
         private float _certicalMaxAngle = 90f;
 
+        public Vector3 HeadDirection => _headTransform.forward;
+        public Vector3 HeadLocalRotation => new Vector3(-_cameraVerticalRotation, _cameraHorizontalRotation, 0);
+
         public PlayerRotationController(Transform playerTransform, Transform headTransform, InputHandler inputHandler)
         {
             _playerTransform = playerTransform;
@@ -44,7 +47,7 @@ namespace Failsafe.PlayerMovements.Controllers
             _cameraVerticalRotation = Mathf.Clamp(_cameraVerticalRotation, _verticalMinAngle, _certicalMaxAngle);
             if (_syncBodyRotationWithHead)
             {
-                _headTransform.transform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, 0, 0);
+                _headTransform.transform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, _cameraHorizontalRotation, 0);
                 _playerTransform.Rotate(Vector3.up * rotation.x);
             }
             else
@@ -78,7 +81,8 @@ namespace Failsafe.PlayerMovements.Controllers
             var yAlignedNormal = Vector3.ProjectOnPlane(targetDirection, Vector3.up);
             var targetRotation = Quaternion.LookRotation(yAlignedNormal, _playerTransform.up);
             _playerTransform.rotation = targetRotation;
-            _headTransform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, 0, 0);
+            _cameraHorizontalRotation = 0;
+            _headTransform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, _cameraHorizontalRotation, 0);
         }
 
         /// <summary>
@@ -86,7 +90,8 @@ namespace Failsafe.PlayerMovements.Controllers
         /// </summary>
         public void RotateHeadToBody()
         {
-            _headTransform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, 0, 0);
+            _cameraHorizontalRotation = 0;
+            _headTransform.localRotation = Quaternion.Euler(-_cameraVerticalRotation, _cameraHorizontalRotation, 0);
         }
     }
 }

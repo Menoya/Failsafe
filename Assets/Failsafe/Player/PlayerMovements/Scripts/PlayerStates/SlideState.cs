@@ -20,7 +20,7 @@ namespace Failsafe.PlayerMovements.States
         private float _minSlideTime => _movementParametrs.MinSlideTime;
         private float _slideProgress = 0f;
         public bool SlideFinished() => _slideProgress >= _maxSlideTime;
-        public bool CanStand() => _slideProgress >= _minSlideTime;
+        public bool CanFinish() => _slideProgress >= _minSlideTime;
 
         public SlideState(
             InputHandler inputHandler,

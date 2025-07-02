@@ -24,7 +24,7 @@ namespace Failsafe.Player
         private int _disabledId = Animator.StringToHash("Disabled");
         private int _groundedId = Animator.StringToHash("Grounded");
         private int _jumpId = Animator.StringToHash("Jump");
-
+        private int _slidingId = Animator.StringToHash("Sliding");
 
         public PlayerAnimationController(PlayerController playerController, PlayerView playerView)
         {
@@ -55,6 +55,7 @@ namespace Failsafe.Player
             _animator.SetBool(_crouchingId, _playerController.StateMachine.CurrentState is CrouchState || _playerController.StateMachine.CurrentState is CrouchIdle);
             _animator.SetBool(_fallingId, _playerController.StateMachine.CurrentState is FallState);
             _animator.SetBool(_groundedId, _playerController.PlayerMovementController.IsGrounded);
+            _animator.SetBool(_slidingId, _playerController.StateMachine.CurrentState is SlideState);
         }
 
         public void Initialize()

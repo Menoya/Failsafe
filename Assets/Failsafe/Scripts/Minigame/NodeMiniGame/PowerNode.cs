@@ -95,7 +95,7 @@ public abstract class PowerNode : MonoBehaviour
     // Метод, вызываемый при отключении питания (можно переопределять)
     protected virtual void OnPowerLost()
     {
-        Debug.Log($"{name} lost power"); 
+        Debug.Log($"{name} потеряно питание"); 
         gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 
