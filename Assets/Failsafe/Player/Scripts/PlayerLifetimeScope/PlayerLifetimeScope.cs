@@ -30,7 +30,6 @@ namespace Failsafe.Player
             builder.RegisterInstance(_playerNoiseParameters);
             builder.RegisterComponent(_playerView);
             builder.RegisterComponent(_inputActionAsset);
-            builder.Register<IDisposable, PlayerMovementSpeedModifier>(Lifetime.Scoped).AsSelf();
 
             builder.Register<InputHandler>(Lifetime.Scoped);
 
