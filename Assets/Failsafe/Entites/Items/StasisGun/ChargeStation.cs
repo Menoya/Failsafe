@@ -8,15 +8,15 @@ public class ChargeStation : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        StasisGunShoot stasisGun = other.GetComponent<StasisGunShoot>();
+        ChargeAmount chargeAmoount = other.GetComponent<ChargeAmount>();
         //other.transform.position = _posForPistolGO.position;
         //other.GetComponent<Rigidbody>().isKinematic = true;
-        if(stasisGun != null)
+        if(chargeAmoount != null)
         {
-            int _chargeAmount = stasisGun.GetAmountForMax();
-            if (_containedChargeAmount >= _chargeAmount && !stasisGun.IsFull() )
+            int _chargeAmount = chargeAmoount.GetAmountForMax();
+            if (_containedChargeAmount >= _chargeAmount && !chargeAmoount.IsFull() )
             {
-                stasisGun.Reload(_chargeAmount);
+                chargeAmoount.Reload(_chargeAmount);
                 _containedChargeAmount -= _chargeAmount;
                 if(_containedChargeAmount == 0)
                     Destroy(this.gameObject);
