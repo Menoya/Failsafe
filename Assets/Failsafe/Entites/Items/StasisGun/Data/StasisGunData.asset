@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aad5315aacf51174fbff3b7e1ef45f79, type: 3}
   m_Name: StasisGunData
   m_EditorClassIdentifier: 
-  _stasisDuration: 3
-  _fireRate: 1.5
+  StasisDuration: 10
+  FireRate: 1
+  ChargeAmountMax: 100

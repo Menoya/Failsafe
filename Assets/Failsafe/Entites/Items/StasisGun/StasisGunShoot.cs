@@ -7,6 +7,7 @@ public class StasisGunShoot : MonoBehaviour
 
     float _fireRateTimer = 0;
     public float ChargeAmountCurrent;
+    private bool _isMDefaultMode = true;
 
     private void Start()
     {
@@ -16,7 +17,12 @@ public class StasisGunShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            _isMDefaultMode = !_isMDefaultMode;
+            Debug.Log("Default mode is " + _isMDefaultMode);
+        }
+           
         if (_fireRateTimer > 0)
         {
             _fireRateTimer -= Time.deltaTime;
@@ -36,6 +42,10 @@ public class StasisGunShoot : MonoBehaviour
             {
                 Debug.DrawRay(transform.position, transform.up * hit.distance, Color.red);
                 Debug.Log("Object ahead: " + hit.collider.name);
+                if(_isMDefaultMode)
+                    DefaultMode(hit);
+                else
+                    AltMode(hit);
             }
             else
             {
@@ -46,6 +56,30 @@ public class StasisGunShoot : MonoBehaviour
         else
         {
             Debug.Log("Not yet!");
+        }
+    }
+    
+    void DefaultMode(RaycastHit hit)
+    {
+        if (hit.collider.GetComponent<Stasisable>() != null)
+        {
+            hit.collider.GetComponent<Stasisable>().StartStasis(Data.StasisDuration);
+        }
+        else if (hit.collider.GetComponentInParent<Enemy>() != null)
+        {
+            hit.collider.GetComponentInParent<Enemy>().DisableState();
+        }
+    }
+
+    void AltMode(RaycastHit hit)
+    {
+        if (hit.collider.GetComponent<Stasisable>() != null)
+        {
+            hit.collider.GetComponent<Stasisable>().StartStasisWithInertion(Data.StasisDuration);
+        }
+        else if (hit.collider.GetComponentInParent<Enemy>() != null)
+        {
+            hit.collider.GetComponentInParent<Enemy>().DisableState();
         }
     }
 }
