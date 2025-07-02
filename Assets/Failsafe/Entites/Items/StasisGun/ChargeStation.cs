@@ -4,26 +4,24 @@ using UnityEngine;
 public class ChargeStation : MonoBehaviour
 {
     [SerializeField] Transform _posForPistolGO;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    [SerializeField]int _containedChargeAmount= 2000;
+    
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
+        StasisGunShoot stasisGun = other.GetComponent<StasisGunShoot>();
         //other.transform.position = _posForPistolGO.position;
         //other.GetComponent<Rigidbody>().isKinematic = true;
-        if(other.GetComponent<StasisGunShoot>() != null)
+        if(stasisGun != null)
         {
-            other.GetComponent<StasisGunShoot>().ChargeAmountCurrent = 100;
+            int _chargeAmount = stasisGun.GetAmountForMax();
+            if (_containedChargeAmount >= _chargeAmount && !stasisGun.IsFull() )
+            {
+                stasisGun.Reload(_chargeAmount);
+                _containedChargeAmount -= _chargeAmount;
+                if(_containedChargeAmount == 0)
+                    Destroy(this.gameObject);
+            }
+            
         }
     }
     

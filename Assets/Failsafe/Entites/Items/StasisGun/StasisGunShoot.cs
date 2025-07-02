@@ -6,7 +6,7 @@ public class StasisGunShoot : MonoBehaviour
     public StasisGunData Data;
 
     float _fireRateTimer = 0;
-    public float ChargeAmountCurrent;
+    [SerializeField]int ChargeAmountCurrent;
     private bool _isMDefaultMode = true;
 
     private void Start()
@@ -17,6 +17,7 @@ public class StasisGunShoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(transform.position, transform.up*10, Color.yellow);
         if (Input.GetKeyDown(KeyCode.LeftAlt))
         {
             _isMDefaultMode = !_isMDefaultMode;
@@ -31,16 +32,16 @@ public class StasisGunShoot : MonoBehaviour
 
     public void Shoot()
     {
-        Debug.DrawRay(transform.position, transform.up, Color.green);
+        
         if (_fireRateTimer <= 0 && ChargeAmountCurrent > 0)
         {
             _fireRateTimer = Data.FireRate;
-            Debug.Log("Shoot");
             ChargeAmountCurrent -= 7;
+            ChargeAmountCurrent = Mathf.Clamp(ChargeAmountCurrent, 0, Data.ChargeAmountMax);
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.up, out hit))
             {
-                Debug.DrawRay(transform.position, transform.up * hit.distance, Color.red);
+                Debug.DrawRay(transform.position, transform.up * hit.distance, Color.green);
                 Debug.Log("Object ahead: " + hit.collider.name);
                 if(_isMDefaultMode)
                     DefaultMode(hit);
@@ -49,14 +50,30 @@ public class StasisGunShoot : MonoBehaviour
             }
             else
             {
-                Debug.DrawRay(transform.position, transform.up, Color.yellow);
-                Debug.Log("Object ahead: " );
+                Debug.DrawRay(transform.position, transform.up, Color.red);
+                Debug.Log("No Object!" );
             }
         }
         else
         {
             Debug.Log("Not yet!");
         }
+    }
+
+    public void Reload(int amount)
+    {
+        ChargeAmountCurrent +=  amount;
+        ChargeAmountCurrent = Mathf.Clamp(ChargeAmountCurrent, 0, Data.ChargeAmountMax);
+    }
+
+    public bool IsFull()
+    {
+        return ChargeAmountCurrent == Data.ChargeAmountMax;
+    }
+
+    public int GetAmountForMax()
+    {
+        return Data.ChargeAmountMax - ChargeAmountCurrent;
     }
     
     void DefaultMode(RaycastHit hit)

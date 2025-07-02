@@ -33,10 +33,20 @@ public class Stasisable : MonoBehaviour
     IEnumerator FreezeRigidbodyWithInertion(float duration)
     {
         _rb.useGravity = false;
-        _rb.linearDamping = 1;
+        //_rb.linearDamping = 1;
         yield return new WaitForSeconds(duration);
         _rb.useGravity = true;
-        _rb.linearDamping = 0;
+        _rb.isKinematic = false;
+        //_rb.linearDamping = 0;
         _startedCoroutine = null;
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        if (_startedCoroutine!=null)
+        {
+            _rb.isKinematic = true; 
+          
+        }
     }
 }
