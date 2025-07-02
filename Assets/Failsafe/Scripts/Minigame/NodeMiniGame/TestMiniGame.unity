@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 91335914}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.62215, y: 17.443056, z: 47.5303}
+  m_LocalPosition: {x: 42.74, y: 17.443056, z: 62.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -483,7 +483,6 @@ MonoBehaviour:
   NeighborsSerialized:
   - Direction: 1
     Node: {fileID: 1463124340}
-  ConnectedDirectionsSerialized: 01000000
   onPowered:
     m_PersistentCalls:
       m_Calls:
@@ -549,7 +548,6 @@ MonoBehaviour:
   NeighborsSerialized:
   - Direction: 2
     Node: {fileID: 947755334}
-  ConnectedDirectionsSerialized: 02000000
 --- !u!65 &278632046
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -765,7 +763,6 @@ MonoBehaviour:
     Node: {fileID: 520603103}
   - Direction: 1
     Node: {fileID: 1772967257}
-  ConnectedDirectionsSerialized: 0300000001000000
 --- !u!1001 &353431331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -777,26 +774,6 @@ PrefabInstance:
     - target: {fileID: 736165728096018233, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
       propertyPath: m_Name
       value: TripleCornerNode
-      objectReference: {fileID: 0}
-    - target: {fileID: 907640875353207532, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: _baseConnections.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: NeighborsSerialized.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: '_baseConnections.Array.data[1]'
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: '_baseConnections.Array.data[2]'
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
       propertyPath: NeighborsSerialized.Array.data[0].Node
@@ -810,18 +787,6 @@ PrefabInstance:
       propertyPath: NeighborsSerialized.Array.data[2].Node
       value: 
       objectReference: {fileID: 1463964237}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: NeighborsSerialized.Array.data[0].Direction
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: NeighborsSerialized.Array.data[1].Direction
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7422041135842096166, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
-      propertyPath: NeighborsSerialized.Array.data[2].Direction
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7834723066141020207, guid: de55ea742b4e8da4eb66ec62b73b51d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0050013736
@@ -1459,7 +1424,6 @@ MonoBehaviour:
     Node: {fileID: 278632045}
   - Direction: 2
     Node: {fileID: 520603103}
-  ConnectedDirectionsSerialized: 0000000002000000
 --- !u!65 &947755335
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1889,6 +1853,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 943045874}
     - target: {fileID: 7964292660390999244, guid: 182baecdab6ea944f9fcbcad9208af84, type: 3}
+      propertyPath: ConnectedDirectionsSerialized.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964292660390999244, guid: 182baecdab6ea944f9fcbcad9208af84, type: 3}
       propertyPath: 'ConnectedDirectionsSerialized.Array.data[0]'
       value: 3
       objectReference: {fileID: 0}
@@ -2101,7 +2069,6 @@ MonoBehaviour:
     Node: {fileID: 1772967257}
   - Direction: 0
     Node: {fileID: 1463124340}
-  ConnectedDirectionsSerialized: 0000000002000000
 --- !u!65 &1463964238
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2400,7 +2367,7 @@ Transform:
   m_GameObject: {fileID: 1747461187}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 46.62215, y: 17.443056, z: 56.88}
+  m_LocalPosition: {x: 49.839, y: 17.443056, z: 56.88}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2774,19 +2741,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.71359324
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.70056033
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2794,7 +2761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 88.944
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 5688133029716585352, guid: 46616d2bb8e268643b32851fbf2b6d18, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2868,9 +2835,9 @@ SceneRoots:
   m_Roots:
   - {fileID: 624593477}
   - {fileID: 1193537281}
+  - {fileID: 1070980076}
   - {fileID: 797391905}
   - {fileID: 440688855}
   - {fileID: 1301255471}
-  - {fileID: 1070980076}
   - {fileID: 2095681392853609523}
   - {fileID: 1002985932032523299}
