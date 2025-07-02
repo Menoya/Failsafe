@@ -5,7 +5,7 @@ public class DoorScript: MonoBehaviour
     private Animator _animator;
     [SerializeField] private bool _isPowered;
     [SerializeField] private bool _isOpen;
-    [SerializeField] private Light _panelLight;// для отображения места для интерактива с дверью
+    [SerializeField] private Light[] _panelLights;// для отображения места для интерактива с дверью
 
     private void Start()
     {
@@ -15,13 +15,15 @@ public class DoorScript: MonoBehaviour
     {
         Debug.Log("Door power on");
         _isPowered = true;
-        _panelLight.enabled = true;
+        foreach (Light light in _panelLights)
+            light.enabled = true;
     }
     public void OffPowered()
     {
         Debug.Log("Door power off");
         _isPowered = false;
-        _panelLight.enabled = false;
+        foreach (Light light in _panelLights)
+            light.enabled = false;
     }
     private void OpenCloseDoor()
     {
