@@ -97,6 +97,11 @@ public class VisualSensor : Sensor
         return false;
     }
 
+    public void SetAngle(float angle)
+    {
+        _viewAngle = angle;
+    }
+
     void OnDrawGizmosSelected()
     {
         if (Target == null) return;

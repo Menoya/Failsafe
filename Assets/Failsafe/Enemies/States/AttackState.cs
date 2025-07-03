@@ -47,7 +47,7 @@ public class AttackState : BehaviorState
 
     public bool PlayerOutOfAttackRange()
     {
-        return (_distanceToPlayer > _enemyConfig.enemyAttackRangeMax || !_playerInSight) && !_onCooldown;
+        return (_distanceToPlayer > _enemyConfig.AttackRangeMax || !_playerInSight) && !_onCooldown;
     }
 
     public override void Enter()
@@ -67,7 +67,7 @@ public class AttackState : BehaviorState
     {
         _attackProgress += Time.deltaTime;
 
-        if (!_delayOver && _attackProgress > _enemyConfig.enemyAttackDelay)
+        if (!_delayOver && _attackProgress > _enemyConfig.AttackDelay)
         {
             _delayOver = true;
             _attackProgress = 0;
@@ -99,8 +99,8 @@ public class AttackState : BehaviorState
                         var damageableComponent = visual.Target.GetComponentInChildren<DamageableComponent>();
                         if (sensor.SignalInAttackRay((Vector3)_targetPosition) && damageableComponent is not null)
                         {
-                            damageableComponent.TakeDamage(new FlatDamage(_enemyConfig.enemyDamage * Time.deltaTime));
-                            Debug.Log($"Урон: {_enemyConfig.enemyDamage * Time.deltaTime:F1}");
+                            damageableComponent.TakeDamage(new FlatDamage(_enemyConfig.Damage * Time.deltaTime));
+                            Debug.Log($"Урон: {_enemyConfig.Damage * Time.deltaTime:F1}");
                         }
                     }
                 }
@@ -110,7 +110,7 @@ public class AttackState : BehaviorState
                 }
         }
 
-        if (_attackFired && _attackProgress > _enemyConfig.enemyAttackDuration)
+        if (_attackFired && _attackProgress > _enemyConfig.AttackDuration)
         {
             if (_activeLaser != null)
             {
@@ -123,7 +123,7 @@ public class AttackState : BehaviorState
             Debug.Log("Атака на перезарядке");
         }
 
-        if (_attackProgress > _enemyConfig.enemyAttackDuration + _enemyConfig.enemyAttackCooldown)
+        if (_attackProgress > _enemyConfig.AttackDuration + _enemyConfig.AttackCooldown)
         {
             _onCooldown = false;
             _enemyAnimator.isReloading(false);

@@ -14,17 +14,17 @@ public class Enemy : MonoBehaviour
     private BehaviorStateMachine _stateMachine;
     private Animator _animator;
     private EnemyAnimator _enemyAnimator;
-    private EnemyController _controller;
+    private EnemyController _enemyController;
     private NavMeshAgent _navMeshAgent;
     [SerializeField] private GameObject _laserBeamPrefab;
     private LaserBeamController _activeLaser;
     [SerializeField] private Transform _laserSpawnPoint; // Точка спавна лазера, если нужно
-   [SerializeField] private List<Transform> _manualPoints; // Привязать вручную через инспектор
+    [SerializeField] private List<Transform> _manualPoints; // Привязать вручную через инспектор
     public BehaviorState currentState;
     public AwarenessMeter _awarenessMeter;
     public bool seePlayer;
     public bool hearPlayer;
-    [SerializeField] private Enemy_ScriptableObject enemyConfig;
+    [SerializeField] private Enemy_ScriptableObject _enemyConfig;
 
     private void Awake()
     {
@@ -38,9 +38,11 @@ public class Enemy : MonoBehaviour
         _navMeshAgent.updateRotation = false;
 
         // Создаём вспомогательные классы
-        _controller = new EnemyController(transform, _navMeshAgent, this);
-        _awarenessMeter = new AwarenessMeter(_sensors);
-        _enemyAnimator = new EnemyAnimator(_navMeshAgent, _animator, transform, _controller);
+        _enemyController = new EnemyController(_sensors, transform, _navMeshAgent);
+        _awarenessMeter = new AwarenessMeter(_sensors, _enemyConfig);
+        _enemyAnimator = new EnemyAnimator(_navMeshAgent, _animator, transform, _enemyController);
+        _awarenessMeter.Initialize();
+        _awarenessMeter.ApplyCalmSensorParams();
 
     }
 
@@ -49,17 +51,20 @@ public class Enemy : MonoBehaviour
         
 
         // Создаём состояния (уже можно брать патрульные точки из Room)
-        var defaultState = new DefaultState(_sensors, transform, _controller);
-        var chasingState = new ChasingState(_sensors, transform, _controller,_navMeshAgent, enemyConfig, _enemyAnimator );
-        var patrolState = new PatrolState(_sensors, _controller,_navMeshAgent,enemyConfig);
-        var attackState = new AttackState(_sensors, transform, _controller, _enemyAnimator, _activeLaser, _laserBeamPrefab, _laserSpawnPoint, _navMeshAgent, enemyConfig);
-
+        var defaultState = new DefaultState(_sensors, transform, _enemyController);
+        var chasingState = new ChasingState(_sensors, transform, _enemyController,_navMeshAgent, _enemyConfig, _enemyAnimator );
+        var patrolState = new PatrolState(_sensors, transform, _enemyController,_navMeshAgent, _enemyConfig);
+        var attackState = new AttackState(_sensors, transform, _enemyController, _enemyAnimator, _activeLaser, _laserBeamPrefab, _laserSpawnPoint, _navMeshAgent, _enemyConfig);
+        var searchingState = new SearchingState(_sensors, transform, _enemyController, _navMeshAgent, _enemyConfig);
+        
         defaultState.AddTransition(chasingState, _awarenessMeter.IsChasing);
         patrolState.AddTransition(chasingState, _awarenessMeter.IsChasing);
         defaultState.AddTransition(patrolState, defaultState.IsPatroling);
-        chasingState.AddTransition(patrolState, chasingState.PlayerLost);
+        chasingState.AddTransition(searchingState, _awarenessMeter.IsPlayerLost);
         chasingState.AddTransition(attackState, chasingState.PlayerInAttackRange);
         attackState.AddTransition(chasingState, attackState.PlayerOutOfAttackRange);
+        searchingState.AddTransition(patrolState, searchingState.SearchingEnd);
+        searchingState.AddTransition(chasingState, _awarenessMeter.IsChasing);
 
         var disabledStates = new List<BehaviorForcedState> { new DisabledState() };
         _stateMachine = new BehaviorStateMachine(defaultState, disabledStates);
@@ -74,6 +79,7 @@ public class Enemy : MonoBehaviour
             // Ищем комнату, в которой находится противник
             RoomCheck();
         }
+        
 
     }
 
@@ -91,7 +97,7 @@ public class Enemy : MonoBehaviour
     {
         _stateMachine.ForseChangeState<DisabledState>();
     }
-
+    
     private void RoomCheck()
     {
         // Ищем все коллайдеры рядом с врагом
@@ -106,13 +112,13 @@ public class Enemy : MonoBehaviour
             if (room != null)
             {
                 Debug.Log($"[Enemy] НАШЁЛ КОМНАТУ через OverlapSphere: {room.name}");
-                _controller.SetCurrentRoom(room);
+                _enemyController.SetCurrentRoom(room);
                 break;
             }
         }
 
         // Получаем патрульные точки из установленной комнаты
-        var points = _controller.GetRoomPatrolPoints();
+        var points = _enemyController.GetRoomPatrolPoints();
         Debug.Log($"[Enemy] Получено точек патруля: {points.Count}");
     }
 

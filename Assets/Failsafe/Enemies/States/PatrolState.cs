@@ -10,31 +10,34 @@ public class PatrolState : BehaviorState
     private readonly EnemyController _enemyController;
     private NavMeshAgent _navMeshAgent;
     private Enemy_ScriptableObject _enemyConfig;
-
+    private Transform _enemyPos;
+    
     private List<Transform> _patrolPoints = new();
     private int _currentPatrolPointIndex = -1;
     private Vector3 _patrolPoint;
 
     private float _waitTimer;
-    private bool _isWaiting = false;
-    private float speed;
-
-    public PatrolState(Sensor[] sensors, EnemyController enemyController, NavMeshAgent navMeshAgent, Enemy_ScriptableObject enemyConfig)
+    private bool _isWaiting;
+    public PatrolState(Sensor[] sensors,Transform enemyPos, EnemyController enemyController, NavMeshAgent navMeshAgent, Enemy_ScriptableObject enemyConfig)
     {
         _sensors = sensors;
         _enemyController = enemyController;
         _navMeshAgent = navMeshAgent;
         _enemyConfig = enemyConfig;
+        _enemyPos = enemyPos;
+
     }
 
     public override void Enter()
     {
         base.Enter();
-        _waitTimer = _enemyConfig.enemyPatrolingWaitTime;
         _navMeshAgent.stoppingDistance = 1f;
-        speed = _enemyConfig.enemyPatrolingSpeed;
-        _isWaiting = false;
+        ChoosePatroloStyle();
 
+    }
+
+    private void ChoosePatroloStyle()
+    {
         if (_patrolPoints == null || _patrolPoints.Count == 0)
         {
             _patrolPoints = _enemyController.GetRoomPatrolPoints();
@@ -42,8 +45,8 @@ public class PatrolState : BehaviorState
 
         if (_patrolPoints == null || _patrolPoints.Count == 0)
         {
-            _patrolPoint = _enemyController.RandomPoint();
-            _enemyController.MoveToPoint(_patrolPoint, speed);
+            _patrolPoint = _enemyController.RandomPointAround(_enemyPos.position, _enemyConfig.offsetSearchingPoint);
+            _enemyController.MoveToPoint(_patrolPoint, _enemyConfig.PatrolingSpeed);
         }
         else
         {
@@ -51,37 +54,34 @@ public class PatrolState : BehaviorState
             HandlePatrolling();
         }
     }
-
     public override void Update()
     {
-
+       
         if (_isWaiting)
         {
-            HandleWaiting();
+            _waitTimer -= Time.deltaTime;
+            if (_waitTimer <= 0f)
+            {
+                _isWaiting = false;
+                HandlePatrolling();
+            }
+            return;
         }
-        else if (_enemyController.IsPointReached())
-        {
-            _isWaiting = true;
-            _enemyController.StopMoving();
-        }
-    }
 
-    private void HandleWaiting()
-    {
-        _waitTimer -= Time.deltaTime;
-        if (_waitTimer <= 0f)
+        if (_enemyController.IsPointReached())
         {
-            _waitTimer = _enemyConfig.enemyPatrolingWaitTime;
-            _isWaiting = false;
-            HandlePatrolling();
+            _enemyController.StopMoving();
+            _isWaiting = true;
+            _waitTimer = _enemyConfig.PatrollingWaitTime;
         }
     }
+    
 
     private void HandlePatrolling()
     {
         if (_patrolPoints == null || _patrolPoints.Count == 0)
         {
-            _patrolPoint = _enemyController.RandomPoint();
+            _patrolPoint = _enemyController.RandomPointAround(_enemyPos.position, _enemyConfig.offsetSearchingPoint);
         }
         else
         {
@@ -89,7 +89,7 @@ public class PatrolState : BehaviorState
             _patrolPoint = _patrolPoints[_currentPatrolPointIndex].position;
         }
 
-        _enemyController.MoveToPoint(_patrolPoint, speed);
+        _enemyController.MoveToPoint(_patrolPoint, _enemyConfig.PatrolingSpeed);
     }
     
     public void SetManualPatrolPoints(List<Transform> points, bool restart = true)
@@ -99,8 +99,6 @@ public class PatrolState : BehaviorState
         if (restart)
         {
             _currentPatrolPointIndex = -1;
-            _isWaiting = false;
-            _waitTimer = _enemyConfig.enemyPatrolingWaitTime;
             HandlePatrolling();
         }
     }
