@@ -19,7 +19,6 @@ public abstract class PowerNode : MonoBehaviour
 
     // Какие направления соединены в этом узле (например, вход и выход)
     protected HashSet<Direction> ConnectedDirections;
-    [SerializeField] protected List<Direction> ConnectedDirectionsSerialized = new List<Direction>();
 
     // Получил ли питание
     protected bool IsPowered = false;
@@ -29,12 +28,15 @@ public abstract class PowerNode : MonoBehaviour
     protected virtual void Awake()
     {
         Neighbors = new Dictionary <Direction, PowerNode>();
+        ConnectedDirections = new HashSet<Direction>();
         foreach (var pair in NeighborsSerialized)
         {
             if (!Neighbors.ContainsKey(pair.Direction))
+            {
                 Neighbors.Add(pair.Direction, pair.Node);
+                ConnectedDirections.Add(pair.Direction);
+            }
         }
-        ConnectedDirections = new HashSet<Direction>(ConnectedDirectionsSerialized);
     }
 
     // Метод запуска распространения питания
@@ -95,7 +97,7 @@ public abstract class PowerNode : MonoBehaviour
     // Метод, вызываемый при отключении питания (можно переопределять)
     protected virtual void OnPowerLost()
     {
-        Debug.Log($"{name} lost power"); 
+        Debug.Log($"{name} потеряно питание"); 
         gameObject.GetComponent<Renderer>().material.color = Color.white;
     }
 
