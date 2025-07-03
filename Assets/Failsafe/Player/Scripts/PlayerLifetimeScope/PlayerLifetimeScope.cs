@@ -1,3 +1,4 @@
+using Failsafe.Items;
 using Failsafe.Player.Model;
 using Failsafe.Player.View;
 using Failsafe.PlayerMovements;
@@ -19,6 +20,8 @@ namespace Failsafe.Player
         [SerializeReference] private PlayerModelParameters _playerModelParameters;
         [SerializeReference] private PlayerMovementParameters _playerMovementParameters;
         [SerializeReference] private PlayerNoiseParameters _playerNoiseParameters;
+        // Параметры предметов
+        [SerializeField] private ScriptableObject[] _playerItemsData;
 
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private InputActionAsset _inputActionAsset;
@@ -34,8 +37,8 @@ namespace Failsafe.Player
 
             builder.Register<InputHandler>(Lifetime.Scoped);
 
-            builder.Register<PlayerHealth>(Lifetime.Singleton).As<IHealth>().WithParameter(_playerModelParameters.MaxHealth);
-            builder.Register<PlayerStamina>(Lifetime.Singleton).As<IStamina>().WithParameter(_playerModelParameters.MaxStamina);
+            builder.Register<IHealth, PlayerHealth>(Lifetime.Singleton).AsSelf().WithParameter(_playerModelParameters.MaxHealth);
+            builder.Register<IStamina, PlayerStamina>(Lifetime.Singleton).AsSelf().WithParameter(_playerModelParameters.MaxStamina);
             builder.RegisterEntryPoint<PlayerDamageable>(Lifetime.Scoped);
             builder.RegisterEntryPoint<PlayerStaminaController>(Lifetime.Scoped).AsSelf();
 
@@ -43,6 +46,17 @@ namespace Failsafe.Player
 
             builder.RegisterEntryPoint<PlayerAnimationController>(Lifetime.Scoped);
             builder.RegisterEntryPoint<PlayerCameraController>(Lifetime.Scoped);
+
+            RegisterItems(builder);
+        }
+
+        private void RegisterItems(IContainerBuilder builder)
+        {
+            foreach (var itemData in _playerItemsData)
+            {
+                builder.RegisterInstance(itemData).As(itemData.GetType());
+            }
+            builder.Register<Stimpack>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
         }
     }
 }
