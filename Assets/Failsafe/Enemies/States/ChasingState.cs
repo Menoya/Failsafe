@@ -30,8 +30,7 @@ public class ChasingState : BehaviorState
         _enemyAnimator = enemyAnimator;
     }
 
-    public bool PlayerLost() => _loseProgress >= _enemyConfig.enemyLostPlayerTime;
-    public bool PlayerInAttackRange() => _playerInSight && (_distanceToPlayer < _enemyConfig.enemyAttackRangeMin);
+    public bool PlayerInAttackRange() => _playerInSight && (_distanceToPlayer < _enemyConfig.AttackRangeMin);
 
 
 
@@ -40,8 +39,8 @@ public class ChasingState : BehaviorState
         base.Enter();
         _loseProgress = 0;
         _playerInSight = false;
-        _navMeshAgent.stoppingDistance = _enemyConfig.enemyAttackRangeMin;
-        _enemyAnimator.StartMove(_enemyConfig.enemyChaseSpeed);
+        _navMeshAgent.stoppingDistance = _enemyConfig.AttackRangeMin;
+        _enemyAnimator.StartMove(_enemyConfig.ChaseSpeed);
         Debug.Log("Enter ChasingState");
     }
 
@@ -69,17 +68,23 @@ public class ChasingState : BehaviorState
                 _loseProgress = 0;
                 _enemyController.RotateToPoint((Vector3)sensor.SignalSourcePosition, 5f);
                 _chasingPosition = sensor.SignalSourcePosition;
-                break;
+                _enemyController.SetLastKnownPlayerPosition(
+                    sensor.SignalSourcePosition.Value,
+                    (sensor.SignalSourcePosition.Value - _transform.position).normalized
+                );                break;
             }
         }
-        if (_enemyController.IsPointReached() && !anySensorIsActive)
-        {
-            _loseProgress += Time.deltaTime;
-        }
+       
         if (_chasingPosition == null)
         {
             return;
         }
-        _enemyController.RunToPoint(_chasingPosition.Value, _enemyConfig.enemyChaseSpeed);
+        _enemyController.RunToPoint(_chasingPosition.Value, _enemyConfig.ChaseSpeed);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        
     }
 }
