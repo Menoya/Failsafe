@@ -33,7 +33,7 @@ public class StasisGun : MonoBehaviour
         if (_fireRateTimer <= 0 && !chargeAmount.IsEmpty())
         {
             _fireRateTimer = Data.FireRate;
-            chargeAmount.UseChargeAmount(7);
+            chargeAmount.UseChargeAmount();
             if (_isDefaultMode)
                 DefaultMode(hit);
             else

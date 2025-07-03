@@ -4,6 +4,6 @@ public class StasisGunData : ScriptableObject
 {
     public float StasisDuration;
     public float FireRate;
-    public int ChargeAmountMax = 100;
+    public int ChargeAmountMax;
     
 }

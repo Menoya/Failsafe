@@ -16,9 +16,9 @@ public class ChargeAmount : MonoBehaviour
         _chargeAmountCurrent = Mathf.Clamp(_chargeAmountCurrent, 0, Data.ChargeAmountMax);
     }
 
-    public void UseChargeAmount(int amount)
+    public void UseChargeAmount()
     {
-        _chargeAmountCurrent -= amount;
+        _chargeAmountCurrent -= 1;
         _chargeAmountCurrent = Mathf.Clamp(_chargeAmountCurrent, 0, Data.ChargeAmountMax);
     }
 
