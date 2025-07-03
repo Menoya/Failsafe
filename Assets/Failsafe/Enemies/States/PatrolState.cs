@@ -17,8 +17,7 @@ public class PatrolState : BehaviorState
     private Vector3 _patrolPoint;
 
     private float _waitTimer;
-    private bool _isWaiting = false;
-
+    private bool _isWaiting;
     public PatrolState(Sensor[] sensors,Transform enemyPos, EnemyController enemyController, NavMeshAgent navMeshAgent, Enemy_ScriptableObject enemyConfig)
     {
         _sensors = sensors;
@@ -32,9 +31,7 @@ public class PatrolState : BehaviorState
     public override void Enter()
     {
         base.Enter();
-        _waitTimer = _enemyConfig.PatrollingWaitTime;
         _navMeshAgent.stoppingDistance = 1f;
-        _isWaiting = false;
         ChoosePatroloStyle();
 
     }
@@ -59,30 +56,26 @@ public class PatrolState : BehaviorState
     }
     public override void Update()
     {
-
+       
         if (_isWaiting)
         {
-            HandleWaiting();
+            _waitTimer -= Time.deltaTime;
+            if (_waitTimer <= 0f)
+            {
+                _isWaiting = false;
+                HandlePatrolling();
+            }
+            return;
         }
-        else if (_enemyController.IsPointReached() && !_isWaiting)
+
+        if (_enemyController.IsPointReached())
         {
-            _isWaiting = true;
             _enemyController.StopMoving();
-        }
-    }
-
-    private void HandleWaiting()
-    {
-        _waitTimer -= Time.deltaTime;
-        if (_waitTimer <= 0f)
-        {
+            _isWaiting = true;
             _waitTimer = _enemyConfig.PatrollingWaitTime;
-            _isWaiting = false;
-            HandlePatrolling();
         }
-        _isWaiting = true;
-
     }
+    
 
     private void HandlePatrolling()
     {
@@ -106,8 +99,6 @@ public class PatrolState : BehaviorState
         if (restart)
         {
             _currentPatrolPointIndex = -1;
-            _isWaiting = false;
-            _waitTimer = _enemyConfig.PatrollingWaitTime;
             HandlePatrolling();
         }
     }

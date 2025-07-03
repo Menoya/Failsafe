@@ -5,12 +5,12 @@ public class SearchingState : BehaviorState
 {
     private Vector3 _targetPoint;
     private float _searchTimer;
-    private float _waitTimer;
     private Vector3 _searchOrigin;
     private Vector3 _searchDir;
     private bool _hasReachedOrigin = false;
-    
-    private bool _isWaiting;
+
+    private float _waitTimer;
+    private bool _isWaiting = false;
 
     private Sensor[] _sensors;
     private Transform _transform;
@@ -32,11 +32,11 @@ public class SearchingState : BehaviorState
     public override void Enter()
     {
         base.Enter();
-
-        _isWaiting = false;
-        _waitTimer = 0f;
         _hasReachedOrigin = false;
         _searchTimer = 0f;
+        _isWaiting = false;
+        _waitTimer = 0f;
+
         _navMeshAgent.stoppingDistance = 1f;
         _searchOrigin = _enemyController.LastKnownPlayerPosition;
         _searchDir = _enemyController.LastKnownPlayerDirection;
@@ -49,7 +49,6 @@ public class SearchingState : BehaviorState
     {
         base.Update();
 
-        // Если ещё не дошли до origin-точки
         if (!_hasReachedOrigin)
         {
             if (_enemyController.IsPointReached())
@@ -62,38 +61,32 @@ public class SearchingState : BehaviorState
             return;
         }
 
-        // После того как дошёл до origin — запускаем таймер
         _searchTimer += Time.deltaTime;
 
         if (SearchingEnd())
             return;
 
-        if (_enemyController.IsPointReached())
+        if (_isWaiting)
         {
-            HandleWaiting();
+            _waitTimer -= Time.deltaTime;
+            if (_waitTimer <= 0f)
+            {
+                _isWaiting = false;
+                PickPoint(_transform.position);
+            }
+            return;
         }
-    }
 
-    private void HandleWaiting()
-    {
-        if (!_isWaiting)
+        if (_enemyController.IsPointReached())
         {
             _isWaiting = true;
             _waitTimer = _enemyConfig.changePointInterval;
-        }
-
-        _waitTimer -= Time.deltaTime;
-
-        if (_waitTimer <= 0f)
-        {
-            _isWaiting = false;
-            PickPoint(_transform.position);
         }
     }
 
     private void PickPoint(Vector3 center)
     {
-        _targetPoint = _enemyController.RandomPointInForwardCone(_searchOrigin,_searchDir, _enemyConfig.SearchRadius, 65f);
+        _targetPoint = _enemyController.RandomPointInForwardCone(_searchOrigin, _searchDir, _enemyConfig.SearchRadius, 65f);
         _enemyController.MoveToPoint(_targetPoint, _enemyConfig.SearchingSpeed);
     }
 

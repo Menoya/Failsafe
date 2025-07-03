@@ -5192,7 +5192,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.5
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 0.1
   m_NavMeshData: {fileID: 23800000, guid: b805f5dde2e41464f972d01e6adfb312, type: 2}
   m_BuildHeightMesh: 0
@@ -5239,7 +5239,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.5
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
@@ -7496,6 +7496,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CursorOn: 0
   Enemies: []
+  showNavMeshPath: 1
+  pathColor: {r: 0, g: 1, b: 1, a: 1}
 --- !u!4 &1371955262
 Transform:
   m_ObjectHideFlags: 0

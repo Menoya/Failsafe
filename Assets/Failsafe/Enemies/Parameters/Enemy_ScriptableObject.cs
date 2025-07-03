@@ -28,13 +28,18 @@ public class Enemy_ScriptableObject : ScriptableObject
     
 
     [Header("Awareness meter")] 
-    public float FillSpeed; //Множитель заполнения шкалы от силы сигнала за единицу времени
-    public float DecaySpeed; //Множитель скорсоти снижения настороженности за единицу времени
-    public float DecayDelay; //Задержка перед началом сниения настороженности
+    public float FillSpeed = 80f; //Множитель заполнения шкалы от силы сигнала за единицу времени
+    public float DecaySpeed = 10f; //Множитель скорсоти снижения настороженности за единицу времени
+    public float DecayDelay = 2f; //Задержка перед началом сниения настороженности
     
-    public float AlertThreshold; // Нижняя граница снижения настороженности после преследования
-    public float ChaseThreshold; // Минимальная граница начала преследования
-    public float ChaseExitThreshold; //Минимальная гринца прекращения преследования
+    public float AlertThreshold = 30f; // Нижняя граница снижения настороженности после преследования
+    public float ChaseThreshold = 100f; // Минимальная граница начала преследования
+    public float ChaseExitThreshold = 30f; //Минимальная гринца прекращения преследования
+    
+    [Header("Check")]
+    public float CheckRadius;
+    public float CheckDuration;
+    public float CheckInterval;
     
     [Header("Chase")]
     public float ChaseSpeed = 6f; // Скорость преследования

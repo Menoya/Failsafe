@@ -5,36 +5,52 @@ namespace Failsafe.Enemies.Sensors
 {
     public class AwarenessMeter
     {
-        [Header("Sensors")] private Sensor[] _sensors;
+        [Header("Sensors")]
+        private readonly Sensor[] _sensors;
 
         [Header("Настройки")]
         private float _fillSpeed = 80f;
         private float _decaySpeed = 10f;
         private float _decayDelay = 2f;
 
-        [Header("Пороги")] [SerializeField]
+        [Header("Пороги")] 
         private float _alertThreshold = 30f;
         private float _chaseThreshold = 100f;
         private float _chaseExitThreshold = 30f;
         
-        [SerializeField, Range(0, 100)] private float _alertness;
+        [Range(0, 100)] private float _alertness;
 
+        private readonly Enemy_ScriptableObject _enemyConfig;
         private float _decayDelayTimer;
 
         private bool _hasEverChased = false;
         private bool _hasLostPlayer = false;
 
         public float AlertnessValue => _alertness;
-
-        public AwarenessMeter(Sensor[] sensors)
+        
+        public AwarenessMeter(Sensor[] sensors, Enemy_ScriptableObject enemyConfig)
         {
             _sensors = sensors;
+            _enemyConfig = enemyConfig;
+            
+        }
+
+        public void Initialize()
+        {
+            _fillSpeed = _enemyConfig.FillSpeed;
+            _decaySpeed = _enemyConfig.DecaySpeed;
+            _decayDelay = _enemyConfig.DecayDelay;
+
+            _alertThreshold = _enemyConfig.AlertThreshold;
+            _chaseThreshold = _enemyConfig.ChaseThreshold;
+            _chaseExitThreshold = _enemyConfig.ChaseExitThreshold;
         }
 
         public bool IsChasing()
         {
                 if (_alertness >= _chaseThreshold)
                 {
+                    ApplyAlertSensorParams();
                     _hasEverChased = true;
                     return true;
                 }
@@ -54,7 +70,8 @@ namespace Failsafe.Enemies.Sensors
         }
 
         public bool IsAlerted()
-        {
+        {    
+            ApplyAlertSensorParams();
             return _alertness >= _alertThreshold;
         }
 
@@ -62,7 +79,8 @@ namespace Failsafe.Enemies.Sensors
         {
             // Если враг однажды достиг состояния погони — он не может вернуться в "спокойствие"
             if (_hasEverChased) return false;
-            return _alertness < _alertThreshold;
+            ApplyCalmSensorParams();
+            return _alertness <= 0f;
         }
 
         public void Update()
@@ -92,6 +110,43 @@ namespace Failsafe.Enemies.Sensors
             // Если враг однажды достиг состояния погони — ограничиваем минимальное значение
             if (_hasEverChased)
                 _alertness = Mathf.Max(_alertness, _alertThreshold);
+        }
+        private void SetVisionSensorParams(float distance, float angle, float focusTime)
+        {
+            foreach (var sensor in _sensors)
+            {
+                if (sensor is VisualSensor visualSensor)
+                {
+                    visualSensor.SetDistance(distance);
+                    visualSensor.SetAngle(angle);
+                    visualSensor.SetFocusingTime(focusTime);
+                }
+            }
+        }
+
+        private void SetHearingSensorParams(float distance, float minSignal, float maxSignal, float focusTime)
+        {
+            foreach (var sensor in _sensors)
+            {
+                if (sensor is NoiseSensor noiseSensor)
+                {
+                    noiseSensor.SetDistance(distance);
+                    noiseSensor.SetMinMaxStrength(minSignal, maxSignal);
+                    noiseSensor.SetFocusingTime(focusTime);
+                }
+            }
+        }
+        
+        public void ApplyCalmSensorParams()
+        {
+            SetVisionSensorParams(_enemyConfig.OriginDistanceSight, _enemyConfig.OrginAngleViev, _enemyConfig.VisualFocusTime);
+            SetHearingSensorParams(_enemyConfig.OriginDistanceHearing, _enemyConfig.MinSoundStr, _enemyConfig.MaxSoundStr, _enemyConfig.HearFocusTime);
+        }
+
+        public void ApplyAlertSensorParams()
+        {
+            SetVisionSensorParams(_enemyConfig.AlertDistanceSight, _enemyConfig.AlertAngleViev, _enemyConfig.AlertVisualFocusTime);
+            SetHearingSensorParams(_enemyConfig.AlertDistanceHearing, _enemyConfig.AlertMinSoundStr, _enemyConfig.MaxSoundStr, _enemyConfig.AlertHearFocusTime);
         }
     }
     
