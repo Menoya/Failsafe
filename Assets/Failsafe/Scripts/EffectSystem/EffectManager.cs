@@ -17,22 +17,10 @@ namespace Failsafe.Scripts.EffectSystem
         /// </summary>
         /// <param name="effect">Эффект</param>
         void ApplyEffect(Effect effect);
-        /// <summary>
-        /// Применить эффект зарегистрированный в DI
-        /// </summary>
-        /// <typeparam name="TEffect">Тип эффекта который нужно применить</typeparam>
-        void ApplyEffect<TEffect>() where TEffect : Effect;
     }
 
     public class EffectManager : IEffectManager, ITickable, IDisposable
     {
-        private IObjectResolver _resolver;
-
-        public EffectManager(IObjectResolver resolver)
-        {
-            _resolver = resolver;
-        }
-
         private List<Effect> _effects = new List<Effect>();
 
         public void ApplyEffect(Effect effect)
@@ -48,12 +36,6 @@ namespace Failsafe.Scripts.EffectSystem
 
             effect.Start();
             _effects.Add(effect);
-        }
-
-        public void ApplyEffect<TEffect>() where TEffect : Effect
-        {
-            var effect = _resolver.Resolve<TEffect>();
-            ApplyEffect(effect);
         }
 
         public void Tick()
