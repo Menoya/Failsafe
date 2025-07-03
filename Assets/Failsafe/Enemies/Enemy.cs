@@ -41,7 +41,8 @@ public class Enemy : MonoBehaviour
         _enemyController = new EnemyController(_sensors, transform, _navMeshAgent);
         _awarenessMeter = new AwarenessMeter(_sensors, _enemyConfig);
         _enemyAnimator = new EnemyAnimator(_navMeshAgent, _animator, transform, _enemyController);
-        
+        _awarenessMeter.Initialize();
+        _awarenessMeter.ApplyCalmSensorParams();
 
     }
 
@@ -78,8 +79,6 @@ public class Enemy : MonoBehaviour
             // Ищем комнату, в которой находится противник
             RoomCheck();
         }
-        _awarenessMeter.Initialize();
-        _awarenessMeter.ApplyCalmSensorParams();
         
 
     }
