@@ -4,26 +4,26 @@ using UnityEngine;
 public class ChargeStation : MonoBehaviour
 {
     [SerializeField] Transform _posForPistolGO;
-    [SerializeField]int _containedChargeAmount= 2000;
-    
+    [SerializeField] int _containedEnergyAmount = 2000;
+
     private void OnTriggerEnter(Collider other)
     {
-        ChargeAmount chargeAmoount = other.GetComponent<ChargeAmount>();
+        EnergyContainer1 connectedEnergyContainer = other.GetComponent<EnergyContainer1>();
         //other.transform.position = _posForPistolGO.position;
         //other.GetComponent<Rigidbody>().isKinematic = true;
-        if(chargeAmoount != null)
+        if (connectedEnergyContainer != null)
         {
-            int _chargeAmount = chargeAmoount.GetAmountForMax();
-            if (_containedChargeAmount >= _chargeAmount && !chargeAmoount.IsFull() )
+            int energyAmountOfConnectedObj = connectedEnergyContainer.GetAmountForMax();
+            if (_containedEnergyAmount >= energyAmountOfConnectedObj && !connectedEnergyContainer.IsFull())
             {
-                chargeAmoount.Reload(_chargeAmount);
-                _containedChargeAmount -= _chargeAmount;
-                if(_containedChargeAmount == 0)
+                connectedEnergyContainer.Reload(energyAmountOfConnectedObj);
+                _containedEnergyAmount -= energyAmountOfConnectedObj;
+                if (_containedEnergyAmount == 0)
                     Destroy(this.gameObject);
             }
-            
+
         }
     }
-    
-    
+
+
 }

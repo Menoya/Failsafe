@@ -18,14 +18,16 @@ public class Stasisable : MonoBehaviour
     {
         _startedCoroutine ??= StartCoroutine(FreezeRigidbodyWithInertion(duration));
     }
-    
+
     private IEnumerator FreezeRigidbody(float duration)
     {
-        _rb.isKinematic = true; 
-        
+        _rb.isKinematic = true;
+        _rb.constraints = RigidbodyConstraints.FreezeAll;
+
         yield return new WaitForSeconds(duration);
 
         _rb.isKinematic = false;
+        _rb.constraints = RigidbodyConstraints.None;
         _startedCoroutine = null;
 
     }
@@ -37,16 +39,18 @@ public class Stasisable : MonoBehaviour
         yield return new WaitForSeconds(duration);
         _rb.useGravity = true;
         _rb.isKinematic = false;
+        _rb.constraints = RigidbodyConstraints.None;
         //_rb.linearDamping = 0;
         _startedCoroutine = null;
     }
-    
+
     void OnCollisionEnter(Collision collision)
     {
-        if (_startedCoroutine!=null)
+        if (_startedCoroutine != null)
         {
-            _rb.isKinematic = true; 
-          
+            _rb.isKinematic = true;
+            _rb.constraints = RigidbodyConstraints.FreezeAll;
+
         }
     }
 }

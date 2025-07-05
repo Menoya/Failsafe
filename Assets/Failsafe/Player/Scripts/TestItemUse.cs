@@ -13,7 +13,7 @@ namespace Failsafe.Player
     public class TestItemUse : MonoBehaviour
     {
         [Inject] private IEnumerable<IUsable> _items;
-        
+
         [ValueDropdown("_itemNames")]
         public string ItemName;
         public GameObject ItemPrefab;
@@ -25,15 +25,8 @@ namespace Failsafe.Player
         [ContextMenu(nameof(TestUse))]
         public void TestUse()
         {
-            string itemName = string.Empty;
-            if (ItemPrefab)
-            {
-                itemName = ItemPrefab.name;
-            }
-            else
-            {
-                itemName = ItemName;
-            }
+            string itemName = SelectItem();
+
 
             if (string.IsNullOrEmpty(itemName))
             {
@@ -46,6 +39,29 @@ namespace Failsafe.Player
                 Debug.Log($"({nameof(TestItemUse)}) Не найдена реализация для {itemName}");
                 return;
             }
+            Debug.Log($"({nameof(TestItemUse)}) был использован {itemName}");
+
+            if (item is IShootable shootable)
+            {
+                Ray ray = GetComponentInChildren<Camera>().ScreenPointToRay(Input.mousePosition);
+                //маска чтобы рейкаст точно игнорировал игрока
+                LayerMask mask = ~(1 << 5);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100, mask))
+                {
+                    //Debug.DrawRay(transform.position, transform.up * hit.distance, Color.green);
+                    Debug.Log("Object ahead: " + hit.collider.name);
+
+                }
+                else
+                {
+                    //Debug.DrawRay(transform.position, transform.up, Color.red);
+                    Debug.Log("No Object!");
+                }
+                shootable.Shoot(hit);
+                return;
+            }
+
             item.Use();
         }
 
@@ -56,6 +72,8 @@ namespace Failsafe.Player
 
         void Update()
         {
+            if (_items.FirstOrDefault(x => x.GetType().Name == SelectItem()) is IUpdatable updatable) updatable.Update();
+
             if (Input.GetKeyDown(_useKeyCode))
             {
                 TestUse();
@@ -65,6 +83,18 @@ namespace Failsafe.Player
         void OnValidate()
         {
             _useKeyCode = System.Enum.Parse<KeyCode>(UseOnKey);
+        }
+
+        string SelectItem()
+        {
+            if (ItemPrefab)
+            {
+                return ItemPrefab.name;
+            }
+
+            return ItemName;
+
+
         }
     }
 }

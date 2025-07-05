@@ -335,7 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 490a04cf88db9584fa950af78a7634e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chargeAmount: {fileID: 6895471819008144628}
+  _energyContainer1: {fileID: 6895471819008144628}
   Data: {fileID: 11400000, guid: 2974ccbf76f0db6449b3b0f0cf1615db, type: 2}
 --- !u!114 &6895471819008144628
 MonoBehaviour:
@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: 2974ccbf76f0db6449b3b0f0cf1615db, type: 2}
-  _chargeAmountCurrent: 0
+  _energyAmountCurrent: 0
 --- !u!4 &5575020062436731130 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3695867075055192612, guid: fbc04dcdb3219f441896bff913d85e53, type: 3}
