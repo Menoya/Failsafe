@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IShootable
 {
-    public void Shoot(RaycastHit hit);
+    public void Shoot(Ray ray);
 }

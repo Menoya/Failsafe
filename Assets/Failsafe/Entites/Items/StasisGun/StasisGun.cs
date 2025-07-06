@@ -20,33 +20,21 @@ namespace Failsafe.Items
             if (_fireRateTimer > 0)
             {
                 _fireRateTimer -= Time.deltaTime;
+
             }
             if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
                 _isDefaultMode = !_isDefaultMode;
                 Debug.Log("Default mode is " + _isDefaultMode);
             }
-            Debug.Log("UpdateInvoked");
+
         }
 
 
         public void Use()
         {
-            //RaycastHit hit;
-            //if (Physics.Raycast(transform.position, transform.up, out hit))
-            //{
-            //    Debug.DrawRay(transform.position, transform.up * hit.distance, Color.green);
-            //    Debug.Log("Object ahead: " + hit.collider.name);
-            //
-            //}
-            //else
-            //{
-            //    Debug.DrawRay(transform.position, transform.up, Color.red);
-            //    Debug.Log("No Object!");
-            //}
-            //Shoot(hit);
-        }
 
+        }
 
         public void ChangeMode()
         {
@@ -55,10 +43,24 @@ namespace Failsafe.Items
         }
 
 
-        public void Shoot(RaycastHit hit)
+        public void Shoot(Ray ray)
         {
             if (_fireRateTimer <= 0 && !_energyContainer.IsEmpty())
             {
+                //маска чтобы рейкаст точно игнорировал игрока
+                LayerMask mask = ~(1 << 5);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100, mask))
+                {
+                    //Debug.DrawRay(transform.position, transform.up * hit.distance, Color.green);
+                    Debug.Log("Object ahead: " + hit.collider.name);
+
+                }
+                else
+                {
+                    //Debug.DrawRay(transform.position, transform.up, Color.red);
+                    Debug.Log("No Object!");
+                }
                 _fireRateTimer = _data.FireRate;
                 _energyContainer.UseChargeAmount();
                 if (_isDefaultMode)
