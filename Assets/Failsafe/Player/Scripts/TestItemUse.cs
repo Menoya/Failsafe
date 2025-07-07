@@ -54,7 +54,7 @@ namespace Failsafe.Player
         void Start()
         {
             _itemNames = _items.Select(x => x.GetType().Name).Concat(new string[1] { "" }).ToArray();
-            //пока написал конкретный итем чтобы сразу можно было тестить как только запустился
+            //пока вписываю конкретный итем чтобы сразу можно было тестить как только запустился
             ItemName = "StasisGun";
         }
 
