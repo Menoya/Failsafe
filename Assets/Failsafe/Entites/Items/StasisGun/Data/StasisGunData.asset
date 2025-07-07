@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StasisDuration: 10
   FireRate: 1
-  ChargeAmountMax: 100
+  ChargeAmountMax: 10

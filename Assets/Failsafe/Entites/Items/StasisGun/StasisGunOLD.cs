@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(EnergyContainer1))]
-public class StasisGun1 : MonoBehaviour
+[RequireComponent(typeof(EnergyContainerOLD))]
+public class StasisGunOLD : MonoBehaviour
 {
-    [SerializeField] EnergyContainer1 _energyContainer1;
+    [SerializeField] EnergyContainerOLD _energyContainer1;
     public StasisGunData Data;
     private bool _isDefaultMode = true;
     float _fireRateTimer = 0;

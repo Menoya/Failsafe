@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnergyContainer1 : MonoBehaviour
+public class EnergyContainerOLD : MonoBehaviour
 {
     public StasisGunData Data;
     [SerializeField] int _energyAmountCurrent;

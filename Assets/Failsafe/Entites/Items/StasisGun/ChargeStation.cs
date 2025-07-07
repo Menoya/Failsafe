@@ -8,7 +8,7 @@ public class ChargeStation : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        EnergyContainer1 connectedEnergyContainer = other.GetComponent<EnergyContainer1>();
+        EnergyContainerOLD connectedEnergyContainer = other.GetComponent<EnergyContainerOLD>();
         //other.transform.position = _posForPistolGO.position;
         //other.GetComponent<Rigidbody>().isKinematic = true;
         if (connectedEnergyContainer != null)

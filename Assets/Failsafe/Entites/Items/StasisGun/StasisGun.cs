@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Failsafe.Items
 {
-    public class StasisGun : IUsable, IUpdatable, IShootable
+    public class StasisGun : IUsable, IUpdatable, IShootable, IAltUsable
     {
         StasisGunData _data;
         EnergyContainer _energyContainer;
@@ -34,6 +34,11 @@ namespace Failsafe.Items
         public void Use()
         {
 
+        }
+
+        public void AltUse()
+        {
+            ChangeMode();
         }
 
         public void ChangeMode()
