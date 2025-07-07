@@ -1,3 +1,4 @@
+using Failsafe.Scripts.EffectSystem;
 using Failsafe.GameSceneServices.SpawnSystem;
 using UnityEngine;
 using VContainer;
@@ -20,8 +21,9 @@ namespace Failsafe.GameSceneServices
 
             //TODO: Пока это монобэх, нужно интегрировать врагов с VContainer
             builder.RegisterComponentInHierarchy<SignalManager>();
-            
+
             builder.RegisterEntryPoint<EnemySpawnSystem>().AsSelf();
+            builder.RegisterEntryPoint<EffectManager>().As<IEffectManager>();
         }
     }
 }
