@@ -1,3 +1,4 @@
+using Failsafe.Scripts.EffectSystem;
 using Failsafe.PlayerMovements.Controllers;
 using UnityEngine;
 
@@ -13,7 +14,8 @@ namespace Failsafe.PlayerMovements.States
         private readonly PlayerMovementController _movementController;
         private readonly PlayerMovementParameters _movementParameters;
         private readonly PlayerNoiseController _playerNoiseController;
-        private readonly PlayerMovementSpeedModifier _playerMovementSpeedModifier;
+        private readonly IEffectManager _effectManager;
+        private readonly SlowOnLandingEffect _slowOnLanding;
 
         private float _fallProgress = 0;
         private Vector3 _initialVelocity;
@@ -21,14 +23,15 @@ namespace Failsafe.PlayerMovements.States
 
         public float FallHeight => _initialPosition.y - _characterController.transform.position.y;
 
-        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController, PlayerMovementSpeedModifier playerMovementSpeedModifier)
+        public FallState(InputHandler inputHandler, CharacterController characterController, PlayerMovementController movementController, PlayerMovementParameters movementParameters, PlayerNoiseController playerNoiseController, IEffectManager effectManager)
         {
             _inputHandler = inputHandler;
             _characterController = characterController;
             _movementController = movementController;
             _movementParameters = movementParameters;
             _playerNoiseController = playerNoiseController;
-            _playerMovementSpeedModifier = playerMovementSpeedModifier;
+            _effectManager = effectManager;
+            _slowOnLanding = new SlowOnLandingEffect(_movementParameters);
         }
 
         public override void Enter()
@@ -57,7 +60,7 @@ namespace Failsafe.PlayerMovements.States
             _movementController.SetGravityDefault();
             if (FallHeight > _movementParameters.FallDistanceToSlow)
             {
-                _playerMovementSpeedModifier.ApplySlowOnLanding();
+                _effectManager.ApplyEffect(_slowOnLanding);
             }
             _playerNoiseController.CreateNoise(FallHeight, 2);
         }

@@ -65,7 +65,6 @@ namespace Failsafe.Player
             if (_inputHandler.ZoomTriggered && _allowToAltUse && _items.FirstOrDefault(x => x.GetType().Name == SelectItem()) is IAltUsable altUsable)
             {
                 _allowToAltUse = false;
-                Debug.Log("нажал на приседание");
                 altUsable.AltUse();
             }
             else if (!_inputHandler.ZoomTriggered)
