@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d737d6d6abaf86438fa33e71e806ff0, type: 3}
-  m_Name: SpeedModifierData
+  m_Script: {fileID: 11500000, guid: 4536b65d63cd9a7458b86180272a97d6, type: 3}
+  m_Name: AdrenalineData
   m_EditorClassIdentifier: 
-  SpeedFactor: 0
+  SpeedFactor: 3
+  Duration: 5

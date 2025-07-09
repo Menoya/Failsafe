@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using VContainer;
 
 namespace Failsafe.Player
@@ -49,17 +50,27 @@ namespace Failsafe.Player
 
 
             item.Use();
+
+            if (item is ILimitedEffect limitedEffect)
+                StartCoroutine(limitedEffect.EndEffect());
         }
 
         void Start()
         {
             _itemNames = _items.Select(x => x.GetType().Name).Concat(new string[1] { "" }).ToArray();
             //пока вписываю конкретный итем чтобы сразу можно было тестить как только запустился
-            ItemName = "StasisGun";
+            ItemName = "Adrenaline";
         }
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+                ItemName = "Stimpack";
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+                ItemName = "Adrenaline";
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+                ItemName = "StasisGun";
+
             if (_items.FirstOrDefault(x => x.GetType().Name == SelectItem()) is IUpdatable updatable) updatable.Update();
 
             if (_inputHandler.ZoomTriggered && _allowToAltUse && _items.FirstOrDefault(x => x.GetType().Name == SelectItem()) is IAltUsable altUsable)

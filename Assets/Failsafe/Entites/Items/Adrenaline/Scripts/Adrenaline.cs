@@ -1,0 +1,44 @@
+using Failsafe.Player.Model;
+using UnityEngine;
+using Failsafe.Scripts.Modifiebles;
+using System.Collections;
+
+namespace Failsafe.Items
+{
+
+
+    public class Adrenaline : IUsable, ILimitedEffect
+    {
+        AdrenalineData _data;
+        private PlayerMovements.PlayerMovementParameters _playerMovementParameters;
+        private IModificator<float> _speedModificator;
+
+        public Adrenaline(AdrenalineData data, PlayerMovements.PlayerMovementParameters playerMovementParameters)
+        {
+            _data = data;
+            _playerMovementParameters = playerMovementParameters;
+            _speedModificator = new MultiplierFloat(_data.SpeedFactor, priority: 100);
+        }
+
+        public IEnumerator EndEffect()
+        {
+            yield return new WaitForSeconds(_data.Duration);
+            _playerMovementParameters.WalkSpeed.RemoveModificator(_speedModificator);
+            _playerMovementParameters.RunSpeed.RemoveModificator(_speedModificator);
+            _playerMovementParameters.CrouchSpeed.RemoveModificator(_speedModificator);
+        }
+
+
+        public void Use()
+        {
+            _playerMovementParameters.WalkSpeed.AddModificator(_speedModificator);
+            _playerMovementParameters.RunSpeed.AddModificator(_speedModificator);
+            _playerMovementParameters.CrouchSpeed.AddModificator(_speedModificator);
+
+        }
+
+
+
+
+    }
+}
