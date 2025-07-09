@@ -95,6 +95,10 @@ namespace Failsafe.Player
                 ItemName = "Adrenaline";
             else if (Input.GetKeyDown(KeyCode.Alpha3))
                 ItemName = "StasisGun";
+            else if (Input.GetKeyDown(KeyCode.Alpha4))
+                ItemName = "Tushkan";
+            else if (Input.GetKeyDown(KeyCode.Alpha5))
+                ItemName = "Gorilla";
 
             if (_items.FirstOrDefault(x => x.GetType().Name == SelectItem()) is IUpdatable updatable) updatable.Update();
 

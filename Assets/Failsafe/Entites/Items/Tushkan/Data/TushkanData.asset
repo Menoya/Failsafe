@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4536b65d63cd9a7458b86180272a97d6, type: 3}
-  m_Name: AdrenalineData
+  m_Script: {fileID: 11500000, guid: 447a7a8caa9c2614a9c573a831420633, type: 3}
+  m_Name: TushkanData
   m_EditorClassIdentifier: 
-  SpeedMultiplier: 2
-  Duration: 3
+  JumpMultiplier: 3
+  Duration: 4

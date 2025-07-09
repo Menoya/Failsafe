@@ -6,8 +6,6 @@ using System;
 
 namespace Failsafe.Items
 {
-
-
     public class Adrenaline : IUsable, ILimitedEffect
     {
         AdrenalineData _data;

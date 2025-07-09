@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-
-public interface ILimitedEffect
+namespace Failsafe.Items
 {
-    public IEnumerator EndEffect(Action callback);
+    public interface ILimitedEffect
+    {
+        public IEnumerator EndEffect(Action callback);
 
+    }
 }
