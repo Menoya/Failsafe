@@ -18,7 +18,7 @@ namespace Failsafe.Items
         {
             _data = data;
             _playerMovementParameters = playerMovementParameters;
-            _speedModificator = new MultiplierFloat(_data.SpeedFactor, priority: 100);
+            _speedModificator = new MultiplierFloat(_data.SpeedMultiplier, priority: 100);
         }
 
         public IEnumerator EndEffect(Action callback)
@@ -34,6 +34,7 @@ namespace Failsafe.Items
 
         public void Use()
         {
+            //происходит именно УМНОЖЕНИЕ
             _playerMovementParameters.WalkSpeed.AddModificator(_speedModificator);
             _playerMovementParameters.RunSpeed.AddModificator(_speedModificator);
             _playerMovementParameters.CrouchSpeed.AddModificator(_speedModificator);
