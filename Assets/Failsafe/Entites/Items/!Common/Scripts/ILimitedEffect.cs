@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
+
 public interface ILimitedEffect
 {
-    IEnumerator EndEffect();
+    public IEnumerator EndEffect(Action callback);
+
 }

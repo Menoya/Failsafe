@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4536b65d63cd9a7458b86180272a97d6, type: 3}
   m_Name: AdrenalineData
   m_EditorClassIdentifier: 
-  SpeedFactor: 3
-  Duration: 5
+  SpeedFactor: 2
+  Duration: 3

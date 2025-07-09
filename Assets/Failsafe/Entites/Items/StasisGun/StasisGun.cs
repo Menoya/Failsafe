@@ -48,31 +48,24 @@ namespace Failsafe.Items
         }
 
 
-        public void Shoot(Ray ray)
+        public void Shoot(RaycastHit hit)
         {
             if (_fireRateTimer <= 0 && !_energyContainer.IsEmpty())
             {
-                //маска чтобы рейкаст точно игнорировал игрока
-                LayerMask mask = ~(1 << 5);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100, mask))
-                {
-                    //Debug.DrawRay(transform.position, transform.up * hit.distance, Color.green);
-                    Debug.Log("Object ahead: " + hit.collider.name);
-
-                }
-                else
-                {
-                    //Debug.DrawRay(transform.position, transform.up, Color.red);
-                    Debug.Log("No Object!");
-                }
                 _fireRateTimer = _data.FireRate;
                 _energyContainer.UseChargeAmount();
-                if (_isDefaultMode)
-                    DefaultMode(hit);
-                else
-                    AltMode(hit);
+                if (hit.collider != null)
+                {
+                    if (_isDefaultMode)
+                        DefaultMode(hit);
+                    else
+                        AltMode(hit);
+                }
+
             }
+
+
+
         }
 
         void DefaultMode(RaycastHit hit)

@@ -2,6 +2,7 @@ using Failsafe.Player.Model;
 using UnityEngine;
 using Failsafe.Scripts.Modifiebles;
 using System.Collections;
+using System;
 
 namespace Failsafe.Items
 {
@@ -20,12 +21,14 @@ namespace Failsafe.Items
             _speedModificator = new MultiplierFloat(_data.SpeedFactor, priority: 100);
         }
 
-        public IEnumerator EndEffect()
+        public IEnumerator EndEffect(Action callback)
         {
             yield return new WaitForSeconds(_data.Duration);
             _playerMovementParameters.WalkSpeed.RemoveModificator(_speedModificator);
             _playerMovementParameters.RunSpeed.RemoveModificator(_speedModificator);
             _playerMovementParameters.CrouchSpeed.RemoveModificator(_speedModificator);
+
+            callback.Invoke();
         }
 
 
@@ -36,9 +39,5 @@ namespace Failsafe.Items
             _playerMovementParameters.CrouchSpeed.AddModificator(_speedModificator);
 
         }
-
-
-
-
     }
 }
