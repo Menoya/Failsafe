@@ -27,7 +27,7 @@ namespace Failsafe.Items
             _effectManager.ApplyEffect(_effect);
         }
 
-        //TODO: Вынести в отдельный класс если эффект будет переиспользоваться другими предметами
+        //TODO: Вынести в отдельный файл если эффект будет переиспользоваться другими предметами
         public class AdrenalineEffect : Effect
         {
             private readonly PlayerMovementParameters _playerMovementParameters;
