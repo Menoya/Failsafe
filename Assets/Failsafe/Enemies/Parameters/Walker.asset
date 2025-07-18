@@ -23,9 +23,9 @@ MonoBehaviour:
   AlertVisualFocusTime: 0.2
   OriginDistanceHearing: 10
   AlertDistanceHearing: 20
-  MinSoundStr: 0.5
+  MinSoundStr: 1
   MaxSoundStr: 10
-  AlertMinSoundStr: 0.1
+  AlertMinSoundStr: 2
   HearFocusTime: 0.5
   AlertHearFocusTime: 0.2
   FillSpeed: 80
@@ -50,5 +50,5 @@ MonoBehaviour:
   AttackRangeMin: 10
   AttackRangeMax: 15
   AttackDuration: 5
-  AttackDelay: 1
+  AttackDelay: 0.5
   AttackCooldown: 4
