@@ -18,19 +18,18 @@ public class AttackState : BehaviorState
     private bool _attackFired = false;
     private bool _targetPointLocked = false;
 
-    private EnemyController _enemyController;
+    private EnemyNavMeshActions _enemyNavMeshActions;
     private EnemyAnimator _enemyAnimator;
 
     private float _distanceToPlayer;
     private LaserBeamController _activeLaser;
     private GameObject _laserPrefab;
     private Transform _laserOrigin;
-
-    public AttackState(Sensor[] sensors, Transform currentTransform, EnemyController enemyController, EnemyAnimator enemyAnimator, LaserBeamController laserBeamController, GameObject laser, Transform laserOrigin, NavMeshAgent navMeshAgent, Enemy_ScriptableObject enemyConfig)
+    public AttackState(Sensor[] sensors, Transform currentTransform, EnemyNavMeshActions enemyNavMeshActions, EnemyAnimator enemyAnimator, LaserBeamController laserBeamController, GameObject laser, Transform laserOrigin,NavMeshAgent navMeshAgent ,Enemy_ScriptableObject enemyConfig)
     {
         _sensors = sensors;
         _transform = currentTransform;
-        _enemyController = enemyController;
+        _enemyNavMeshActions = enemyNavMeshActions;
         _enemyAnimator = enemyAnimator;
         _activeLaser = laserBeamController;
         _laserPrefab = laser;
@@ -53,7 +52,7 @@ public class AttackState : BehaviorState
         _onCooldown = false;
         _attackFired = false;
         _targetPointLocked = false;
-        _enemyController.StopMoving();
+        _enemyNavMeshActions.StopMoving();
         _enemyAnimator.isAttacking(true);
     }
 
@@ -76,6 +75,7 @@ public class AttackState : BehaviorState
                 // Зафиксировать точку только один раз
                 if (!_targetPointLocked)
                 {
+    
                     _targetPoint = visual.GetBestVisiblePointWithChestOverride();
                     _targetPointLocked = _targetPoint != null;
 
@@ -86,7 +86,7 @@ public class AttackState : BehaviorState
                 if (_targetPoint == null) return;
 
                 _distanceToPlayer = Vector3.Distance(_transform.position, _targetPoint.position);
-                _enemyController.RotateToPoint(_targetPoint.position, 5f);
+                _enemyNavMeshActions.RotateToPoint(_targetPoint.position, 5f);
 
                 if (_delayOver && !_onCooldown && !_attackFired)
                 {
@@ -148,7 +148,7 @@ public class AttackState : BehaviorState
         }
 
         _enemyAnimator.isAttacking(false);
-        _enemyController.ResumeMoving();
+        _enemyNavMeshActions.ResumeMoving();
         _targetPoint = null;
         _targetPointLocked = false;
     }
